@@ -1,0 +1,36 @@
+server:
+  port: 8095
+spring:
+  datasource:
+    password: root
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/yokdb
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: public
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 200MB
+sesasis:
+  app:
+    sunucuTipi : 'linux'
+    jwtSecret: SESASISSecretKey
+    jwtExpirationMs: '86400000'
+
+springfox:
+  documentation:
+    enabled: true
+
+upload:
+  dir : src/main/resources/static/uploads

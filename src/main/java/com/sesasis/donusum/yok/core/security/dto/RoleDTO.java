@@ -1,0 +1,22 @@
+package com.sesasis.donusum.yok.core.security.dto;
+
+import com.sesasis.donusum.yok.core.domain.BaseDTO;
+import com.sesasis.donusum.yok.core.security.models.Role;
+import com.sesasis.donusum.yok.core.security.models.User;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+public class RoleDTO extends BaseDTO<Role> {
+    private String ad;
+
+    @Override
+    public Role toEntity() {
+        Role role = new Role();
+        role.setId(getId());
+        role.setAd(ad);
+        return role;
+    }
+}
