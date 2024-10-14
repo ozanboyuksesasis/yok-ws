@@ -69,30 +69,6 @@ public class DashBoardMenuService implements IService<DashboardMenuDTO> {
             throw new RuntimeException(MessageConstant.GET_BY_ID_ERROR);
         }
     }
-    public ApiResponse assignDashboardMenusToUser(Long userId, Long roleId) {
-
-        Optional<User> UserOpt = userRepository.findById(userId);
-        Optional<Role> roleOpt = roleRepository.findById(roleId);
-
-        if (UserOpt.isEmpty() || roleOpt.isEmpty()) {
-            return new ApiResponse(false, "Kullanıcı veya rol bulunamadı.", null);
-        }
-        User user = UserOpt.get();
-        Role role = roleOpt.get();
-
-        List<DashboardMenu> dashboardMenus = role.getDashboardMenuList();
-
-        if (dashboardMenus.isEmpty()) {
-            return new ApiResponse(false, "Bu role atanmış menü bulunamadı.", null);
-        }
-        user.getRoleList().add(role);
-
-        userRepository.save(user);
-
-        return new ApiResponse(true, " Kullanıcıya rol ve menüler başarıyla atandı.", null);
-    }
-
-
 
 }
 
