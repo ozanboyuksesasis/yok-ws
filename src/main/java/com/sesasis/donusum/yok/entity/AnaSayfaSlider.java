@@ -4,7 +4,6 @@ import com.sesasis.donusum.yok.core.domain.BaseModel;
 import com.sesasis.donusum.yok.dto.AnaSayfaSliderDTO;
 import lombok.Data;
 import org.hibernate.annotations.Type;
-
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -15,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 public class AnaSayfaSlider extends BaseModel<AnaSayfaSliderDTO> {
 	String baslik;
 	String slogan;
-	int sira=0;
+	int sira = 0;
 	String path;
 	boolean aktif;
 	@Lob
