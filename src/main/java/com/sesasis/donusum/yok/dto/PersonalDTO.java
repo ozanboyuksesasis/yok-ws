@@ -1,11 +1,13 @@
 package com.sesasis.donusum.yok.dto;
 
+import com.sesasis.donusum.yok.entity.GorevDonemi;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +25,9 @@ public class PersonalDTO {
     @NotBlank(message = "İsim boş olamaz")
     private String isim;
 
+    @NotBlank(message = "Kimlik numarassı boş olamaz")
+    private String kimlikNumarasi;
+
     @NotBlank(message = "Soyisim boş olamaz")
     private String soyisim;
 
@@ -31,6 +36,14 @@ public class PersonalDTO {
     private String fotografUrl;
 
     private String profilUrl;
+
+
+    private LocalDate girisTarihi;
+
+
+    private LocalDate cikisTarihi;
+
+    private List<GorevDonemi> gorevDonemis;
 
 
     private boolean aktif;

@@ -1,12 +1,17 @@
 package com.sesasis.donusum.yok.controller;
 
 import com.sesasis.donusum.yok.constant.MappingConstants;
+import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.dto.PersonalDTO;
+import com.sesasis.donusum.yok.entity.GorevDonemi;
+import com.sesasis.donusum.yok.service.GorevDonemiService;
 import com.sesasis.donusum.yok.service.PersonelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/personel")
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class PersonelController {
 
     private final PersonelService personelService;
+    private final GorevDonemiService gorevDonemiService;
 
     @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@RequestBody PersonalDTO personalDTO) {
@@ -35,5 +41,11 @@ public class PersonelController {
         personelService.deleteById(id);
         return ResponseEntity.ok().build();
     }
-
+    @PostMapping(value = "/cikis")
+    public ResponseEntity<?> personelCikis(@RequestBody PersonalDTO personelDTO) {
+        ApiResponse response = gorevDonemiService.personelCikis(personelDTO.getId(), personelDTO.getCikisTarihi());
+        return ResponseEntity.ok(response);
+    }
 }
+
+

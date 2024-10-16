@@ -18,7 +18,7 @@ public class GorevDonemi {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "giris_tarihi", nullable = false)
+    @Column(name = "giris_tarihi", nullable = false )
     private LocalDate girisTarihi;
 
     @Column(name = "cikis_tarihi")

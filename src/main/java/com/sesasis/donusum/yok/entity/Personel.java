@@ -29,8 +29,8 @@ public class Personel {
     @Column(name = "soyisim")
     private String soyisim;
 
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(name = "kimlik_numarası", nullable = false, unique = true)
+    private String kimlikNumarasi;
 
     @Column(name = "fotograf_url")
     private String fotografUrl;
