@@ -10,6 +10,7 @@ import com.sesasis.donusum.yok.repository.PersonalRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class GorevDonemiService implements IService<GorevDonemiDTO> {
@@ -21,21 +22,22 @@ public class GorevDonemiService implements IService<GorevDonemiDTO> {
         this.gorevDonemiRepository = gorevDonemiRepository;
         this.personalRepository = personalRepository;
     }
-    public ApiResponse personelCikis(Long personelId, LocalDate cikisTarihi) {
-
-        GorevDonemi aktifGorevDonemi = gorevDonemiRepository.findByPersonelIdAndCikisTarihiIsNull(personelId);
-
-        if (aktifGorevDonemi == null) {
-            return new ApiResponse<>(false, "Personelin aktif bir görev dönemi bulunamadı", null);
+    public ApiResponse personelCikis(String kimlikNumarasi, LocalDate cikisTarihi) {
+        Personel personel = personalRepository.findByKimlikNumarasi(kimlikNumarasi);
+        if (personel == null) {
+            return new ApiResponse<>(false, "Personel bulunamadı.", null);
         }
-        aktifGorevDonemi.setCikisTarihi(cikisTarihi);
-        aktifGorevDonemi.getPersonel().setAktif(false);
 
-        // Güncellenen görev dönemini kaydet
-        gorevDonemiRepository.save(aktifGorevDonemi);
+        GorevDonemi gorevDonemi = gorevDonemiRepository.findByPersonelAndCikisTarihiIsNull(personel)
+                .orElseThrow(() -> new IllegalStateException("Personelin çıkış tarihi daha önce girilmiş."));
+        gorevDonemi.setCikisTarihi(cikisTarihi);
+        gorevDonemi.setPersonel(personel);
+        personel.setAktif(false);
+        gorevDonemiRepository.save(gorevDonemi);
 
         return new ApiResponse<>(true, "Personelin çıkış tarihi başarıyla güncellendi", null);
     }
+
 
 
     @Override

@@ -36,15 +36,12 @@ public class PersonelService implements IService<PersonalDTO> {
         if (personalDTO.getIsim() == null || personalDTO.getIsim().trim().isEmpty()) {
             return new ApiResponse<>(false, "Hata: İsim boş olamaz.", null);
         }
-
         if (personalDTO.getSoyisim() == null || personalDTO.getSoyisim().trim().isEmpty()) {
             return new ApiResponse<>(false, "Hata: Soyisim boş olamaz.", null);
         }
-
         if (personalDTO.getUnvan() == null || personalDTO.getUnvan().trim().isEmpty()) {
             return new ApiResponse<>(false, "Hata: Unvan boş olamaz.", null);
         }
-
 
         boolean personelVarMi = personalRepository.existsByKimlikNumarasi(personalDTO.getKimlikNumarasi());
 

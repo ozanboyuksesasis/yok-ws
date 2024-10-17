@@ -43,7 +43,7 @@ public class PersonelController {
     }
     @PostMapping(value = "/cikis")
     public ResponseEntity<?> personelCikis(@RequestBody PersonalDTO personelDTO) {
-        ApiResponse response = gorevDonemiService.personelCikis(personelDTO.getId(), personelDTO.getCikisTarihi());
+        ApiResponse response = gorevDonemiService.personelCikis(personelDTO.getKimlikNumarasi(), personelDTO.getCikisTarihi());
         return ResponseEntity.ok(response);
     }
 }
