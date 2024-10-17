@@ -22,23 +22,6 @@ public class GorevDonemiService implements IService<GorevDonemiDTO> {
         this.gorevDonemiRepository = gorevDonemiRepository;
         this.personalRepository = personalRepository;
     }
-    public ApiResponse personelCikis(String kimlikNumarasi, LocalDate cikisTarihi) {
-        Personel personel = personalRepository.findByKimlikNumarasi(kimlikNumarasi);
-        if (personel == null) {
-            return new ApiResponse<>(false, "Personel bulunamadı.", null);
-        }
-
-        GorevDonemi gorevDonemi = gorevDonemiRepository.findByPersonelAndCikisTarihiIsNull(personel)
-                .orElseThrow(() -> new IllegalStateException("Personelin çıkış tarihi daha önce girilmiş."));
-        gorevDonemi.setCikisTarihi(cikisTarihi);
-        gorevDonemi.setPersonel(personel);
-        personel.setAktif(false);
-        gorevDonemiRepository.save(gorevDonemi);
-
-        return new ApiResponse<>(true, "Personelin çıkış tarihi başarıyla güncellendi", null);
-    }
-
-
 
     @Override
     public ApiResponse save(GorevDonemiDTO gorevDonemiDTO) {
