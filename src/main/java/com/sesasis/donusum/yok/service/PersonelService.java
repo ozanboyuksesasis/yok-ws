@@ -52,7 +52,6 @@ public class PersonelService implements IService<PersonalDTO> {
                 return new ApiResponse<>(false, "Hata: Personelin çıkış tarihi girilmemiş, yeni kayıt açılamaz.", null);
             } else {
                 GorevDonemi yeniGorevDonemi = new GorevDonemi();
-                yeniGorevDonemi.setId(aktifGorevDonemi.map(GorevDonemi::getId).orElse(null)); // Eski ID'yi koru
                 yeniGorevDonemi.setPersonel(mevcutPersonel);
                 yeniGorevDonemi.setGirisTarihi(personalDTO.getGirisTarihi());
                 yeniGorevDonemi.setCikisTarihi(null); // Çıkış tarihi boş kalacak

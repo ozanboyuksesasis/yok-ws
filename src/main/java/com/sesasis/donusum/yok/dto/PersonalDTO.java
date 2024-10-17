@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class PersonalDTO {
 
-    private Long id;
+    private Long personalId;
 
 
     @NotBlank(message = "Unvan boş olamaz")
@@ -40,11 +40,12 @@ public class PersonalDTO {
 
     private LocalDate girisTarihi;
 
-
     private LocalDate cikisTarihi;
 
-    private List<GorevDonemi> gorevDonemis;
-
-
     private boolean aktif;
+
+    private List<GorevDonemiDTO> gorevDonemis;
+
+
+
 }

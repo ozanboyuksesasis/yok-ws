@@ -10,9 +10,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GorevDonemiDTO {
-
-    private Long id;
+    private Long personelId;
+    private Long gorevDonemId;
     private LocalDate girisTarihi;
     private LocalDate cikisTarihi;
-    private Long personelId;
+
+
 }
