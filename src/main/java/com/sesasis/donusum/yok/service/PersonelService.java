@@ -108,6 +108,13 @@ public class PersonelService implements IService<PersonalDTO> {
         if (personalDTO.getUnvan() == null || personalDTO.getUnvan().trim().isEmpty()) {
             return new ApiResponse<>(false, "Hata: Unvan boş olamaz.", null);
         }
+        if (personalDTO.getKimlikNumarasi() == null || personalDTO.getKimlikNumarasi().trim().isEmpty()) {
+            return new ApiResponse<>(false, "Hata: Kimlik numarası boş olamaz.", null);
+        }
+        if (personalDTO.getEmail() == null || personalDTO.getEmail().trim().isEmpty()) {
+            return new ApiResponse<>(false, "Hata: E-mail boş olamaz.", null);
+
+        }
         return new ApiResponse<>(true, "Kayıt başarıyla kontrol edildi.", personalDTO);
     }
 
