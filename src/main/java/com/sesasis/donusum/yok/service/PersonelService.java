@@ -33,46 +33,55 @@ public class PersonelService implements IService<PersonalDTO> {
 
     @Override
     public ApiResponse save(PersonalDTO personalDTO) {
-        // İsim, soyisim ve unvan için gerekli kontroller
-        if (personalDTO.getIsim() == null || personalDTO.getIsim().trim().isEmpty()) {
-            return new ApiResponse<>(false, "Hata: İsim boş olamaz.", null);
+        ApiResponse validationResponse = saveControl(personalDTO);
+        if (!validationResponse.getSuccess()) {
+            return validationResponse;
         }
-        if (personalDTO.getSoyisim() == null || personalDTO.getSoyisim().trim().isEmpty()) {
-            return new ApiResponse<>(false, "Hata: Soyisim boş olamaz.", null);
-        }
-        if (personalDTO.getUnvan() == null || personalDTO.getUnvan().trim().isEmpty()) {
-            return new ApiResponse<>(false, "Hata: Unvan boş olamaz.", null);
-        }
+
         boolean personelVarMi = personalRepository.existsByKimlikNumarasi(personalDTO.getKimlikNumarasi());
+
         if (personelVarMi) {
-            Personel mevcutPersonel = personalRepository.findByKimlikNumarasi(personalDTO.getKimlikNumarasi());
-            Optional<GorevDonemi> aktifGorevDonemi = gorevDonemiRepository.findByPersonelAndCikisTarihiIsNull(mevcutPersonel);
-
-            if (aktifGorevDonemi.isPresent()) {
-                return new ApiResponse<>(false, "Hata: Personelin çıkış tarihi girilmemiş, yeni kayıt açılamaz.", null);
-            } else {
-                GorevDonemi yeniGorevDonemi = new GorevDonemi();
-                yeniGorevDonemi.setPersonel(mevcutPersonel);
-                yeniGorevDonemi.setGirisTarihi(personalDTO.getGirisTarihi());
-                yeniGorevDonemi.setCikisTarihi(null); // Çıkış tarihi boş kalacak
-                gorevDonemiRepository.save(yeniGorevDonemi);
-
-                return new ApiResponse<>(true, "Eski personelin yeni giriş tarihi kaydedildi", null);
+            ApiResponse existingPersonelResponse = handleExistingPersonel(personalDTO);
+            if (!existingPersonelResponse.getSuccess()) {
+                return existingPersonelResponse;
             }
         } else {
-            Personel yeniPersonel = this.modelMapperService.response().map(personalDTO, Personel.class);
-            yeniPersonel.setAktif(true);
-            personalRepository.save(yeniPersonel);
+            ApiResponse newPersonelResponse = createNewPersonel(personalDTO);
+            return newPersonelResponse;
+        }
 
+        return new ApiResponse<>(true, "İşlem başarıyla tamamlandı.", null);
+    }
+
+    private ApiResponse handleExistingPersonel(PersonalDTO personalDTO) {
+        Personel mevcutPersonel = personalRepository.findByKimlikNumarasi(personalDTO.getKimlikNumarasi());
+        Optional<GorevDonemi> aktifGorevDonemi = gorevDonemiRepository.findByPersonelAndCikisTarihiIsNull(mevcutPersonel);
+
+        if (aktifGorevDonemi.isPresent()) {
+            return new ApiResponse<>(false, "Hata: Personelin çıkış tarihi girilmemiş, yeni kayıt açılamaz.", null);
+        } else {
             GorevDonemi yeniGorevDonemi = new GorevDonemi();
-            yeniGorevDonemi.setPersonel(yeniPersonel);
+            yeniGorevDonemi.setPersonel(mevcutPersonel);
             yeniGorevDonemi.setGirisTarihi(personalDTO.getGirisTarihi());
-            yeniGorevDonemi.setCikisTarihi(null);
             gorevDonemiRepository.save(yeniGorevDonemi);
 
-            return new ApiResponse<>(true, "Yeni personel ve giriş tarihi başarıyla kaydedildi", null);
+            return new ApiResponse<>(true, "Eski personelin yeni giriş tarihi başarıyla kaydedildi.", null);
         }
     }
+
+    private ApiResponse createNewPersonel(PersonalDTO personalDTO) {
+        Personel yeniPersonel = this.modelMapperService.response().map(personalDTO, Personel.class);
+        yeniPersonel.setAktif(true);
+        personalRepository.save(yeniPersonel);
+
+        GorevDonemi yeniGorevDonemi = new GorevDonemi();
+        yeniGorevDonemi.setPersonel(yeniPersonel);
+        yeniGorevDonemi.setGirisTarihi(personalDTO.getGirisTarihi());
+        gorevDonemiRepository.save(yeniGorevDonemi);
+
+        return new ApiResponse<>(true, "Yeni personel ve giriş tarihi başarıyla kaydedildi.", null);
+    }
+
     public ApiResponse personelCikis(String kimlikNumarasi, LocalDate cikisTarihi) {
         Personel personel = personalRepository.findByKimlikNumarasi(kimlikNumarasi);
         if (personel == null) {
@@ -88,6 +97,19 @@ public class PersonelService implements IService<PersonalDTO> {
 
         return new ApiResponse<>(true, "Personelin çıkış tarihi başarıyla güncellendi", null);
     }
+    public ApiResponse saveControl(PersonalDTO personalDTO) {
+        if (personalDTO.getIsim() == null || personalDTO.getIsim().trim().isEmpty()) {
+            return new ApiResponse<>(false, "Hata: İsim boş olamaz.", null);
+        }
+        if (personalDTO.getSoyisim() == null || personalDTO.getSoyisim().trim().isEmpty()) {
+            return new ApiResponse<>(false, "Hata: Soyisim boş olamaz.", null);
+        }
+        if (personalDTO.getUnvan() == null || personalDTO.getUnvan().trim().isEmpty()) {
+            return new ApiResponse<>(false, "Hata: Unvan boş olamaz.", null);
+        }
+        return new ApiResponse<>(true, "Kayıt başarıyla kontrol edildi.", personalDTO);
+    }
+
 
     @Override
     public ApiResponse findAll() {
