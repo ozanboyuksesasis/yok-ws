@@ -29,11 +29,30 @@ public class GorevDonemiService implements IService<GorevDonemiDTO> {
         this.modelMapperServiceImpl = modelMapperServiceImpl;
     }
 
-    public ApiResponse updateGirisTarih(GorevDonemiDTO gorevDonemiDTO,LocalDate girisTarih) {
-       // Optional<Personel> personel=personalRepository.findById(gorevDonemiDTO.getPersonelId());
-        return null;
+    public ApiResponse updateTarih(Long gorevDonemiID, GorevDonemiDTO gorevDonemiDTO) {
+        LocalDate girisDate = gorevDonemiDTO.getGirisTarihi();
+        LocalDate cikisDate = gorevDonemiDTO.getCikisTarihi();
 
+        Optional<GorevDonemi> gorevDonemiOptional = gorevDonemiRepository.findById(gorevDonemiID);
+
+        if (gorevDonemiOptional.isEmpty()) {
+            return new ApiResponse<>(false, "Görev dönemi bulunamadı.", null);
+        }
+
+        // Görev dönemi bulunduğunda güncelle
+        GorevDonemi mevcutGorevDonemi = gorevDonemiOptional.get();
+        mevcutGorevDonemi.setGirisTarihi(girisDate);
+        mevcutGorevDonemi.setCikisTarihi(cikisDate);
+
+        // Değişiklikleri kaydet
+        gorevDonemiRepository.save(mevcutGorevDonemi);
+
+        // Başarılı yanıt döndür
+        return new ApiResponse<>(true, "Giriş ve çıkış tarihleri başarıyla güncellendi.", null);
     }
+
+
+
     @Override
     public ApiResponse save(GorevDonemiDTO gorevDonemiDTO) {
 

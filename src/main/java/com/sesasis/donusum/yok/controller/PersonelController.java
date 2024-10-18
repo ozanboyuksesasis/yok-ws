@@ -46,6 +46,16 @@ public class PersonelController {
         ApiResponse response = personelService.personelCikis(personelDTO.getKimlikNumarasi(), personelDTO.getCikisTarihi());
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping(value = "/kimlik/{kimlikNumarasi}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findByKimlikNumarasi(@PathVariable String kimlikNumarasi) {
+        ApiResponse response = personelService.findByKimlikNumarasi(kimlikNumarasi);
+        return ResponseEntity.ok(response);
+    }
+
+
+
+
 }
 
 

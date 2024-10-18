@@ -65,7 +65,7 @@ public class PersonelService implements IService<PersonalDTO> {
             yeniGorevDonemi.setGirisTarihi(personalDTO.getGirisTarihi());
             gorevDonemiRepository.save(yeniGorevDonemi);
 
-            return new ApiResponse<>(true, "Eski personelin yeni giriş tarihi başarıyla kaydedildi.", null);
+            return new ApiResponse<>(true, "İşlem başarıyla tamamlandı.", null);
         }
     }
 
@@ -97,6 +97,7 @@ public class PersonelService implements IService<PersonalDTO> {
 
         return new ApiResponse<>(true, "Personelin çıkış tarihi başarıyla güncellendi", null);
     }
+
     public ApiResponse saveControl(PersonalDTO personalDTO) {
         if (personalDTO.getIsim() == null || personalDTO.getIsim().trim().isEmpty()) {
             return new ApiResponse<>(false, "Hata: İsim boş olamaz.", null);
@@ -115,28 +116,42 @@ public class PersonelService implements IService<PersonalDTO> {
     public ApiResponse findAll() {
         List<Personel> personels = personalRepository.findAll();
         if (personels.isEmpty()) {
-            return new ApiResponse<>(false,"Personel listesi bulunamadı.",null);
+            return new ApiResponse<>(false, "Personel listesi bulunamadı.", null);
         }
-        List<PersonalDTO> personalDTOS=personels.stream().map(personel ->
-                this.modelMapperService.response().map(personel,PersonalDTO.class)).collect(Collectors.toList());
-        return new ApiResponse<>(true,"Personel listesi başarı ile bulundu.",personalDTOS);
+        List<PersonalDTO> personalDTOS = personels.stream().map(personel ->
+                this.modelMapperService.response().map(personel, PersonalDTO.class)).collect(Collectors.toList());
+        return new ApiResponse<>(true, "Personel listesi başarı ile bulundu.", personalDTOS);
     }
 
     @Override
     public ApiResponse findById(Long id) {
         Personel personel = personalRepository.findById(id).orElse(null);
         if (personel == null) {
-            return new ApiResponse<>(false,"Personel bulunamadı.",null);
+            return new ApiResponse<>(false, "Personel bulunamadı.", null);
         }
-        PersonalDTO personalDTO = this.modelMapperService.response().map(personel,PersonalDTO.class);
-        return new ApiResponse<>(true,"Personel bulundu.",personel);
+        PersonalDTO personalDTO = this.modelMapperService.response().map(personel, PersonalDTO.class);
+        return new ApiResponse<>(true, "Personel bulundu.", personalDTO);
     }
 
     @Override
     public void deleteById(Long id) {
-    if (personalRepository.existsById(id)){
-        personalRepository.deleteById(id);
+        if (personalRepository.existsById(id)) {
+            personalRepository.deleteById(id);
+        }
+
+
     }
+
+    public ApiResponse findByKimlikNumarasi(String kimlikNumarasi) {
+        Personel personel = personalRepository.findByKimlikNumarasi(kimlikNumarasi);
+        if (personel == null) {
+            return new ApiResponse<>(false, "Personel bulunamadı.", null);
+        }
+        System.out.print(personel.getIsim());
+
+        // Personel nesnesini DTO'ya map edelim
+        PersonalDTO dto = this.modelMapperService.response().map(personel, PersonalDTO.class);
+        return new ApiResponse<>(true, "Personel bulundu.", dto);
     }
 
 }
