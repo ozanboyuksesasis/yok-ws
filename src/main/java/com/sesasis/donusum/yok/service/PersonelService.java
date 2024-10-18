@@ -138,18 +138,14 @@ public class PersonelService implements IService<PersonalDTO> {
         if (personalRepository.existsById(id)) {
             personalRepository.deleteById(id);
         }
-
-
     }
 
     public ApiResponse findByKimlikNumarasi(String kimlikNumarasi) {
         Personel personel = personalRepository.findByKimlikNumarasi(kimlikNumarasi);
         if (personel == null) {
             return new ApiResponse<>(false, "Personel bulunamadı.", null);
-        }
-        System.out.print(personel.getIsim());
+        };
 
-        // Personel nesnesini DTO'ya map edelim
         PersonalDTO dto = this.modelMapperService.response().map(personel, PersonalDTO.class);
         return new ApiResponse<>(true, "Personel bulundu.", dto);
     }

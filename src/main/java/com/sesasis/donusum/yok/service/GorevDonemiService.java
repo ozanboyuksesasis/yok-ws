@@ -39,15 +39,13 @@ public class GorevDonemiService implements IService<GorevDonemiDTO> {
             return new ApiResponse<>(false, "Görev dönemi bulunamadı.", null);
         }
 
-        // Görev dönemi bulunduğunda güncelle
         GorevDonemi mevcutGorevDonemi = gorevDonemiOptional.get();
         mevcutGorevDonemi.setGirisTarihi(girisDate);
         mevcutGorevDonemi.setCikisTarihi(cikisDate);
 
-        // Değişiklikleri kaydet
         gorevDonemiRepository.save(mevcutGorevDonemi);
 
-        // Başarılı yanıt döndür
+
         return new ApiResponse<>(true, "Giriş ve çıkış tarihleri başarıyla güncellendi.", null);
     }
 
