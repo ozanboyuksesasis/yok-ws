@@ -12,6 +12,8 @@ import java.util.List;
 public class IdariBirimDTO {
 
     private Long id;
+
     private String name;
+
     private List<PersonalDTO>  personalDTOS;
 }

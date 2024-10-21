@@ -4,7 +4,7 @@ import com.sesasis.donusum.yok.entity.IdariBirim;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
+
 public interface IdariBirimRepository extends JpaRepository<IdariBirim,Long> {
 
 }

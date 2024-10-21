@@ -6,31 +6,30 @@ import com.sesasis.donusum.yok.dto.IdariBirimDTO;
 import com.sesasis.donusum.yok.entity.IdariBirim;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.IdariBirimRepository;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Service
 public class IdariBirimService implements IService<IdariBirimDTO> {
 
-    private IdariBirimRepository idariBirimRepository;
     private ModelMapperServiceImpl modelMapperServiceImpl;
+    private IdariBirimRepository idariBirimRepository;
+
+    public IdariBirimService(IdariBirimRepository idariBirimRepository, ModelMapperServiceImpl modelMapperServiceImpl) {
+        this.idariBirimRepository = idariBirimRepository;
+        this.modelMapperServiceImpl = modelMapperServiceImpl;
+    }
 
     @Override
     public ApiResponse save(IdariBirimDTO idariBirimDTO) {
-        IdariBirim idariBirim = this.modelMapperServiceImpl.request().map(idariBirimDTO, IdariBirim.class);
         ApiResponse validationResponse = saveControl(idariBirimDTO);
         if (!validationResponse.getSuccess()) {
             return validationResponse;
         }
+        IdariBirim idariBirim = this.modelMapperServiceImpl.request().map(idariBirimDTO, IdariBirim.class);
         idariBirimRepository.save(idariBirim);
         return new ApiResponse(true, "İşlem başarılı.", null);
     }

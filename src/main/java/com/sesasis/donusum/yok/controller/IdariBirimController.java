@@ -16,28 +16,26 @@ public class IdariBirimController {
 
     private final IdariBirimService idariBirimService;
 
-    @PostMapping(value = "save",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@RequestBody IdariBirimDTO idariBirimDTO) {
         ApiResponse response = idariBirimService.save(idariBirimDTO);
         return ResponseEntity.ok(response);
     }
 
 
-    @GetMapping(value = "all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> all(IdariBirimDTO idariBirimDTO) {
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> all() {
         return ResponseEntity.ok(idariBirimService.findAll());
     }
 
-    @GetMapping(value = "{/id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> one(@PathVariable Long id) {
         return ResponseEntity.ok(idariBirimService.findById(id));
     }
 
-    @DeleteMapping(MappingConstants.PATH_VARIABLE_ID)
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         idariBirimService.deleteById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new ApiResponse(true, "İdari birim başarıyla silindi.", null));
     }
-
-
 }

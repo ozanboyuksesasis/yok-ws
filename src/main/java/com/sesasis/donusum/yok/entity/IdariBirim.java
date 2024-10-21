@@ -14,7 +14,7 @@ import java.util.List;
 public class IdariBirim {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
