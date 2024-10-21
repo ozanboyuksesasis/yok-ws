@@ -2,6 +2,7 @@ package com.sesasis.donusum.yok.service;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
+import com.sesasis.donusum.yok.dto.GorevDonemiDTO;
 import com.sesasis.donusum.yok.dto.PersonalDTO;
 import com.sesasis.donusum.yok.entity.GorevDonemi;
 import com.sesasis.donusum.yok.entity.Personel;
@@ -127,6 +128,12 @@ public class PersonelService implements IService<PersonalDTO> {
         }
         List<PersonalDTO> personalDTOS = personels.stream().map(personel ->
                 this.modelMapperService.response().map(personel, PersonalDTO.class)).collect(Collectors.toList());
+
+        List<GorevDonemiDTO> gorevDonemiDTOS = personalDTOS.stream()
+                .map(gorevDonemi -> this.modelMapperService.response().map(gorevDonemi, GorevDonemiDTO.class))
+                .collect(Collectors.toList());
+
+
         return new ApiResponse<>(true, "Personel listesi başarı ile bulundu.", personalDTOS);
     }
 
@@ -136,8 +143,14 @@ public class PersonelService implements IService<PersonalDTO> {
         if (personel == null) {
             return new ApiResponse<>(false, "Personel bulunamadı.", null);
         }
-        PersonalDTO personalDTO = this.modelMapperService.response().map(personel, PersonalDTO.class);
-        return new ApiResponse<>(true, "Personel bulundu.", personalDTO);
+        PersonalDTO dto = this.modelMapperService.response().map(personel, PersonalDTO.class);
+
+        List<GorevDonemiDTO> gorevDonemiDTOS = personel.getGorevDonemleri().stream()
+                .map(gorevDonemi -> this.modelMapperService.response().map(gorevDonemi, GorevDonemiDTO.class))
+                .collect(Collectors.toList());
+         dto.setGorevDonemis(gorevDonemiDTOS);
+
+        return new ApiResponse<>(true, "Personel bulundu.", dto);
     }
 
     @Override

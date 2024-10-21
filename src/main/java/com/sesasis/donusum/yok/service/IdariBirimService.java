@@ -3,6 +3,7 @@ package com.sesasis.donusum.yok.service;
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.dto.IdariBirimDTO;
+import com.sesasis.donusum.yok.dto.PersonalDTO;
 import com.sesasis.donusum.yok.entity.IdariBirim;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.IdariBirimRepository;
@@ -44,8 +45,12 @@ public class IdariBirimService implements IService<IdariBirimDTO> {
     @Override
     public ApiResponse findAll() {
         List<IdariBirim> birims = idariBirimRepository.findAll();
-        List<IdariBirimDTO> dtos = birims.stream().map(birim ->
-                this.modelMapperServiceImpl.response().map(birim, IdariBirimDTO.class)).collect(Collectors.toList());
+        List<IdariBirimDTO> dtos = birims.stream().map(birim-> {
+            IdariBirimDTO dto = this.modelMapperServiceImpl.request().map(birim, IdariBirimDTO.class);
+            List<PersonalDTO> personalDTOS = birim.getPersonels().stream().map(personel -> this.modelMapperServiceImpl.request().map(personel, PersonalDTO.class)).collect(Collectors.toList());
+            dto.setPersonalDTOS(personalDTOS);
+            return dto;
+        }).collect(Collectors.toList());
         return new ApiResponse(true, "İşlem başarılı.", dtos);
     }
 
