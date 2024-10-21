@@ -22,6 +22,9 @@ spring:
       enabled: true
       max-file-size: 200MB
       max-request-size: 200MB
+  jackson:
+    date-format: "dd-MM-yyyy"
+    time-zone: Europe/Istanbul
 sesasis:
   app:
     sunucuTipi : 'linux'
@@ -33,4 +36,4 @@ springfox:
     enabled: true
 
 upload:
-  dir : src/main/resources/static/uploads
+  dir: src/main/resources/static/uploads

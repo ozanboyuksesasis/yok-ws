@@ -26,6 +26,9 @@ public class Personel {
     @Column(name = "isim")
     private String isim;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "soyisim")
     private String soyisim;
 

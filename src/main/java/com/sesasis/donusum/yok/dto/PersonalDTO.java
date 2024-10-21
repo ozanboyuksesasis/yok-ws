@@ -1,5 +1,6 @@
 package com.sesasis.donusum.yok.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sesasis.donusum.yok.entity.GorevDonemi;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,10 +39,11 @@ public class PersonalDTO {
     private String profilUrl;
 
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate girisTarihi;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate cikisTarihi;
-
     private boolean aktif;
 
     private List<GorevDonemiDTO> gorevDonemis;
