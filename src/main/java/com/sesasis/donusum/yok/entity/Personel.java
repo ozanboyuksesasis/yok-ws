@@ -48,7 +48,7 @@ public class Personel {
     private List<GorevDonemi> gorevDonemleri;
 
     @ManyToOne
-    @JoinColumn(name = "idari_birim_id")
+    @JoinColumn(name = "idaribirim_id")
     private IdariBirim idariBirim;
 
 

@@ -17,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class PersonalDTO {
 
-     private Long personalId;;
+     private Long id;;
 
     private Long idariBirimId;
 
