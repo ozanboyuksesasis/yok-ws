@@ -55,10 +55,8 @@ public class PersonelService implements IService<PersonalDTO> {
             }
         } else {
             ApiResponse newPersonelResponse = createNewPersonel(personalDTO);
-
             return newPersonelResponse;
         }
-
         return new ApiResponse<>(true, "İşlem başarıyla tamamlandı.", null);
     }
 
@@ -72,6 +70,7 @@ public class PersonelService implements IService<PersonalDTO> {
             GorevDonemi yeniGorevDonemi = new GorevDonemi();
             yeniGorevDonemi.setPersonel(mevcutPersonel);
             yeniGorevDonemi.setGirisTarihi(personalDTO.getGirisTarihi());
+            yeniGorevDonemi.setCikisTarihi(personalDTO.getCikisTarihi());
             gorevDonemiRepository.save(yeniGorevDonemi);
             return new ApiResponse<>(true, "İşlem başarıyla tamamlandı.", null);
         }
@@ -90,6 +89,7 @@ public class PersonelService implements IService<PersonalDTO> {
         GorevDonemi yeniGorevDonemi = new GorevDonemi();
         yeniGorevDonemi.setPersonel(yeniPersonel);
         yeniGorevDonemi.setGirisTarihi(personalDTO.getGirisTarihi());
+        yeniGorevDonemi.setCikisTarihi(personalDTO.getCikisTarihi());
         gorevDonemiRepository.save(yeniGorevDonemi);
         return new ApiResponse<>(true, "Yeni personel ve giriş tarihi başarıyla kaydedildi.", null);
     }
