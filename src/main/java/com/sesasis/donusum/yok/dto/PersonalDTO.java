@@ -21,6 +21,8 @@ public class PersonalDTO {
 
     private Long idariBirimId;
 
+    private Long gorevId;
+
     @NotBlank(message = "Unvan boş olamaz")
     private String unvan;
 
@@ -49,6 +51,7 @@ public class PersonalDTO {
     private boolean aktif;
 
     private List<GorevDonemiDTO> gorevDonemis;
+
 
 
 

@@ -44,13 +44,15 @@ public class Personel {
     @Column(name = "aktif")
     private Boolean aktif;
 
-    @OneToMany(mappedBy = "personel", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "personel", cascade = CascadeType.ALL)
     private List<GorevDonemi> gorevDonemleri;
 
     @ManyToOne
     @JoinColumn(name = "idaribirim_id")
     private IdariBirim idariBirim;
 
-
+    @ManyToOne
+    @JoinColumn(name = "personel_görev_id")
+    private Gorev gorev;
 
 }
