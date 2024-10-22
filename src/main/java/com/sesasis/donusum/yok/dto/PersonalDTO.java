@@ -17,8 +17,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class PersonalDTO {
 
-    private Long personalId;
+     private Long id;;
 
+    private Long idariBirimId;
 
     @NotBlank(message = "Unvan boş olamaz")
     private String unvan;
@@ -39,11 +40,12 @@ public class PersonalDTO {
     private String profilUrl;
 
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate girisTarihi;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private LocalDate cikisTarihi;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate cikisTarihi;;
+
     private boolean aktif;
 
     private List<GorevDonemiDTO> gorevDonemis;

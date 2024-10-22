@@ -46,4 +46,11 @@ public class Personel {
 
     @OneToMany(mappedBy = "personel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GorevDonemi> gorevDonemleri;
+
+    @ManyToOne
+    @JoinColumn(name = "idaribirim_id")
+    private IdariBirim idariBirim;
+
+
+
 }

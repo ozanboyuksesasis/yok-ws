@@ -2,11 +2,14 @@ package com.sesasis.donusum.yok.service;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
+import com.sesasis.donusum.yok.dto.GorevDonemiDTO;
 import com.sesasis.donusum.yok.dto.PersonalDTO;
 import com.sesasis.donusum.yok.entity.GorevDonemi;
+import com.sesasis.donusum.yok.entity.IdariBirim;
 import com.sesasis.donusum.yok.entity.Personel;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.GorevDonemiRepository;
+import com.sesasis.donusum.yok.repository.IdariBirimRepository;
 import com.sesasis.donusum.yok.repository.PersonalRepository;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -24,11 +27,13 @@ public class PersonelService implements IService<PersonalDTO> {
     private final PersonalRepository personalRepository;
     private final ModelMapperServiceImpl modelMapperService;
     private final GorevDonemiRepository gorevDonemiRepository;
+    private final IdariBirimRepository idariBirimRepository;
 
-    public PersonelService(PersonalRepository personalRepository, ModelMapperServiceImpl modelMapperService, GorevDonemiRepository gorevDonemiRepository) {
+    public PersonelService(PersonalRepository personalRepository, ModelMapperServiceImpl modelMapperService, GorevDonemiRepository gorevDonemiRepository, IdariBirimRepository idariBirimRepository) {
         this.personalRepository = personalRepository;
         this.modelMapperService = modelMapperService;
         this.gorevDonemiRepository = gorevDonemiRepository;
+        this.idariBirimRepository = idariBirimRepository;
     }
 
     @Override
@@ -39,17 +44,19 @@ public class PersonelService implements IService<PersonalDTO> {
         }
 
         boolean personelVarMi = personalRepository.existsByKimlikNumarasi(personalDTO.getKimlikNumarasi());
-
+        Personel personel = personalRepository.findByKimlikNumarasi(personalDTO.getKimlikNumarasi());
+        IdariBirim idariBirim = idariBirimRepository.findById(personalDTO.getIdariBirimId()).
+                orElseThrow(()-> new RuntimeException("Birim bulunamadı."));
         if (personelVarMi) {
             ApiResponse existingPersonelResponse = handleExistingPersonel(personalDTO);
             if (!existingPersonelResponse.getSuccess()) {
+                personel.setIdariBirim(idariBirim);
                 return existingPersonelResponse;
             }
         } else {
             ApiResponse newPersonelResponse = createNewPersonel(personalDTO);
             return newPersonelResponse;
         }
-
         return new ApiResponse<>(true, "İşlem başarıyla tamamlandı.", null);
     }
 
@@ -63,8 +70,8 @@ public class PersonelService implements IService<PersonalDTO> {
             GorevDonemi yeniGorevDonemi = new GorevDonemi();
             yeniGorevDonemi.setPersonel(mevcutPersonel);
             yeniGorevDonemi.setGirisTarihi(personalDTO.getGirisTarihi());
+            yeniGorevDonemi.setCikisTarihi(personalDTO.getCikisTarihi());
             gorevDonemiRepository.save(yeniGorevDonemi);
-
             return new ApiResponse<>(true, "İşlem başarıyla tamamlandı.", null);
         }
     }
@@ -72,25 +79,30 @@ public class PersonelService implements IService<PersonalDTO> {
     private ApiResponse createNewPersonel(PersonalDTO personalDTO) {
         Personel yeniPersonel = this.modelMapperService.response().map(personalDTO, Personel.class);
         yeniPersonel.setAktif(true);
+
+        IdariBirim idariBirim = idariBirimRepository.findById(personalDTO.getIdariBirimId())
+                .orElseThrow(() -> new RuntimeException("Idari Birim bulunamadı"));
+        yeniPersonel.setIdariBirim(idariBirim);
         personalRepository.save(yeniPersonel);
+
 
         GorevDonemi yeniGorevDonemi = new GorevDonemi();
         yeniGorevDonemi.setPersonel(yeniPersonel);
         yeniGorevDonemi.setGirisTarihi(personalDTO.getGirisTarihi());
+        yeniGorevDonemi.setCikisTarihi(personalDTO.getCikisTarihi());
         gorevDonemiRepository.save(yeniGorevDonemi);
-
         return new ApiResponse<>(true, "Yeni personel ve giriş tarihi başarıyla kaydedildi.", null);
     }
 
-    public ApiResponse personelCikis(String kimlikNumarasi, LocalDate cikisTarihi) {
-        Personel personel = personalRepository.findByKimlikNumarasi(kimlikNumarasi);
+    public ApiResponse personelCikis(PersonalDTO personalDTO) {
+        Personel personel = personalRepository.findByKimlikNumarasi(personalDTO.getKimlikNumarasi());
         if (personel == null) {
             return new ApiResponse<>(false, "Personel bulunamadı.", null);
         }
 
         GorevDonemi gorevDonemi = gorevDonemiRepository.findByPersonelAndCikisTarihiIsNull(personel)
                 .orElseThrow(() -> new IllegalStateException("Personelin çıkış tarihi daha önce girilmiş."));
-        gorevDonemi.setCikisTarihi(cikisTarihi);
+        gorevDonemi.setCikisTarihi(personalDTO.getCikisTarihi());
         gorevDonemi.setPersonel(personel);
         personel.setAktif(false);
         gorevDonemiRepository.save(gorevDonemi);
@@ -127,6 +139,12 @@ public class PersonelService implements IService<PersonalDTO> {
         }
         List<PersonalDTO> personalDTOS = personels.stream().map(personel ->
                 this.modelMapperService.response().map(personel, PersonalDTO.class)).collect(Collectors.toList());
+
+        List<GorevDonemiDTO> gorevDonemiDTOS = personalDTOS.stream()
+                .map(gorevDonemi -> this.modelMapperService.response().map(gorevDonemi, GorevDonemiDTO.class))
+                .collect(Collectors.toList());
+
+
         return new ApiResponse<>(true, "Personel listesi başarı ile bulundu.", personalDTOS);
     }
 
@@ -136,8 +154,14 @@ public class PersonelService implements IService<PersonalDTO> {
         if (personel == null) {
             return new ApiResponse<>(false, "Personel bulunamadı.", null);
         }
-        PersonalDTO personalDTO = this.modelMapperService.response().map(personel, PersonalDTO.class);
-        return new ApiResponse<>(true, "Personel bulundu.", personalDTO);
+        PersonalDTO dto = this.modelMapperService.response().map(personel, PersonalDTO.class);
+
+        List<GorevDonemiDTO> gorevDonemiDTOS = personel.getGorevDonemleri().stream()
+                .map(gorevDonemi -> this.modelMapperService.response().map(gorevDonemi, GorevDonemiDTO.class))
+                .collect(Collectors.toList());
+         dto.setGorevDonemis(gorevDonemiDTOS);
+
+        return new ApiResponse<>(true, "Personel bulundu.", dto);
     }
 
     @Override
