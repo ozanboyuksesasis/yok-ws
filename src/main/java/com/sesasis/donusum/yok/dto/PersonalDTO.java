@@ -40,9 +40,11 @@ public class PersonalDTO {
     private String profilUrl;
 
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate girisTarihi;
 
-    private LocalDate cikisTarihi;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate cikisTarihi;;
 
     private boolean aktif;
 
