@@ -2,8 +2,11 @@ package com.sesasis.donusum.yok.service;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
+import com.sesasis.donusum.yok.dto.GorevDTO;
 import com.sesasis.donusum.yok.dto.GorevDonemiDTO;
+import com.sesasis.donusum.yok.dto.IdariBirimDTO;
 import com.sesasis.donusum.yok.dto.PersonalDTO;
+import com.sesasis.donusum.yok.entity.Gorev;
 import com.sesasis.donusum.yok.entity.GorevDonemi;
 import com.sesasis.donusum.yok.entity.IdariBirim;
 import com.sesasis.donusum.yok.entity.Personel;
@@ -137,16 +140,31 @@ public class PersonelService implements IService<PersonalDTO> {
         if (personels.isEmpty()) {
             return new ApiResponse<>(false, "Personel listesi bulunamadı.", null);
         }
-        List<PersonalDTO> personalDTOS = personels.stream().map(personel ->
-                this.modelMapperService.response().map(personel, PersonalDTO.class)).collect(Collectors.toList());
 
-        List<GorevDonemiDTO> gorevDonemiDTOS = personalDTOS.stream()
-                .map(gorevDonemi -> this.modelMapperService.response().map(gorevDonemi, GorevDonemiDTO.class))
-                .collect(Collectors.toList());
+        List<PersonalDTO> personalDTOS = personels.stream().map(personel -> {
+            PersonalDTO personalDTO = this.modelMapperService.response().map(personel, PersonalDTO.class);
 
+            if (personel.getGorev() != null) {
+                GorevDTO gorevDTO = this.modelMapperService.response().map(personel.getGorev(), GorevDTO.class);
+                personalDTO.setGorevId(gorevDTO.getId());
+            }
 
-        return new ApiResponse<>(true, "Personel listesi başarı ile bulundu.", personalDTOS);
+            if (personel.getIdariBirim() != null) {
+                IdariBirimDTO idariBirimDTO = this.modelMapperService.response().map(personel.getIdariBirim(), IdariBirimDTO.class);
+                personalDTO.setIdariBirimId(idariBirimDTO.getId());
+            }
+
+            List<GorevDonemiDTO> gorevDonemiDTOS = personel.getGorevDonemleri().stream()
+                    .map(gorevDonemi -> this.modelMapperService.response().map(gorevDonemi, GorevDonemiDTO.class))
+                    .collect(Collectors.toList());
+            personalDTO.setGorevDonemleri(gorevDonemiDTOS);
+
+            return personalDTO;
+        }).collect(Collectors.toList());
+
+        return new ApiResponse<>(true, "Personel listesi başarıyla getirildi.", personalDTOS);
     }
+
 
     @Override
     public ApiResponse findById(Long id) {
@@ -155,12 +173,18 @@ public class PersonelService implements IService<PersonalDTO> {
             return new ApiResponse<>(false, "Personel bulunamadı.", null);
         }
         PersonalDTO dto = this.modelMapperService.response().map(personel, PersonalDTO.class);
+        if (personel.getGorev() != null) {
+            Gorev gorev = this.modelMapperService.response().map(personel.getGorev(), Gorev.class);
+            dto.setGorevId(gorev.getId());
+        }
+        if (personel.getIdariBirim() != null) {
+            IdariBirim idariBirim = this.modelMapperService.response().map(personel.getIdariBirim(), IdariBirim.class);
+            dto.setIdariBirimId(idariBirim.getId());
+        }
 
-        List<GorevDonemiDTO> gorevDonemiDTOS = personel.getGorevDonemleri().stream()
-                .map(gorevDonemi -> this.modelMapperService.response().map(gorevDonemi, GorevDonemiDTO.class))
-                .collect(Collectors.toList());
-         dto.setGorevDonemis(gorevDonemiDTOS);
-
+        List<GorevDonemiDTO> gorevDonemiDTOS = personel.getGorevDonemleri().stream().map(gorevDonemi ->
+                this.modelMapperService.response().map(gorevDonemi, GorevDonemiDTO.class)).collect(Collectors.toList());
+        dto.setGorevDonemleri(gorevDonemiDTOS);
         return new ApiResponse<>(true, "Personel bulundu.", dto);
     }
 
