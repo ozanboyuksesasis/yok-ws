@@ -62,11 +62,6 @@ public class GorevService implements IService<GorevDTO> {
             return new ApiResponse<>(false, "Görev bulunamadı.", null);
         }
         GorevDTO gorevDTO = modelMapperService.response().map(gorev, GorevDTO.class);
-        if (gorevDTO.getPersonals()!=null) {
-            List<PersonalDTO> personalDTOS = gorevDTO.getPersonals().stream().map( personal ->
-                    this.modelMapperService.response().map(personal, PersonalDTO.class)).collect(Collectors.toList());
-            gorevDTO.setPersonals(personalDTOS);
-        }
 
         return new ApiResponse<>(true, "İşlem başarılı.", gorevDTO);
     }
@@ -84,4 +79,22 @@ public class GorevService implements IService<GorevDTO> {
         }
         return new ApiResponse<>(true, "İşlem başarılı.", null);
     }
+    public ApiResponse gorevVePersoneller(Long id) {
+        Gorev gorev = gorevRepository.findById(id).orElse(null);
+        if (gorev == null) {
+            return new ApiResponse<>(false, "Görev bulunamadı.", null);
+        }
+
+        GorevDTO gDto = this.modelMapperService.response().map(gorev, GorevDTO.class);
+
+        if (gorev.getPersonels() != null && !gorev.getPersonels().isEmpty()) {
+            List<PersonalDTO> personalDTOS = gorev.getPersonels().stream()
+                    .map(personel -> this.modelMapperService.response().map(personel, PersonalDTO.class))
+                    .collect(Collectors.toList());
+            gDto.setPersonals(personalDTOS);
+        }
+
+        return new ApiResponse<>(true, "Görev ve personeller başarıyla getirildi.", gDto);
+    }
+
 }

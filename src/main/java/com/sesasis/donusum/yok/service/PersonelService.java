@@ -12,6 +12,7 @@ import com.sesasis.donusum.yok.entity.IdariBirim;
 import com.sesasis.donusum.yok.entity.Personel;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.GorevDonemiRepository;
+import com.sesasis.donusum.yok.repository.GorevRepository;
 import com.sesasis.donusum.yok.repository.IdariBirimRepository;
 import com.sesasis.donusum.yok.repository.PersonalRepository;
 import org.springframework.security.core.parameters.P;
@@ -31,12 +32,14 @@ public class PersonelService implements IService<PersonalDTO> {
     private final ModelMapperServiceImpl modelMapperService;
     private final GorevDonemiRepository gorevDonemiRepository;
     private final IdariBirimRepository idariBirimRepository;
+    private final GorevRepository gorevRepository;
 
-    public PersonelService(PersonalRepository personalRepository, ModelMapperServiceImpl modelMapperService, GorevDonemiRepository gorevDonemiRepository, IdariBirimRepository idariBirimRepository) {
+    public PersonelService(PersonalRepository personalRepository, ModelMapperServiceImpl modelMapperService, GorevDonemiRepository gorevDonemiRepository, IdariBirimRepository idariBirimRepository, GorevRepository gorevRepository) {
         this.personalRepository = personalRepository;
         this.modelMapperService = modelMapperService;
         this.gorevDonemiRepository = gorevDonemiRepository;
         this.idariBirimRepository = idariBirimRepository;
+        this.gorevRepository = gorevRepository;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class PersonelService implements IService<PersonalDTO> {
         boolean personelVarMi = personalRepository.existsByKimlikNumarasi(personalDTO.getKimlikNumarasi());
         Personel personel = personalRepository.findByKimlikNumarasi(personalDTO.getKimlikNumarasi());
         IdariBirim idariBirim = idariBirimRepository.findById(personalDTO.getIdariBirimId()).
-                orElseThrow(()-> new RuntimeException("Birim bulunamadı."));
+                orElseThrow(() -> new RuntimeException("Birim bulunamadı."));
         if (personelVarMi) {
             ApiResponse existingPersonelResponse = handleExistingPersonel(personalDTO);
             if (!existingPersonelResponse.getSuccess()) {
@@ -156,7 +159,7 @@ public class PersonelService implements IService<PersonalDTO> {
             }
 
             List<GorevDonemiDTO> gorevDonemiDTOS = personel.getGorevDonemleri().stream().map(gorevDonemi -> {
-                GorevDonemiDTO gorevDonemiDTO = this.modelMapperService.response().map(gorevDonemi,GorevDonemiDTO.class);
+                GorevDonemiDTO gorevDonemiDTO = this.modelMapperService.response().map(gorevDonemi, GorevDonemiDTO.class);
                 gorevDonemiDTO.setGorevDonemId(gorevDonemi.getId());
                 return gorevDonemiDTO;
             }).collect(Collectors.toList());
@@ -185,8 +188,8 @@ public class PersonelService implements IService<PersonalDTO> {
             dto.setIdariBirimId(idariBirim.getId());
         }
 
-        List<GorevDonemiDTO> gorevDonemiDTOS =personel.getGorevDonemleri().stream().map(gorevDonemi -> {
-            GorevDonemiDTO gorevDonemiDTO = this.modelMapperService.response().map(gorevDonemi,GorevDonemiDTO.class);
+        List<GorevDonemiDTO> gorevDonemiDTOS = personel.getGorevDonemleri().stream().map(gorevDonemi -> {
+            GorevDonemiDTO gorevDonemiDTO = this.modelMapperService.response().map(gorevDonemi, GorevDonemiDTO.class);
             gorevDonemiDTO.setGorevDonemId(gorevDonemi.getId());
             return gorevDonemiDTO;
         }).collect(Collectors.toList());
@@ -205,11 +208,8 @@ public class PersonelService implements IService<PersonalDTO> {
         Personel personel = personalRepository.findByKimlikNumarasi(kimlikNumarasi);
         if (personel == null) {
             return new ApiResponse<>(false, "Personel bulunamadı.", null);
-        };
-
+        }
         PersonalDTO dto = this.modelMapperService.response().map(personel, PersonalDTO.class);
         return new ApiResponse<>(true, "Personel bulundu.", dto);
     }
-
-
 }
