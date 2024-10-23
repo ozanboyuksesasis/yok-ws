@@ -11,7 +11,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GorevDonemiDTO {
+
     private Long personelId;
+
     private Long gorevDonemId;
 
     @JsonFormat(pattern = "dd-MM-yyyy")

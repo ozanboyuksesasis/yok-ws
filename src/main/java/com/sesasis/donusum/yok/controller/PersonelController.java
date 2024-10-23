@@ -7,6 +7,7 @@ import com.sesasis.donusum.yok.entity.GorevDonemi;
 import com.sesasis.donusum.yok.service.GorevDonemiService;
 import com.sesasis.donusum.yok.service.PersonelService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,9 @@ public class PersonelController {
         ApiResponse response = personelService.findByKimlikNumarasi(kimlikNumarasi);
         return ResponseEntity.ok(response);
     }
+
+
+
 
 
 
