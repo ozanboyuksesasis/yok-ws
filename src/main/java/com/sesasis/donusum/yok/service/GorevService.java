@@ -3,6 +3,7 @@ package com.sesasis.donusum.yok.service;
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.dto.GorevDTO;
+import com.sesasis.donusum.yok.dto.PersonalDTO;
 import com.sesasis.donusum.yok.entity.Gorev;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.GorevRepository;
@@ -61,6 +62,12 @@ public class GorevService implements IService<GorevDTO> {
             return new ApiResponse<>(false, "Görev bulunamadı.", null);
         }
         GorevDTO gorevDTO = modelMapperService.response().map(gorev, GorevDTO.class);
+        if (gorevDTO.getPersonals()!=null) {
+            List<PersonalDTO> personalDTOS = gorevDTO.getPersonals().stream().map( personal ->
+                    this.modelMapperService.response().map(personal, PersonalDTO.class)).collect(Collectors.toList());
+            gorevDTO.setPersonals(personalDTOS);
+        }
+
         return new ApiResponse<>(true, "İşlem başarılı.", gorevDTO);
     }
 

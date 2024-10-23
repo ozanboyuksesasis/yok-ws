@@ -70,6 +70,7 @@ public class PersonelService implements IService<PersonalDTO> {
         if (aktifGorevDonemi.isPresent()) {
             return new ApiResponse<>(false, "Hata: Personelin çıkış tarihi girilmemiş, yeni kayıt açılamaz.", null);
         } else {
+            mevcutPersonel.setAktif(true);
             GorevDonemi yeniGorevDonemi = new GorevDonemi();
             yeniGorevDonemi.setPersonel(mevcutPersonel);
             yeniGorevDonemi.setGirisTarihi(personalDTO.getGirisTarihi());
@@ -154,9 +155,11 @@ public class PersonelService implements IService<PersonalDTO> {
                 personalDTO.setIdariBirimId(idariBirimDTO.getId());
             }
 
-            List<GorevDonemiDTO> gorevDonemiDTOS = personel.getGorevDonemleri().stream()
-                    .map(gorevDonemi -> this.modelMapperService.response().map(gorevDonemi, GorevDonemiDTO.class))
-                    .collect(Collectors.toList());
+            List<GorevDonemiDTO> gorevDonemiDTOS = personel.getGorevDonemleri().stream().map(gorevDonemi -> {
+                GorevDonemiDTO gorevDonemiDTO = this.modelMapperService.response().map(gorevDonemi,GorevDonemiDTO.class);
+                gorevDonemiDTO.setGorevDonemId(gorevDonemi.getId());
+                return gorevDonemiDTO;
+            }).collect(Collectors.toList());
             personalDTO.setGorevDonemleri(gorevDonemiDTOS);
 
             return personalDTO;
@@ -182,8 +185,11 @@ public class PersonelService implements IService<PersonalDTO> {
             dto.setIdariBirimId(idariBirim.getId());
         }
 
-        List<GorevDonemiDTO> gorevDonemiDTOS = personel.getGorevDonemleri().stream().map(gorevDonemi ->
-                this.modelMapperService.response().map(gorevDonemi, GorevDonemiDTO.class)).collect(Collectors.toList());
+        List<GorevDonemiDTO> gorevDonemiDTOS =personel.getGorevDonemleri().stream().map(gorevDonemi -> {
+            GorevDonemiDTO gorevDonemiDTO = this.modelMapperService.response().map(gorevDonemi,GorevDonemiDTO.class);
+            gorevDonemiDTO.setGorevDonemId(gorevDonemi.getId());
+            return gorevDonemiDTO;
+        }).collect(Collectors.toList());
         dto.setGorevDonemleri(gorevDonemiDTOS);
         return new ApiResponse<>(true, "Personel bulundu.", dto);
     }
@@ -204,5 +210,6 @@ public class PersonelService implements IService<PersonalDTO> {
         PersonalDTO dto = this.modelMapperService.response().map(personel, PersonalDTO.class);
         return new ApiResponse<>(true, "Personel bulundu.", dto);
     }
+
 
 }
