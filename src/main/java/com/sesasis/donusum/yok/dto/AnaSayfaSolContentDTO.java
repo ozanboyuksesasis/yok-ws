@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Data
-public class AnaSayfaSolContentDTO extends BaseDTO<AnaSayfaSolContent> {
+public class AnaSayfaSolContentDTO  {
 	String baslik;
 	int sira=0;
 	boolean aktif;

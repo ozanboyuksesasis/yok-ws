@@ -5,7 +5,7 @@ import com.sesasis.donusum.yok.entity.AnaSayfaSlider;
 import lombok.Data;
 
 @Data
-public class AnaSayfaSliderDTO extends BaseDTO<AnaSayfaSlider> {
+public class AnaSayfaSliderDTO  {
 	String baslik;
 	String slogan;
 	int sira;

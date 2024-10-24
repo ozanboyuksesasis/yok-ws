@@ -1,22 +1,31 @@
 package com.sesasis.donusum.yok.dto;
 
 import com.sesasis.donusum.yok.core.domain.BaseDTO;
+import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Menu;
 import lombok.Data;
 
-@Data
-public class MenuDTO extends BaseDTO<Menu> {
-	String ad;
-	String url;
-	boolean anaSayfaMi;
+import javax.persistence.*;
 
-	@Override
-	public Menu toEntity() {
-		Menu menu = new Menu();
-		menu.setId(getId());
-		menu.setAd(ad);
-		menu.setUrl(url);
-		menu.setAnaSayfaMi(anaSayfaMi);
-		return menu;
-	}
+@Data
+public class MenuDTO  {
+
+
+	private int id ;
+
+	private int parentId ;
+
+	private String label ;
+
+	private String isim;
+
+	private  String menuUrl;
+
+	private boolean anaSayfaMi;
+
+	private Long domainID;
+
+
 }
+
+
