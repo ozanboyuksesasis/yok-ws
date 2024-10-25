@@ -2,28 +2,23 @@ package com.sesasis.donusum.yok.service;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
-import com.sesasis.donusum.yok.dto.FotografDTO;
-import com.sesasis.donusum.yok.entity.Fotograf;
+import com.sesasis.donusum.yok.dto.SliderDTO;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
-import com.sesasis.donusum.yok.repository.FotografRepository;
+import com.sesasis.donusum.yok.repository.SliderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Base64;
-@RequiredArgsConstructor
 @Service
-public class FotograflarService implements IService<FotografDTO> {
-    private final FotografRepository fotografRepository;
-    private final ModelMapperServiceImpl modelMapperService;
+@RequiredArgsConstructor
+public class SliderService implements IService<SliderDTO> {
 
+    private final SliderRepository sliderRepository;
+    private final ModelMapperServiceImpl modelMapperServiceImpl;
 
 
     @Override
-    public ApiResponse save(FotografDTO fotografDTO) {
-    return null;
+    public ApiResponse save(SliderDTO sliderDTO) {
+        return null;
     }
 
     @Override
@@ -40,6 +35,4 @@ public class FotograflarService implements IService<FotografDTO> {
     public void deleteById(Long id) {
 
     }
-
-
 }

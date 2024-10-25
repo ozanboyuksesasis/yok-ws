@@ -29,4 +29,5 @@ public class Domain {
 	@JoinColumn(name = "role_id", nullable = false)
 	@JsonIgnore
 	private Role role;
+
 }

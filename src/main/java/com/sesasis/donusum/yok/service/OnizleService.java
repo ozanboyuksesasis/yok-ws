@@ -29,7 +29,7 @@ public class OnizleService {
 	private final FileService fileService;
 
 	public ApiResponse onizle(){
-		List<AnaSayfaSlider> anaSayfaSliderList = anaSayfaSliderRepository.findAllByMenuAnaSayfaMiAndMenuDomainId(Boolean.TRUE,securityContextUtil.getCurrentUser().getLoggedDomain().getId());
+	/*	List<AnaSayfaSlider> anaSayfaSliderList = anaSayfaSliderRepository.findAllByMenuAnaSayfaMiAndMenuDomainId(Boolean.TRUE,securityContextUtil.getCurrentUser().getLoggedDomain().getId());
 		List<AnaSayfaSolContent> anaSayfaSolContentList = anaSayfaSolContentRepository.findAllByMenuAnaSayfaMiAndMenuDomainId(Boolean.TRUE,securityContextUtil.getCurrentUser().getLoggedDomain().getId());
 
 		if (anaSayfaSliderList.isEmpty() && anaSayfaSolContentList.isEmpty()){
@@ -55,5 +55,7 @@ public class OnizleService {
 		onizleDTO.setSolContentList(!anaSayfaSolContentList.isEmpty() ? anaSayfaSolContentList.stream().map(e->e.toDTO()).collect(Collectors.toList()): new ArrayList<>());
 
 		return new ApiResponse(true, MessageConstant.SUCCESS,onizleDTO);
-	}
+	}*/
+		return null;
+}
 }
