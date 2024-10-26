@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.Base64;
 @RequiredArgsConstructor
 @Service
-public class FotograflarService implements IService<FotografDTO> {
+public class FotografService implements IService<FotografDTO> {
     private final FotografRepository fotografRepository;
     private final ModelMapperServiceImpl modelMapperService;
 

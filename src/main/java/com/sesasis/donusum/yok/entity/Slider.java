@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -33,6 +34,14 @@ public class Slider {
 
     @Column(name = "sayfa_url")
     private String sayfaUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "domain_id")
+    private Domain domain;
+
+    @OneToMany(mappedBy = "slider")
+    private List<Fotograf> fotograflar;
+
 
     
 }

@@ -11,4 +11,6 @@ public class DomainDTO {
 	private boolean anaDomainMi;
 
 	private Long roleId;
+
+
 }

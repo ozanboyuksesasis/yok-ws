@@ -33,9 +33,15 @@ public class Fotograf {
     @Column(name = "created_date")
     private LocalDate createdDate;
 
-   /* @OneToMany(mappedBy = "fotograf")
+    @OneToMany(mappedBy = "fotograf",cascade = CascadeType.ALL)
     private List<DomainLogo> domainLogos;
 
-    @OneToMany(mappedBy = "fotograf")
-    private List<Menu> menuler;*/
+    @OneToMany(mappedBy = "fotograf",cascade = CascadeType.ALL)
+    private List<Menu> menuler;
+
+    @ManyToOne
+    @JoinColumn(name = "slider_id")
+    private Slider slider;
+
+
 }

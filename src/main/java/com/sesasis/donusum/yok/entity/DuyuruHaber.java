@@ -35,4 +35,12 @@ public class DuyuruHaber {
     @Column(name = "created_at")
     private LocalDate createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "domain_id")
+    private Domain domain;
+
 }

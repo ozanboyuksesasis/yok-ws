@@ -11,6 +11,7 @@ import com.sesasis.donusum.yok.entity.DashboardMenu;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.DomainRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,17 +20,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class DomainService  implements IService<DomainDTO> {
 
 	private  final RoleRepository roleRepository;
 	private  final DomainRepository domainRepository;
 	private final ModelMapperServiceImpl modelMapperServiceImpl;
-
-	public DomainService(DomainRepository repository, RoleRepository roleRepository, DomainRepository domainRepository, ModelMapperServiceImpl modelMapperServiceImpl) {
-		this.roleRepository = roleRepository;
-        this.domainRepository = domainRepository;
-        this.modelMapperServiceImpl = modelMapperServiceImpl;
-    }
 
 
 	@Override
@@ -41,7 +37,6 @@ public class DomainService  implements IService<DomainDTO> {
 
 		Domain domain = modelMapperServiceImpl.request().map(domainDTO, Domain.class);
 		domainRepository.save(domain);
-
 		if (!domainDTO.isAnaDomainMi()) { // Eğer ana domain değilse, farklı menüler atanacak
 			List<DashboardMenu> dashboardMenuList = getDefaultDashboardMenus();
 
@@ -50,6 +45,7 @@ public class DomainService  implements IService<DomainDTO> {
 				Role role = optionalRole.get();
 				role.setDashboardMenuList(dashboardMenuList);
 				roleRepository.save(role);
+				domain.setRole(role);
 			} else {
 				return new ApiResponse(false, "Rol bulunamadı.", null);
 			}
@@ -92,12 +88,20 @@ public class DomainService  implements IService<DomainDTO> {
 
 	@Override
 	public ApiResponse findById(Long id) {
-		return null;
+		Domain domain = domainRepository.findById(id).orElse(null);
+		if (domain == null) {
+			return new ApiResponse<>(false,"Domain bulunamadı.",null);
+		}
+		DomainDTO dto = modelMapperServiceImpl.request().map(domain, DomainDTO.class);
+
+		return new ApiResponse<>(true,"İşlem başarılı.",dto);
 	}
 
 	@Override
 	public void deleteById(Long id) {
-
+	if (domainRepository.existsById(id)) {
+		domainRepository.deleteById(id);
+	}
 	}
 
 }

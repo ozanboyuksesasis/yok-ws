@@ -32,7 +32,12 @@ public class Menu  {
 	private boolean anaSayfaMi;
 
 	@ManyToOne
+	@JoinColumn(name = "domain_id")
 	private Domain domain;
+
+	@ManyToOne
+	@JoinColumn(name = "fotograf_id")
+	private Fotograf fotograf;
 
 
 

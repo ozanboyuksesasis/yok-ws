@@ -25,6 +25,8 @@ public class MenuDTO  {
 
 	private Long domainID;
 
+	private Long fotografId;
+
 
 }
 
