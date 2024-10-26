@@ -17,12 +17,13 @@ public class DomainController {
 
 	@PostMapping(value="/save",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> save(@RequestBody DomainDTO domainDTO) {
-		return ResponseEntity.ok(domainService.save(domainDTO));
+		return ResponseEntity.ok(domainService.newSave(domainDTO));
 	}
 
-	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> findAll() {
-		return ResponseEntity.ok(domainService.findAll());
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getById(DomainDTO domainDTO) {
+		domainService.findById(domainDTO.getId());
+		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping(MappingConstants.PATH_VARIABLE_ID)

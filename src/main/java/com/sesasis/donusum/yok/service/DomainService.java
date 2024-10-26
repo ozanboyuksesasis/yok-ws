@@ -85,6 +85,15 @@ public class DomainService  implements IService<DomainDTO> {
 	public ApiResponse findAll() {
 		return null;
 	}
+	public ApiResponse newSave(DomainDTO domainDTO) {
+		Domain domain = modelMapperServiceImpl.request().map(domainDTO, Domain.class);
+		if (domainRepository.existsByAd(domainDTO.getAd())) {
+			return new ApiResponse<>(false,"Domain adı daha önce kullanılmış.",null);
+		}
+		domainRepository.save(domain);
+		DomainDTO dto = modelMapperServiceImpl.request().map(domainDTO, DomainDTO.class);
+		return new ApiResponse(true, MessageConstant.SAVE_MSG, dto);
+	}
 
 	@Override
 	public ApiResponse findById(Long id) {
