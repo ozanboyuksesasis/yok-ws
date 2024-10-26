@@ -44,7 +44,7 @@ public class Personel {
     @Column(name = "aktif")
     private Boolean aktif;
 
-    @OneToMany(mappedBy = "personel", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "personel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<GorevDonemi> gorevDonemleri;
 
     @ManyToOne

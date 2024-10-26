@@ -7,8 +7,10 @@ import com.sesasis.donusum.yok.core.security.repository.RoleRepository;
 import com.sesasis.donusum.yok.core.service.AbstractService;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.dto.DomainDTO;
+import com.sesasis.donusum.yok.dto.MenuDTO;
 import com.sesasis.donusum.yok.entity.DashboardMenu;
 import com.sesasis.donusum.yok.entity.Domain;
+import com.sesasis.donusum.yok.entity.Menu;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.DomainRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -95,6 +98,16 @@ public class DomainService  implements IService<DomainDTO> {
 		DomainDTO dto = modelMapperServiceImpl.request().map(domain, DomainDTO.class);
 
 		return new ApiResponse<>(true,"İşlem başarılı.",dto);
+	}
+
+	public ApiResponse getMenusByDomainId(Long domainId) {
+		Optional<Domain> domain = domainRepository.findById(domainId);
+		if (domain.isPresent()) {
+			List<MenuDTO> menuDTOS = domain.get().getMenuList().stream().
+					map(menu -> this.modelMapperServiceImpl.response().map(menu,MenuDTO.class)).collect(Collectors.toList());
+			return new ApiResponse<>(true, "Menüler başarıyla getirildi.", menuDTOS);
+		}
+		return new ApiResponse<>(false, "Domain bulunamadı.", null);
 	}
 
 	@Override

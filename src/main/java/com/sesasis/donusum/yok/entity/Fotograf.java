@@ -33,10 +33,10 @@ public class Fotograf {
     @Column(name = "created_date")
     private LocalDate createdDate;
 
-    @OneToMany(mappedBy = "fotograf",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fotograf",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<DomainLogo> domainLogos;
 
-    @OneToMany(mappedBy = "fotograf",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fotograf",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Menu> menuler;
 
     @ManyToOne

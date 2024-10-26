@@ -2,6 +2,7 @@ package com.sesasis.donusum.yok.controller;
 
 import com.sesasis.donusum.yok.constant.MappingConstants;
 import com.sesasis.donusum.yok.dto.DomainDTO;
+import com.sesasis.donusum.yok.entity.Menu;
 import com.sesasis.donusum.yok.service.DomainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -20,9 +21,9 @@ public class DomainController {
 		return ResponseEntity.ok(domainService.save(domainDTO));
 	}
 
-	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> findAll() {
-		return ResponseEntity.ok(domainService.findAll());
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getById(@PathVariable Long id) {
+		return ResponseEntity.ok(domainService.findById(id));
 	}
 
 	@DeleteMapping(MappingConstants.PATH_VARIABLE_ID)
