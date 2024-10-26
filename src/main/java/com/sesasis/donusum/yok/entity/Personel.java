@@ -48,11 +48,11 @@ public class Personel {
     private List<GorevDonemi> gorevDonemleri;
 
     @ManyToOne
-    @JoinColumn(name = "idaribirim_id")
+    @JoinColumn(name = "idaribirim_id",nullable = false)
     private IdariBirim idariBirim;
 
     @ManyToOne
-    @JoinColumn(name = "personel_görev_id")
+    @JoinColumn(name = "personel_görev_id",nullable = false)
     private Gorev gorev;
 
 }
