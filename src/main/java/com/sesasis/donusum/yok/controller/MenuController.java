@@ -1,6 +1,7 @@
 package com.sesasis.donusum.yok.controller;
 
 import com.sesasis.donusum.yok.constant.MappingConstants;
+import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.dto.MenuDTO;
 import com.sesasis.donusum.yok.service.MenuService;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,8 @@ public class MenuController {
 
 	@DeleteMapping(MappingConstants.PATH_VARIABLE_ID)
 	public ResponseEntity<?> deleteById(@PathVariable Long id) {
-		return ResponseEntity.ok(menuService.delete(id));
+		 menuService.deleteById(id);
+		return ResponseEntity.ok().build();
 	}
 
 

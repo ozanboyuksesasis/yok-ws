@@ -35,7 +35,8 @@ public class AnaSayfaSliderController {
 
 	@DeleteMapping(MappingConstants.PATH_VARIABLE_ID)
 	public ResponseEntity<?> deleteById(@PathVariable Long id) {
-		return ResponseEntity.ok(anaSayfaSliderService.delete(id));
+		anaSayfaSliderService.deleteById(id);
+		return ResponseEntity.ok().build();
 	}
 
 

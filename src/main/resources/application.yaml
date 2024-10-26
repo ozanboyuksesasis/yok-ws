@@ -33,4 +33,4 @@ springfox:
     enabled: true
 
 upload:
-  dir : src/main/resources/static/uploads
+  dir: src/main/resources/static/uploads

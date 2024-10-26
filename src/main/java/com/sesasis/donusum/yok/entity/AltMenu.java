@@ -1,29 +1,31 @@
 package com.sesasis.donusum.yok.entity;
 
-import com.sesasis.donusum.yok.core.domain.BaseModel;
-import com.sesasis.donusum.yok.dto.AltMenuDTO;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Data
 @Entity
-public class AltMenu extends BaseModel<AltMenuDTO> {
-	String ad;
-	@Column(unique = true)
-	String url;
-	@ManyToOne
-	Menu anaMenu;
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "alt_menus")
+public class AltMenu {
 
-	@Override
-	public AltMenuDTO toDTO() {
-		AltMenuDTO altMenuDTO = new AltMenuDTO();
-		altMenuDTO.setId(getId());
-		altMenuDTO.setAd(ad);
-		altMenuDTO.setUrl(url);
-		altMenuDTO.setAnaMenu(anaMenu != null ? anaMenu.toDTO() : null);
-		return altMenuDTO;
-	}
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
+
+	@Column(name = "ad", nullable = false)
+	private String ad;
+
+	@Column(name = "url", unique = true, nullable = false)
+	private String url;
+
+	@ManyToOne
+	@JoinColumn(name = "ana_menu_id", referencedColumnName = "id")
+	private Menu anaMenu;
+
 }

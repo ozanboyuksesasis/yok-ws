@@ -27,7 +27,8 @@ public class DomainController {
 
 	@DeleteMapping(MappingConstants.PATH_VARIABLE_ID)
 	public ResponseEntity<?> deleteById(@PathVariable Long id) {
-		return ResponseEntity.ok(domainService.delete(id));
+		domainService.deleteById(id);
+		return ResponseEntity.ok().build();
 	}
 
 
