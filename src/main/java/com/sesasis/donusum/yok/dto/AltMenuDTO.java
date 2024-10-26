@@ -2,21 +2,23 @@ package com.sesasis.donusum.yok.dto;
 
 import com.sesasis.donusum.yok.core.domain.BaseDTO;
 import com.sesasis.donusum.yok.entity.AltMenu;
+import com.sesasis.donusum.yok.entity.Menu;
 import lombok.Data;
 
-@Data
-public class AltMenuDTO extends BaseDTO<AltMenu> {
-	String ad;
-	String url;
-	MenuDTO anaMenu;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-	@Override
-	public AltMenu toEntity() {
-		AltMenu altMenu = new AltMenu();
-		altMenu.setId(getId());
-		altMenu.setAd(ad);
-		altMenu.setUrl(url);
-		altMenu.setAnaMenu(anaMenu != null ? anaMenu.toEntity() : null);
-		return altMenu;
-	}
+@Data
+public class AltMenuDTO {
+
+	private Long id;
+
+	private String ad;
+
+	private String url;
+
+	private Long menuId;
+
+
 }

@@ -12,24 +12,12 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Data
-public class AnaSayfaSolContentDTO extends BaseDTO<AnaSayfaSolContent> {
-	String baslik;
-	int sira=0;
-	boolean aktif;
-	@JsonSerialize(using = CustomDateSerializer.class)
-	Date contentTarihi;
-	String contentDetay;
-	MenuDTO menu;
-
-	@Override
-	public AnaSayfaSolContent toEntity() {
-		AnaSayfaSolContent anaSayfaSolContent = new AnaSayfaSolContent();
-		anaSayfaSolContent.setId(getId());
-		anaSayfaSolContent.setBaslik(baslik);
-		anaSayfaSolContent.setSira(sira);
-		anaSayfaSolContent.setContentTarihi(contentTarihi);
-		anaSayfaSolContent.setContentDetay(contentDetay.getBytes());
-		anaSayfaSolContent.setMenu(menu != null ? menu.toEntity() : null);
-		return anaSayfaSolContent;
-	}
+public class AnaSayfaSolContentDTO  {
+	private Long id;
+	private String baslik;
+	private int sira;
+	private boolean aktif;
+	private Date contentTarihi;
+	private byte[] contentDetay;
+	private Long menuId;
 }

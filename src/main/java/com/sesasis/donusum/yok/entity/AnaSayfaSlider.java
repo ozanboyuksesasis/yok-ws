@@ -1,40 +1,45 @@
 package com.sesasis.donusum.yok.entity;
 
-import com.sesasis.donusum.yok.core.domain.BaseModel;
-import com.sesasis.donusum.yok.dto.AnaSayfaSliderDTO;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import java.nio.charset.StandardCharsets;
+import javax.persistence.*;
 
-@Entity
 @Data
-public class AnaSayfaSlider extends BaseModel<AnaSayfaSliderDTO> {
-	String baslik;
-	String slogan;
-	int sira=0;
-	String path;
-	boolean aktif;
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "ana_sayfa_slider")
+public class AnaSayfaSlider {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
+
+	@Column(name = "baslik", nullable = false)
+	private String baslik;
+
+	@Column(name = "slogan", nullable = false)
+	private String slogan;
+
+	@Column(name = "sira", nullable = false)
+	private int sira = 0;
+
+	@Column(name = "path", nullable = false)
+	private String path;
+
+	@Column(name = "aktif", nullable = false)
+	private boolean aktif;
+
 	@Lob
 	@Type(type = "org.hibernate.type.ImageType")
+	@Column(name = "content_detay")
 	private byte[] contentDetay;
-	@ManyToOne
-	Menu menu;//ana sayfa olan menu ile ilişkilendirilecek
 
-	@Override
-	public AnaSayfaSliderDTO toDTO() {
-		AnaSayfaSliderDTO anaSayfaSliderDTO = new AnaSayfaSliderDTO();
-		anaSayfaSliderDTO.setId(getId());
-		anaSayfaSliderDTO.setBaslik(baslik);
-		anaSayfaSliderDTO.setSlogan(slogan);
-		anaSayfaSliderDTO.setSira(sira);
-		anaSayfaSliderDTO.setPath(path);
-		anaSayfaSliderDTO.setAktif(aktif);
-		anaSayfaSliderDTO.setContentDetay(new String(contentDetay, StandardCharsets.UTF_8));
-		anaSayfaSliderDTO.setMenu(menu != null ? menu.toDTO() : null);
-		return anaSayfaSliderDTO;
-	}
+	@ManyToOne
+	private Menu menu;
+
 }

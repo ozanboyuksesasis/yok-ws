@@ -32,7 +32,8 @@ public class AnaSayfaSolContentController {
 
 	@DeleteMapping(MappingConstants.PATH_VARIABLE_ID)
 	public ResponseEntity<?> deleteById(@PathVariable Long id) {
-		return ResponseEntity.ok(anaSayfaSolContentService.delete(id));
+		anaSayfaSolContentService.deleteById(id);
+		return ResponseEntity.ok().build();
 	}
 
 

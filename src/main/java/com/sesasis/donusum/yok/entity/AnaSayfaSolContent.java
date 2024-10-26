@@ -1,38 +1,40 @@
 package com.sesasis.donusum.yok.entity;
 
-import com.sesasis.donusum.yok.core.domain.BaseModel;
-import com.sesasis.donusum.yok.dto.AnaSayfaSolContentDTO;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import java.nio.charset.StandardCharsets;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Data
-public class AnaSayfaSolContent extends BaseModel<AnaSayfaSolContentDTO> {
-	String baslik;
-	int sira=0;
-	boolean aktif;
-	Date contentTarihi;
+@Table(name = "ana_sayfa_sol_content")
+public class AnaSayfaSolContent {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
+
+	@Column(name = "baslik", nullable = false)
+	private String baslik;
+
+	@Column(name = "sira", nullable = false)
+	private int sira = 0;
+
+	@Column(name = "aktif", nullable = false)
+	private boolean aktif;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "content_tarihi", nullable = false)
+	private Date contentTarihi;
+
 	@Lob
 	@Type(type = "org.hibernate.type.ImageType")
+	@Column(name = "content_detay")
 	private byte[] contentDetay;
-	@ManyToOne
-	Menu menu;//ana sayfa olan menu ile ilişkilendirilecek
 
-	@Override
-	public AnaSayfaSolContentDTO toDTO() {
-		AnaSayfaSolContentDTO anaSayfaSolContentDTO = new AnaSayfaSolContentDTO();
-		anaSayfaSolContentDTO.setId(getId());
-		anaSayfaSolContentDTO.setBaslik(baslik);
-		anaSayfaSolContentDTO.setSira(sira);
-		anaSayfaSolContentDTO.setContentTarihi(contentTarihi);
-		anaSayfaSolContentDTO.setContentDetay(new String(contentDetay, StandardCharsets.UTF_8));
-		anaSayfaSolContentDTO.setMenu(menu != null ? menu.toDTO() : null);
-		return anaSayfaSolContentDTO;
-	}
+	@ManyToOne
+	@JoinColumn(name = "menu_id", referencedColumnName = "id")
+	private Menu menu;
 }

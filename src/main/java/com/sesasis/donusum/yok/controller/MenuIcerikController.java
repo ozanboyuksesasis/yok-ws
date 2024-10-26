@@ -1,3 +1,4 @@
+/*
 package com.sesasis.donusum.yok.controller;
 
 import com.sesasis.donusum.yok.constant.MappingConstants;
@@ -37,3 +38,4 @@ public class MenuIcerikController {
 
 
 }
+*/

@@ -1,30 +1,14 @@
 package com.sesasis.donusum.yok.dto;
 
-import com.sesasis.donusum.yok.core.domain.BaseDTO;
-import com.sesasis.donusum.yok.entity.AltMenu;
-import com.sesasis.donusum.yok.entity.DashboardMenu;
 import lombok.Data;
 
-import javax.persistence.OneToOne;
-
 @Data
-public class DashboardMenuDTO extends BaseDTO<DashboardMenu> {
+public class DashboardMenuDTO {
 
-	String name;
-	DashboardMenu parent;
-	int number;
-	String path;
-	String iconName;
+	private String name;
+	private Long parentId;
+	private int number;
+	private String path;
+	private String iconName;
 
-	@Override
-	public DashboardMenu toEntity() {
-		DashboardMenu dashboardMenu = new DashboardMenu();
-		dashboardMenu.setId(getId());
-		dashboardMenu.setName(name);
-		dashboardMenu.setParent(parent);
-		dashboardMenu.setNumber(number);
-		dashboardMenu.setPath(path);
-		dashboardMenu.setIconName(iconName);
-		return dashboardMenu;
-	}
 }

@@ -11,6 +11,7 @@ import com.sesasis.donusum.yok.dto.AnaSayfaSolContentDTO;
 import com.sesasis.donusum.yok.entity.AnaSayfaSlider;
 import com.sesasis.donusum.yok.entity.AnaSayfaSolContent;
 import com.sesasis.donusum.yok.entity.Menu;
+import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.AnaSayfaSliderRepository;
 import com.sesasis.donusum.yok.repository.AnaSayfaSolContentRepository;
 import com.sesasis.donusum.yok.repository.MenuRepository;
@@ -23,35 +24,51 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AnaSayfaSolContentService extends AbstractService<AnaSayfaSolContent, AnaSayfaSolContentRepository> implements IService<AnaSayfaSolContentDTO> {
+public class AnaSayfaSolContentService implements IService<AnaSayfaSolContentDTO> {
 
 	private final SecurityContextUtil securityContextUtil;
 	private final MenuRepository menuRepository;
 	private final FileService fileService;
+	private final ModelMapperServiceImpl modelMapperServiceImpl;
+	private final AnaSayfaSolContentRepository anaSayfaSolContentRepository;
 
-	public AnaSayfaSolContentService(AnaSayfaSolContentRepository repository, SecurityContextUtil securityContextUtil, MenuRepository menuRepository, FileService fileService) {
-		super(repository);
-		this.securityContextUtil = securityContextUtil;
-		this.menuRepository = menuRepository;
-		this.fileService = fileService;
-	}
+    public AnaSayfaSolContentService(SecurityContextUtil securityContextUtil, MenuRepository menuRepository, FileService fileService, ModelMapperServiceImpl modelMapperServiceImpl, AnaSayfaSolContentRepository anaSayfaSolContentRepository) {
+        this.securityContextUtil = securityContextUtil;
+        this.menuRepository = menuRepository;
+        this.fileService = fileService;
+        this.modelMapperServiceImpl = modelMapperServiceImpl;
+        this.anaSayfaSolContentRepository = anaSayfaSolContentRepository;
+    }
 
 
-	@Override
+    @Override
 	@Transactional
 	public ApiResponse save(AnaSayfaSolContentDTO anaSayfaSolContentDTO) {
-		AnaSayfaSolContent anaSayfaSolContent = anaSayfaSolContentDTO.toEntity();
-		Menu anasayfa = menuRepository.findOneByDomainIdAndAnaSayfaMi(securityContextUtil.getCurrentUser().getLoggedDomain().getId(),Boolean.TRUE);
+		AnaSayfaSolContent anaSayfaSolContent = modelMapperServiceImpl.request().map(anaSayfaSolContentDTO, AnaSayfaSolContent.class);
+
+		// Mevcut Domain'de ana sayfa menüsünü bul ve ata
+		Long domainId = securityContextUtil.getCurrentUser().getLoggedDomain().getId();
+		Menu anasayfa = menuRepository.findOneByDomainIdAndAnaSayfaMi(domainId, Boolean.TRUE);
 		anaSayfaSolContent.setMenu(anasayfa);
-		getRepository().save(anaSayfaSolContent);
+
+		// Veritabanına kaydet
+		anaSayfaSolContentRepository.save(anaSayfaSolContent);
 
 		return new ApiResponse(true, MessageConstant.SAVE_MSG, null);
 	}
 
 	@Override
 	public ApiResponse findAll() {
-		return new ApiResponse(true,MessageConstant.SUCCESS, getRepository().findAllByMenuAnaSayfaMiAndMenuDomainId(Boolean.TRUE,securityContextUtil.getCurrentUser().getLoggedDomain().getId()).stream().map(e->e.toDTO()).collect(Collectors.toList()));
+		Long domainId = securityContextUtil.getCurrentUser().getLoggedDomain().getId();
+		List<AnaSayfaSolContentDTO> anaSayfaSolContentDTOList = anaSayfaSolContentRepository
+				.findAllByMenuAnaSayfaMiAndMenuDomainId(Boolean.TRUE, domainId)
+				.stream()
+				.map(content -> modelMapperServiceImpl.response().map(content, AnaSayfaSolContentDTO.class))
+				.collect(Collectors.toList());
+
+		return new ApiResponse(true, MessageConstant.SUCCESS, anaSayfaSolContentDTOList);
 	}
+
 
 	@Override
 	public ApiResponse findById(Long id) {
