@@ -27,6 +27,7 @@ public class FotografDTO {
 
     private LocalDate createdDate;
 
+    private Long slideId;
 
 }
 
