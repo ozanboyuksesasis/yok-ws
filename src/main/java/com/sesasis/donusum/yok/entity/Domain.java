@@ -31,20 +31,5 @@ public class Domain {
 	@JsonIgnore
 	private Role role;
 
-	@OneToMany(mappedBy = "domain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Menu> menuList;
-
-	@OneToMany(mappedBy = "domain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<DuyuruHaber> duyuruHabers;
-
-	@OneToMany(mappedBy = "domain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Category> categories;
-
-	@OneToMany(mappedBy = "domain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Slider> sliders;
-
-	@OneToMany(mappedBy = "domain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<DomainLogo> domainLogos;
-
 
 }

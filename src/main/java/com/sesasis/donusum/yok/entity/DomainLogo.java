@@ -23,8 +23,9 @@ public class DomainLogo {
     private Fotograf fotograf;
 
     @ManyToOne
-    @JoinColumn(name = "domain_id")
-    private Domain domain;
+    @JoinColumn(name = "new_domain_id")
+    private NewDomain  newDomain;
+
 
 
 }

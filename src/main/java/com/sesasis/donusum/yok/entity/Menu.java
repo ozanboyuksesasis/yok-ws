@@ -3,6 +3,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.util.List;
 
 
 @Data
@@ -14,7 +15,7 @@ public class Menu  {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-	int id ;
+	private Long id ;
 
 	@Column(name = "parent_id")
 	private int parentId ;
@@ -32,12 +33,15 @@ public class Menu  {
 	private boolean anaSayfaMi;
 
 	@ManyToOne
-	@JoinColumn(name = "domain_id")
-	private Domain domain;
+	@JoinColumn(name = "new_domain_id")
+	private NewDomain newDomain;
 
 	@ManyToOne
 	@JoinColumn(name = "fotograf_id")
 	private Fotograf fotograf;
+
+	@OneToMany(mappedBy = "anaMenu")
+	private  List<AltMenu> altMenus;
 
 
 
