@@ -29,7 +29,8 @@ public class NewMenuService implements IService<NewMenuDTO> {
         NewDomain domain = newDomainsRepository.findById(newMenuDTO.getDomainId()).
                 orElseThrow(()->new RuntimeException("Domain bulunamadı."));
 
-        Menu existMenu = newMenuRepository.findOneByNewDomain_IdAndAnaSayfaMi(domain.getId(), Boolean.TRUE);
+
+        NewMenu existMenu = newMenuRepository.findOneByNewDomain_IdAndAnaSayfaMi(domain.getId(), Boolean.TRUE);
         if (existMenu != null && newMenuDTO.isAnaSayfaMi()) {
             return new ApiResponse(false, "Sadece bir tane anasayfa tanımlayabilirsiniz.", null);
         }

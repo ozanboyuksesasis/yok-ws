@@ -10,7 +10,7 @@ public interface NewMenuRepository extends JpaRepository<NewMenu, Long> {
 
     List<Menu> findAllByNewDomain_Id(Long domainId);
 
-    Menu findOneByNewDomain_IdAndAnaSayfaMi(Long domainId, boolean anaSayfaMi);
+    NewMenu findOneByNewDomain_IdAndAnaSayfaMi(Long domainId, boolean anaSayfaMi);
 
     List<Menu> findAllByNewDomain_IdAndAnaSayfaMi(Long domainId, boolean anaSayfaMi);
 }

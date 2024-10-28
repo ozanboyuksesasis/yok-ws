@@ -18,11 +18,9 @@ public class NewMenuDTO {
     private Long id ;
 
     @NotNull
-    @NotBlank(message = "Hata : Domain id boş bırakılamaz.")
     private Long domainId;
 
     @NotNull
-    @NotBlank(message = "Hata : Fotoğraf id boş bırakılamaz.")
     private Long fotografId;
 
     private int parentId ;
@@ -39,5 +37,5 @@ public class NewMenuDTO {
 
     private boolean anaSayfaMi;
 
-    private List<AltMenuDTO> altMenus;
+
 }
