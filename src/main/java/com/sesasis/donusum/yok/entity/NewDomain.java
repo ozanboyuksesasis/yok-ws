@@ -36,7 +36,7 @@ public class NewDomain {
     private Role role;
 
     @OneToMany(mappedBy = "newDomain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Menu> menuList;
+    private List<NewMenu> menuList;
 
     @OneToMany(mappedBy = "newDomain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DuyuruHaber> duyuruHabers;

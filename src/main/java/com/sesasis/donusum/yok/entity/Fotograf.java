@@ -37,7 +37,7 @@ public class Fotograf {
     private List<DomainLogo> domainLogos;
 
     @OneToMany(mappedBy = "fotograf",cascade = CascadeType.ALL)
-    private List<Menu> menuler;
+    private List<NewMenu> menuler;
 
     @ManyToOne
     @JoinColumn(name = "slider_id")
