@@ -28,7 +28,7 @@ public class NewDomainDTO {
     @NotBlank(message = "URL alanı boş olamaz veya yalnızca boşluk içeremez.")
     private String url;
 
-    @AssertTrue(message = "Ana domain olması için true değeri atanmalı.")
+
     private boolean anaDomainMi;
 
     @NotNull(message = "Role ID alanı boş olamaz.")

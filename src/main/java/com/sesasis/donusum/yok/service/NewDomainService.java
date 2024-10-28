@@ -11,6 +11,9 @@ import com.sesasis.donusum.yok.repository.NewDomainsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class NewDomainService implements IService<NewDomainDTO> {
@@ -21,26 +24,43 @@ public class NewDomainService implements IService<NewDomainDTO> {
 
     @Override
     public ApiResponse save(NewDomainDTO newDomainDTO) {
-        Role role = roleRepository.findById(newDomainDTO.getRoleId()).
-                orElseThrow(() -> new RuntimeException("Role not found"));
-        NewDomain newDomain = this.modelMapperServiceImpl.request().map(newDomainDTO, NewDomain.class);
+        Role role = roleRepository.findById(newDomainDTO.getRoleId())
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        NewDomain newDomain = modelMapperServiceImpl.request().map(newDomainDTO, NewDomain.class);
         newDomain.setRole(role);
         newDomainsRepository.save(newDomain);
-        NewDomainDTO DTO = modelMapperServiceImpl.response().map(newDomain, NewDomainDTO.class);
-        return new ApiResponse<>(true,"Domain kayıt işlemi başarılı.",DTO);
+
+        NewDomainDTO dto = modelMapperServiceImpl.response().map(newDomain, NewDomainDTO.class);
+        return new ApiResponse<>(true, "Domain kayıt işlemi başarılı.", dto);
     }
+
 
     @Override
     public ApiResponse findAll() {
-        return null;
+
+        List<NewDomain> domains = newDomainsRepository.findAll();
+        if (domains.isEmpty()) {
+            return new ApiResponse(false,"Liste boş.",null);
+        }
+        List<NewDomainDTO> dtos = domains.stream().map(
+                domain -> this.modelMapperServiceImpl.response().map(domain,NewDomainDTO.class)).collect(Collectors.toList());
+        return new ApiResponse<>(true,"İşlem başarılı.",dtos);
     }
 
     @Override
     public ApiResponse findById(Long id) {
-        return null;
+        NewDomain domain = newDomainsRepository.findById(id).
+                orElseThrow(() -> new RuntimeException("Domain not found"));
+        NewDomainDTO dto = this.modelMapperServiceImpl.response().map(domain,NewDomainDTO.class);
+
+        return new ApiResponse<>(true,"İşlem başarılı.",dto);
     }
 
     @Override
     public void deleteById(Long id) {
+    if (newDomainsRepository.existsById(id)) {
+        newDomainsRepository.deleteById(id);
+    }
     }
 }
