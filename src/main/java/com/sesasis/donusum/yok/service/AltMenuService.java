@@ -37,14 +37,15 @@ public class AltMenuService implements IService<AltMenuDTO> {
 
 	@Override
 	public ApiResponse findAll() {
-		Long domainId = securityContextUtil.getCurrentUser().getLoggedDomain().getId();
-		List<AltMenuDTO> altMenuDTOList = altMenuRepository
-				.findAllByAnaMenuDomainId(domainId)
+		//Long domainId = securityContextUtil.getCurrentUser().getLoggedDomain().getId();
+
+		/*List<AltMenuDTO> altMenuDTOList = altMenuRepository
+				.findAllByAnaMenuDomainId(null)
 				.stream()
 				.map(altMenu -> modelMapperServiceImpl.response().map(altMenu, AltMenuDTO.class))
-				.collect(Collectors.toList());
+				.collect(Collectors.toList());*/
 
-		return new ApiResponse(true, MessageConstant.SUCCESS, altMenuDTOList);
+		return new ApiResponse(true, MessageConstant.SUCCESS, null);
 	}
 
 	@Override

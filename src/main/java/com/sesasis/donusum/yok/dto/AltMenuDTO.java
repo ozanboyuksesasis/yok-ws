@@ -20,5 +20,7 @@ public class AltMenuDTO {
 
 	private Long menuId;
 
+	private Long newDomainId;
+
 
 }

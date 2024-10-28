@@ -23,8 +23,9 @@ public class Category {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "domain_id")
-    private Domain domain;
+    @JoinColumn(name = "new_domain_id")
+    private NewDomain  newDomain;
+
 
     @OneToMany(mappedBy = "category")
     private List<DuyuruHaber> duyuruHaber;

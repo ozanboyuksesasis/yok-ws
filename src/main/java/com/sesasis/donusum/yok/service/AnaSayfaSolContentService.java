@@ -48,7 +48,7 @@ public class AnaSayfaSolContentService implements IService<AnaSayfaSolContentDTO
 
 		// Mevcut Domain'de ana sayfa menüsünü bul ve ata
 		Long domainId = securityContextUtil.getCurrentUser().getLoggedDomain().getId();
-		Menu anasayfa = menuRepository.findOneByDomainIdAndAnaSayfaMi(domainId, Boolean.TRUE);
+		Menu anasayfa = menuRepository.findOneByNewDomain_IdAndAnaSayfaMi(domainId, Boolean.TRUE);
 		anaSayfaSolContent.setMenu(anasayfa);
 
 		// Veritabanına kaydet
@@ -61,7 +61,7 @@ public class AnaSayfaSolContentService implements IService<AnaSayfaSolContentDTO
 	public ApiResponse findAll() {
 		Long domainId = securityContextUtil.getCurrentUser().getLoggedDomain().getId();
 		List<AnaSayfaSolContentDTO> anaSayfaSolContentDTOList = anaSayfaSolContentRepository
-				.findAllByMenuAnaSayfaMiAndMenuDomainId(Boolean.TRUE, domainId)
+				.findAllByMenuAnaSayfaMiAndMenuNewDomain_Id(Boolean.TRUE, domainId)
 				.stream()
 				.map(content -> modelMapperServiceImpl.response().map(content, AnaSayfaSolContentDTO.class))
 				.collect(Collectors.toList());

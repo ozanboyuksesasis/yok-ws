@@ -38,7 +38,7 @@ public class MenuService implements IService<MenuDTO> {
 
 		Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
 
-		Menu existMenu = menuRepository.findOneByDomainIdAndAnaSayfaMi(loggedDomain.getId(),Boolean.TRUE);
+		Menu existMenu = menuRepository.findOneByNewDomain_IdAndAnaSayfaMi(loggedDomain.getId(),Boolean.TRUE);
 
 		if (existMenu!=null && menuDTO.isAnaSayfaMi()){
 			return new ApiResponse(false, "Sadece bir tane anasayfa tanımlayabilirsiniz.", null);
@@ -51,7 +51,7 @@ public class MenuService implements IService<MenuDTO> {
 	@Override
 	public ApiResponse findAll() {
 		Long domainId = securityContextUtil.getCurrentUser().getLoggedDomain().getId();
-		List<MenuDTO> menuDTOList = menuRepository.findAllByDomainId(domainId)
+		List<MenuDTO> menuDTOList = menuRepository.findAllByNewDomain_Id(domainId)
 				.stream()
 				.map(menu -> modelMapperServiceImpl.response().map(menu, MenuDTO.class))
 				.collect(Collectors.toList());
@@ -73,7 +73,7 @@ public class MenuService implements IService<MenuDTO> {
 	public ApiResponse findAllWithoutAnasayfa() {
 		Long domainId = securityContextUtil.getCurrentUser().getLoggedDomain().getId();
 		List<MenuDTO> menuDTOList = menuRepository
-				.findAllByDomainIdAndAnaSayfaMi(domainId, Boolean.FALSE)
+				.findAllByNewDomain_IdAndAnaSayfaMi(domainId, Boolean.FALSE)
 				.stream()
 				.map(menu -> modelMapperServiceImpl.response().map(menu, MenuDTO.class))
 				.collect(Collectors.toList());
@@ -85,7 +85,7 @@ public class MenuService implements IService<MenuDTO> {
 
 	public ApiResponse findDomainAnasayfa() {
 		Long domainId = securityContextUtil.getCurrentUser().getLoggedDomain().getId();
-		Menu anasayfa = menuRepository.findOneByDomainIdAndAnaSayfaMi(domainId, Boolean.TRUE);
+		Menu anasayfa = menuRepository.findOneByNewDomain_IdAndAnaSayfaMi(domainId, Boolean.TRUE);
 
 		if (anasayfa == null) {
 			return new ApiResponse(false, MessageConstant.ERROR, null);

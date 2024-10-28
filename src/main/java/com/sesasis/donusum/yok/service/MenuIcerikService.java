@@ -42,7 +42,7 @@ public class MenuIcerikService implements IService<MenuIcerikDTO> {
     public ApiResponse findAll() {
         Long domainId = securityContextUtil.getCurrentUser().getLoggedDomain().getId();
         List<MenuIcerikDTO> menuIcerikDTOList = menuIcerikRepository
-                .findAllByAltMenuAnaMenuDomainId(domainId)
+                .findAllByAltMenuAnaMenuNewDomainId(domainId)
                 .stream()
                 .map(menuIcerik -> modelMapperServiceImpl.response().map(menuIcerik, MenuIcerikDTO.class)).collect(Collectors.toList());
 
@@ -61,7 +61,7 @@ public class MenuIcerikService implements IService<MenuIcerikDTO> {
 
     public ApiResponse getIcerikByAltMenuUrl(String altMenuUrl) {
         Long domainId = securityContextUtil.getCurrentUser().getLoggedDomain().getId();
-        MenuIcerik menuIcerik = menuIcerikRepository.findOneByAltMenuAnaMenuDomainIdAndAltMenuUrl(domainId, altMenuUrl);
+        MenuIcerik menuIcerik = menuIcerikRepository.findOneByAltMenuAnaMenuNewDomainIdAndAltMenuUrl(domainId, altMenuUrl);
 
         if (menuIcerik == null) {
             return new ApiResponse(false, "Menü bulunamadı.", null);

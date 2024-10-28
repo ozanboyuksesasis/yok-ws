@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface MenuIcerikRepository extends JpaRepository<MenuIcerik, Long> {
-	List<MenuIcerik> findAllByAltMenuAnaMenuDomainId(Long domainId);
-	MenuIcerik findOneByAltMenuAnaMenuDomainIdAndAltMenuUrl(Long domainId,String altMenuUrl);
+
+	// `domainId` alanı yerine `domain_Id` yapısını kullanıyoruz
+	List<MenuIcerik> findAllByAltMenuAnaMenuNewDomainId(Long newDomainId);
+	MenuIcerik findOneByAltMenuAnaMenuNewDomainIdAndAltMenuUrl(Long newDomainId, String altMenuUrl);
+
 }
