@@ -28,11 +28,14 @@ public class NewMenuService implements IService<NewMenuDTO> {
     private final FotografRepository fotografRepository;
     @Override
     public ApiResponse save(NewMenuDTO newMenuDTO) {
-        NewDomain domain = newDomainsRepository.findById(newMenuDTO.getDomainId()).
-                orElseThrow(()->new RuntimeException("Domain bulunamadı."));
 
-        Fotograf fotograf = fotografRepository.findById(newMenuDTO.getFotografId())
-                .orElseThrow(()-> new RuntimeException("Fotoğraf bulunamadı."));
+        Fotograf fotograf = null;
+        if (newMenuDTO.getFotografId() != null) {
+            fotograf = fotografRepository.findById(newMenuDTO.getFotografId()).orElse(null);
+        }
+
+          NewDomain domain = newDomainsRepository.findById(newMenuDTO.getDomainId()).
+                orElseThrow(()->new RuntimeException("Domain bulunamadı."));
 
         NewMenu existMenu = newMenuRepository.findOneByNewDomain_IdAndAnaSayfaMi(domain.getId(), Boolean.TRUE);
         if (existMenu != null && newMenuDTO.isAnaSayfaMi()) {
@@ -42,7 +45,7 @@ public class NewMenuService implements IService<NewMenuDTO> {
         menu.setNewDomain(domain);
         menu.setFotograf(fotograf);
         newMenuRepository.save(menu);
-        return new ApiResponse(true, MessageConstant.SAVE_MSG, menu);
+        return new ApiResponse(true, MessageConstant.SAVE_MSG, menu.getNewDomain());
 
     }
 
@@ -72,5 +75,23 @@ public class NewMenuService implements IService<NewMenuDTO> {
     if (newMenuRepository.existsById(id)){
         newMenuRepository.deleteById(id);
     }
+    }
+
+    public ApiResponse add(NewMenuDTO newMenuDTO){
+
+        if (newMenuDTO.getFotografId() == null) {
+            return new ApiResponse<>(false, "Fotoğraf ID boş olamaz.", null);
+        }
+        if (newMenuDTO.getId() == null) {
+            return new ApiResponse<>(false, "Menü ID boş olamaz.", null);
+        }
+        Fotograf fotograf = fotografRepository.findById(newMenuDTO.getFotografId())
+                .orElseThrow(()-> new RuntimeException("Fotoğraf bulunamadı."));
+
+        NewMenu newMenu = newMenuRepository.findById(newMenuDTO.getId())
+                .orElseThrow(()->new RuntimeException("Menü bulunamadı."));
+        newMenu.setFotograf(fotograf);
+        newMenuRepository.save(newMenu);
+       return new ApiResponse<>(true,"Menüye fotoğraf başarılı şekilde eklendi.",null);
     }
 }

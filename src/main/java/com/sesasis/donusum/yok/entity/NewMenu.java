@@ -1,6 +1,7 @@
 package com.sesasis.donusum.yok.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,7 @@ public class NewMenu {
 
     @ManyToOne
     @JoinColumn(name = "new_domain_id")
+    @JsonIgnore
     private NewDomain newDomain;
 
     @ManyToOne
