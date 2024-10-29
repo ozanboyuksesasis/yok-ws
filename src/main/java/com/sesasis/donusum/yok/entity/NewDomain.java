@@ -39,10 +39,8 @@ public class NewDomain {
     private List<NewMenu> menuList;
 
     @OneToMany(mappedBy = "newDomain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<DuyuruHaber> duyuruHabers;
+    private List<Haber> duyuruHabers;
 
-    @OneToMany(mappedBy = "newDomain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Category> categories;
 
     @OneToMany(mappedBy = "newDomain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Slider> sliders;
