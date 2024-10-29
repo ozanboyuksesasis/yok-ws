@@ -20,7 +20,7 @@ public class NewMenuDTO {
     @NotNull
     private Long domainId;
 
-    @NotNull
+
     private Long fotografId;
 
     private int parentId ;
