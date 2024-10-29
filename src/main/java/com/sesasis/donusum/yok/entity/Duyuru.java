@@ -1,20 +1,17 @@
 package com.sesasis.donusum.yok.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "duyuru_haber")
-public class DuyuruHaber {
-
+@Table(name = "duyurular")
+public class Duyuru {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -36,11 +33,6 @@ public class DuyuruHaber {
     private LocalDate createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @ManyToOne
     @JoinColumn(name = "new_domain_id")
     private NewDomain  newDomain;
-
 }

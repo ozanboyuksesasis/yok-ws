@@ -2,9 +2,10 @@ package com.sesasis.donusum.yok.dto;
 
 import java.time.LocalDate;
 
-public class DuyuruHaberDTO {
+public class HaberDTO {
 
     private Long id;
+    private Long newDomainId;
 
     private String baslık;
 

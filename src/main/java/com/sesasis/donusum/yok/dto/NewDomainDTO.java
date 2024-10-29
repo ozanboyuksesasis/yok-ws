@@ -1,15 +1,9 @@
 package com.sesasis.donusum.yok.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sesasis.donusum.yok.core.security.dto.RoleDTO;
-import com.sesasis.donusum.yok.core.security.models.Role;
-import com.sesasis.donusum.yok.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -36,7 +30,7 @@ public class NewDomainDTO {
 
     private List<MenuDTO> menuList;
 
-    private List<DuyuruHaberDTO> duyuruHabers;
+    private List<HaberDTO> duyuruHabers;
 
     private List<CategoryDto> categories;
 
