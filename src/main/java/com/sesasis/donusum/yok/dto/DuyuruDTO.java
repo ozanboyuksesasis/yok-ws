@@ -1,7 +1,14 @@
 package com.sesasis.donusum.yok.dto;
 
-import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import java.time.LocalDate;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class DuyuruDTO {
 
     private Long id;
