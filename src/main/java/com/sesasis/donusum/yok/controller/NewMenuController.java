@@ -40,4 +40,10 @@ public class NewMenuController {
         newMenuService.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping(value = "/add",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> add(@RequestBody NewMenuDTO newMenuDTO) {
+        ApiResponse add = newMenuService.add(newMenuDTO);
+        return ResponseEntity.ok(add);
+    }
 }
