@@ -11,6 +11,7 @@ import com.sesasis.donusum.yok.repository.NewDomainsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -27,40 +28,51 @@ public class DuyuruService implements IService<DuyuruDTO> {
 
     @Override
     public ApiResponse save(DuyuruDTO duyuruDTO) {
-
         NewDomain newDomain = null;
         if (duyuruDTO.getNewDomainId() != null) {
             newDomain = this.newDomainsRepository.findById(duyuruDTO.getNewDomainId()).orElse(null);
         }
-        Long maxSiraNo = duyuruRepository.findMaxSiraNo().orElse(0L);
-        Long yeniSiraNo = maxSiraNo + 1;
 
         Duyuru duyuru = this.modelMapperServiceImpl.request().map(duyuruDTO, Duyuru.class);
         duyuru.setNewDomain(newDomain);
-        duyuru.setSiraNo(yeniSiraNo);
+
+        // En yüksek siraNo değerini al ve bir artır
+        Long maxSiraNo = duyuruRepository.findMaxSiraNo().orElse(0L);
+        duyuru.setSiraNo(maxSiraNo + 1);
+
+        // Tarih ekleme
         duyuru.setCreatedAt(ZonedDateTime.now(ZoneId.of("Europe/Istanbul")).toLocalDate());
+
         this.duyuruRepository.save(duyuru);
 
         DuyuruDTO dto = this.modelMapperServiceImpl.response().map(duyuru, DuyuruDTO.class);
         return new ApiResponse(true, "Kayıt işlemi başarılı.", dto);
     }
 
+    @Transactional
     @Override
     public ApiResponse findAll() {
         List<Duyuru> duyuruList = this.duyuruRepository.findAllByOrderByCreatedAtDesc();
+
         if (duyuruList.isEmpty()) {
             return new ApiResponse(false, "Liste boş.", null);
         }
-        List<DuyuruDTO> dtos = duyuruList.stream().map(duyuru ->
-                this.modelMapperServiceImpl.response().map(duyuru, DuyuruDTO.class)).collect(Collectors.toList());
-        return new ApiResponse<>(true, "İşlem başarılı.", dtos);
+        try {
+            List<DuyuruDTO> dtos = duyuruList.stream()
+                    .map(duyuru -> this.modelMapperServiceImpl.response().map(duyuru, DuyuruDTO.class))
+                    .collect(Collectors.toList());
+            return new ApiResponse<>(true, "İşlem başarılı.", dtos);
+        } catch (Exception e) {
+            // Mapping veya veri çekme hatalarını döndür
+            return new ApiResponse(false, "Veri çekme veya mapping sırasında hata oluştu: " + e.getMessage(), null);
+        }
     }
 
+    @Transactional
     @Override
     public ApiResponse findById(Long id) {
        Duyuru duyuru = this.duyuruRepository.findById(id)
                .orElseThrow(()-> new RuntimeException("Duyuru bulunamadı."));
-
        DuyuruDTO dto = this.modelMapperServiceImpl.response().map(duyuru, DuyuruDTO.class);
 
         return new ApiResponse<>(true,"İşlem başarılı.",dto);
@@ -73,23 +85,29 @@ public class DuyuruService implements IService<DuyuruDTO> {
             siraNoGuncelle();
         }
     }
-    public ApiResponse DomainEkle(DuyuruDTO duyuruDTO) {
-        NewDomain newDomain = newDomainsRepository.findById(duyuruDTO.getNewDomainId())
-                .orElseThrow(()-> new RuntimeException("Domain bulunamadı : "+duyuruDTO.getNewDomainId()));
-        Duyuru duyuru = duyuruRepository.findById(duyuruDTO.getId())
-                .orElseThrow(()-> new RuntimeException("Duyuru bulunamadı : "+duyuruDTO.getId()));
+    public ApiResponse DomainEkle(Long newDomainId, Long duyuruId) {
+        NewDomain newDomain = newDomainsRepository.findById(newDomainId)
+                .orElseThrow(()-> new RuntimeException("Domain bulunamadı : "+newDomainId));
+        Duyuru duyuru = duyuruRepository.findById(duyuruId)
+                .orElseThrow(()-> new RuntimeException("Duyuru bulunamadı : "+duyuruId));
         duyuru.setNewDomain(newDomain);
         this.duyuruRepository.save(duyuru);
         return new ApiResponse<>(true,"Domain ekleme işlemi başarılı.",duyuru);
     }
     public ApiResponse siraNoGuncelle() {
         List<Duyuru> duyuruList = this.duyuruRepository.findAllByOrderByCreatedAtDesc();
+
+        if (duyuruList.isEmpty()) {
+            return new ApiResponse(false, "Sıra güncellemesi yapılacak duyuru bulunamadı.", null);
+        }
+
         long index = 1;
-        for (int i = 0; i < duyuruList.size(); i++) {
-            Duyuru duyuru = duyuruList.get(i);
+        for (Duyuru duyuru : duyuruList) {
             duyuru.setSiraNo(index++);
         }
+
         duyuruRepository.saveAll(duyuruList);
-        return new ApiResponse<>(true,"Sıra güncellendi.",null);
+        return new ApiResponse<>(true, "Sıra güncellendi.", null);
     }
+
 }
