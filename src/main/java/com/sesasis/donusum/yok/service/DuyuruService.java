@@ -35,12 +35,9 @@ public class DuyuruService implements IService<DuyuruDTO> {
 
         Duyuru duyuru = this.modelMapperServiceImpl.request().map(duyuruDTO, Duyuru.class);
         duyuru.setNewDomain(newDomain);
-
-        // En yüksek siraNo değerini al ve bir artır
         Long maxSiraNo = duyuruRepository.findMaxSiraNo().orElse(0L);
         duyuru.setSiraNo(maxSiraNo + 1);
 
-        // Tarih ekleme
         duyuru.setCreatedAt(ZonedDateTime.now(ZoneId.of("Europe/Istanbul")).toLocalDate());
 
         this.duyuruRepository.save(duyuru);
@@ -63,7 +60,6 @@ public class DuyuruService implements IService<DuyuruDTO> {
                     .collect(Collectors.toList());
             return new ApiResponse<>(true, "İşlem başarılı.", dtos);
         } catch (Exception e) {
-            // Mapping veya veri çekme hatalarını döndür
             return new ApiResponse(false, "Veri çekme veya mapping sırasında hata oluştu: " + e.getMessage(), null);
         }
     }
