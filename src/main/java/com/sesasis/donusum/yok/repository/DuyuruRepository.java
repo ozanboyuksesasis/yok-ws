@@ -11,6 +11,7 @@ public interface DuyuruRepository extends JpaRepository<Duyuru, Long> {
 
     List<Duyuru> findAllByOrderByCreatedAtDesc();
 
-    @Query("SELECT MAX(d.siraNo) FROM Duyuru d")
+    @Query("SELECT MAX(h.siraNo) FROM Haber h")
     Optional<Long> findMaxSiraNo();
+
 }
