@@ -40,9 +40,9 @@ public class DuyuruController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Duyuru başarıyla silindi.", null));
     }
 
-    @PostMapping(value = "/addDomain", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addDomain(@Valid @RequestBody DuyuruDTO duyuruDTO) {
-        ApiResponse response = duyuruService.DomainEkle(duyuruDTO);
+    @PostMapping(value = "/{newDomainId}/{duyuruId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> addDomain( @PathVariable Long newDomainId, @PathVariable  Long duyuruId) {
+        ApiResponse response = duyuruService.DomainEkle(newDomainId, duyuruId);
         return ResponseEntity.ok(response);
     }
 

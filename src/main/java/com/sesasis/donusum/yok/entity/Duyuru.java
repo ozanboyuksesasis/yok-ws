@@ -27,7 +27,9 @@ public class Duyuru {
     @Column(name = "ozet")
     private String ozet;
 
-    @Column(name = "detay")
+
+    @Lob
+    @Column(name = "detay", columnDefinition = "TEXT")
     private String detay;
 
     @Column(name = "sayfa_url")
