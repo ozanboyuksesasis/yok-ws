@@ -1,5 +1,6 @@
 package com.sesasis.donusum.yok.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,9 @@ public class Duyuru {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "sira_no")
+    private Long siraNo;
+
     @Column(name = "baslık")
     private String baslık;
 
@@ -33,6 +37,7 @@ public class Duyuru {
     private LocalDate createdAt;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "new_domain_id")
     private NewDomain  newDomain;
 }

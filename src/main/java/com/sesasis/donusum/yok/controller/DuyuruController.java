@@ -6,10 +6,7 @@ import com.sesasis.donusum.yok.service.DuyuruService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -24,6 +21,29 @@ public class DuyuruController {
     public ResponseEntity<?> save(@Valid @RequestBody DuyuruDTO duyuruDTO){
         ApiResponse save = duyuruService.save(duyuruDTO);
     return ResponseEntity.ok(save);
+    }
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findAll() {
+        ApiResponse response = duyuruService.findAll();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        ApiResponse response = duyuruService.findById(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        duyuruService.deleteById(id);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Duyuru başarıyla silindi.", null));
+    }
+
+    @PostMapping(value = "/addDomain", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> addDomain(@Valid @RequestBody DuyuruDTO duyuruDTO) {
+        ApiResponse response = duyuruService.DomainEkle(duyuruDTO);
+        return ResponseEntity.ok(response);
     }
 
 }

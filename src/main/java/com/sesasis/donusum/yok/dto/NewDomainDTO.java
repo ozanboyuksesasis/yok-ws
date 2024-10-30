@@ -3,6 +3,7 @@ package com.sesasis.donusum.yok.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,6 +21,7 @@ public class NewDomainDTO {
     private String isim;
 
     @NotBlank(message = "URL alanı boş olamaz veya yalnızca boşluk içeremez.")
+    @URL(message = "Geçerli bir URL giriniz.")
     private String url;
 
 
@@ -31,8 +33,6 @@ public class NewDomainDTO {
     private List<MenuDTO> menuList;
 
     private List<HaberDTO> duyuruHabers;
-
-    private List<CategoryDto> categories;
 
     private List<SliderDTO> sliders;
 
