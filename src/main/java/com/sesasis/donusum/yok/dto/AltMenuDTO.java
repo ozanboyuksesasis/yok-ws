@@ -4,6 +4,7 @@ import com.sesasis.donusum.yok.core.domain.BaseDTO;
 import com.sesasis.donusum.yok.entity.AltMenu;
 import com.sesasis.donusum.yok.entity.Menu;
 import lombok.Data;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -16,6 +17,7 @@ public class AltMenuDTO {
 
 	private String ad;
 
+	@URL(message = "Geçerli bir URL giriniz.")
 	private String url;
 
 	private Long menuId;
