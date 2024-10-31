@@ -53,6 +53,7 @@ public class SliderService implements IService<SliderDTO> {
         if (sliders.isEmpty()) {
             return new ApiResponse(false,"Liste boş.",null);
         }
+
         List<SliderDTO> dtos = sliders.stream().map(slider ->
                 this.modelMapperServiceImpl.response().map(slider,SliderDTO.class)).collect(Collectors.toList());
         return new ApiResponse<>(true,"İşlem başarılı.",dtos);
