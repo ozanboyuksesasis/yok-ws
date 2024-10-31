@@ -13,11 +13,12 @@ import com.sesasis.donusum.yok.repository.NewDomainsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class HaberService implements IService<HaberDTO> {
@@ -25,6 +26,7 @@ public class HaberService implements IService<HaberDTO> {
     private final HaberRepository haberRepository;
     private final ModelMapperServiceImpl modelMapperServiceImpl;
     private final NewDomainsRepository newDomainsRepository;
+
     @Override
     public ApiResponse save(HaberDTO haberDTO) {
 
@@ -67,12 +69,15 @@ public class HaberService implements IService<HaberDTO> {
         return new ApiResponse<>(true,"İşlem başarılı.",dto);
     }
 
+    @Transactional
     @Override
     public void deleteById(Long id) {
-    if (this.haberRepository.existsById(id)) {
-        this.haberRepository.deleteById(id);
+        if (this.haberRepository.existsById(id)) {
+            this.haberRepository.deleteById(id);
+            siraNoGuncelle();
+        }
     }
-    }
+
     public ApiResponse DomainEkle(Long newDomainId, Long duyuruId) {
         NewDomain newDomain = newDomainsRepository.findById(newDomainId)
                 .orElseThrow(()-> new RuntimeException("Domain bulunamadı : "+newDomainId));
@@ -82,6 +87,7 @@ public class HaberService implements IService<HaberDTO> {
         this.haberRepository.save(haber);
         return new ApiResponse<>(true,"Domain ekleme işlemi başarılı.",null);
     }
+    @Transactional
     public ApiResponse siraNoGuncelle() {
         List<Haber> habers = this.haberRepository.findAllByOrderByCreatedAtDesc();
 
