@@ -50,7 +50,7 @@ public class HaberService implements IService<HaberDTO> {
 
     @Override
     public ApiResponse findAll() {
-       List<Haber> habers = this.haberRepository.findAll();
+       List<Haber> habers = this.haberRepository.findAllByOrderBySiraNoDesc();
        if (habers.isEmpty()) {
            return new ApiResponse<>(false,"Liste boş.",null);
        }

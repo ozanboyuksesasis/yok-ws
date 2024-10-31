@@ -49,7 +49,7 @@ public class DuyuruService implements IService<DuyuruDTO> {
     @Transactional
     @Override
     public ApiResponse findAll() {
-        List<Duyuru> duyuruList = this.duyuruRepository.findAllByOrderByCreatedAtDesc();
+        List<Duyuru> duyuruList = this.duyuruRepository.findAllByOrderBySiraNoDesc();
 
         if (duyuruList.isEmpty()) {
             return new ApiResponse(false, "Liste boş.", null);

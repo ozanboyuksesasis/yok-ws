@@ -16,4 +16,6 @@ public interface HaberRepository extends JpaRepository<Haber, Long> {
     @Query("SELECT COALESCE(MAX(h.siraNo), 0) FROM Haber h")
     Optional<Long> findMaxSiraNo();
 
+    List<Haber> findAllByOrderBySiraNoDesc();
+
 }
