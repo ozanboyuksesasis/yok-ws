@@ -1,6 +1,7 @@
 package com.sesasis.donusum.yok.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,13 +21,17 @@ public class Haber {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "sira_no")
+    private Long siraNo;
+
     @Column(name = "baslık")
     private String baslık;
 
     @Column(name = "ozet")
     private String ozet;
 
-    @Column(name = "detay")
+    @Lob
+    @Column(name = "detay", columnDefinition = "TEXT")
     private String detay;
 
     @Column(name = "sayfa_url")
@@ -36,6 +41,7 @@ public class Haber {
     private LocalDate createdAt;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "new_domain_id")
     private NewDomain  newDomain;
 

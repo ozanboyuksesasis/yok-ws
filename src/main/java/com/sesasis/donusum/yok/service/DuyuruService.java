@@ -16,7 +16,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class DuyuruService implements IService<DuyuruDTO> {
@@ -73,7 +73,6 @@ public class DuyuruService implements IService<DuyuruDTO> {
 
         return new ApiResponse<>(true,"İşlem başarılı.",dto);
     }
-
     @Override
     public void deleteById(Long id) {
         if (this.duyuruRepository.existsById(id)) {
@@ -81,6 +80,7 @@ public class DuyuruService implements IService<DuyuruDTO> {
             siraNoGuncelle();
         }
     }
+    @Transactional
     public ApiResponse DomainEkle(Long newDomainId, Long duyuruId) {
         NewDomain newDomain = newDomainsRepository.findById(newDomainId)
                 .orElseThrow(()-> new RuntimeException("Domain bulunamadı : "+newDomainId));
@@ -90,6 +90,7 @@ public class DuyuruService implements IService<DuyuruDTO> {
         this.duyuruRepository.save(duyuru);
         return new ApiResponse<>(true,"Domain ekleme işlemi başarılı.",duyuru);
     }
+    @Transactional
     public ApiResponse siraNoGuncelle() {
         List<Duyuru> duyuruList = this.duyuruRepository.findAllByOrderByCreatedAtDesc();
 
