@@ -87,6 +87,7 @@ public class HaberService implements IService<HaberDTO> {
         this.haberRepository.save(haber);
         return new ApiResponse<>(true,"Domain ekleme işlemi başarılı.",null);
     }
+
     @Transactional
     public ApiResponse siraNoGuncelle() {
         List<Haber> habers = this.haberRepository.findAllByOrderByCreatedAtDesc();

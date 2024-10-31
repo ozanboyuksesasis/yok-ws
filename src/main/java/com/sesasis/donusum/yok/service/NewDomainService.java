@@ -24,43 +24,52 @@ public class NewDomainService implements IService<NewDomainDTO> {
 
     @Override
     public ApiResponse save(NewDomainDTO newDomainDTO) {
-        Role role = roleRepository.findById(newDomainDTO.getRoleId())
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+        try {
+            Role role = roleRepository.findById(newDomainDTO.getRoleId())
+                    .orElseThrow(() -> new RuntimeException("Role not found"));
 
-        NewDomain newDomain = modelMapperServiceImpl.request().map(newDomainDTO, NewDomain.class);
-        newDomain.setRole(role);
-        newDomainsRepository.save(newDomain);
+            NewDomain newDomain = modelMapperServiceImpl.request().map(newDomainDTO, NewDomain.class);
+            newDomain.setRole(role);
+            newDomainsRepository.save(newDomain);
 
-        NewDomainDTO dto = modelMapperServiceImpl.response().map(newDomain, NewDomainDTO.class);
-        return new ApiResponse<>(true, "Domain kayıt işlemi başarılı.", dto);
+            NewDomainDTO dto = modelMapperServiceImpl.response().map(newDomain, NewDomainDTO.class);
+            return new ApiResponse<>(true, "Domain kayıt işlemi başarılı.", dto);
+
+        } catch (RuntimeException ex) {
+            return new ApiResponse<>(false, "Role bulunamadı. Lütfen doğru bilgileri girin.", null);
+        }
     }
 
 
     @Override
     public ApiResponse findAll() {
-
         List<NewDomain> domains = newDomainsRepository.findAll();
         if (domains.isEmpty()) {
-            return new ApiResponse(false,"Liste boş.",null);
+            return new ApiResponse(false, "Liste boş.", null);
         }
         List<NewDomainDTO> dtos = domains.stream().map(
-                domain -> this.modelMapperServiceImpl.response().map(domain,NewDomainDTO.class)).collect(Collectors.toList());
-        return new ApiResponse<>(true,"İşlem başarılı.",dtos);
+                domain -> this.modelMapperServiceImpl.response().map(domain, NewDomainDTO.class)).collect(Collectors.toList());
+        return new ApiResponse<>(true, "İşlem başarılı.", dtos);
     }
 
     @Override
     public ApiResponse findById(Long id) {
-        NewDomain domain = newDomainsRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Domain not found"));
-        NewDomainDTO dto = this.modelMapperServiceImpl.response().map(domain,NewDomainDTO.class);
+        NewDomainDTO dto;
+        try {
+            NewDomain domain = newDomainsRepository.findById(id).
+                    orElseThrow(() -> new RuntimeException("Domain not found"));
+            dto = this.modelMapperServiceImpl.response().map(domain, NewDomainDTO.class);
+        } catch (RuntimeException ex) {
+            return new ApiResponse<>(false, ex.getMessage(), null);
+        }
 
-        return new ApiResponse<>(true,"İşlem başarılı.",dto);
+        return new ApiResponse<>(true, "İşlem başarılı.", dto);
     }
 
     @Override
     public void deleteById(Long id) {
-    if (newDomainsRepository.existsById(id)) {
-        newDomainsRepository.deleteById(id);
-    }
+        if (newDomainsRepository.existsById(id)) {
+            newDomainsRepository.deleteById(id);
+        }
     }
 }
