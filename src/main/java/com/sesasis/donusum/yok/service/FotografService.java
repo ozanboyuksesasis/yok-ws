@@ -102,7 +102,7 @@ public class FotografService implements IService<FotografDTO> {
     }
     public ApiResponse sliderNoEkle(Long sliderId,Long fotografId) {
         try {
-            Slider slider = sliderRepository.findById(fotografId)
+            Slider slider = sliderRepository.findById(sliderId)
                     .orElseThrow(()-> new RuntimeException("Slider bulunamadı."));
             Fotograf fotograf =this.fotografRepository.findById(fotografId)
                     .orElseThrow(()-> new RuntimeException("Fotoğraf bulunamadı."));

@@ -23,7 +23,6 @@ public class FotografDTO {
 
     private String fotografUrl;
 
-    private String kucukFotografUrl;
 
     private LocalDate createdDate;
 

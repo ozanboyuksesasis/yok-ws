@@ -27,9 +27,6 @@ public class Fotograf {
     @Column(name = "fotograf_url")
     private String fotografUrl;
 
-    @Column(name = "kucukfotograf_url")
-    private String kucukFotografUrl;
-
     @Column(name = "created_date")
     private LocalDate createdDate;
 

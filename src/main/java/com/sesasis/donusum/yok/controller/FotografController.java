@@ -21,8 +21,7 @@ public class FotografController {
     @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> save(@Valid @RequestBody FotografDTO fotografDTO) {
         ApiResponse response = fotografService.save(fotografDTO);
-        HttpStatus status = response.getSuccess() ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST;
-        return new ResponseEntity<>(response, status);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
