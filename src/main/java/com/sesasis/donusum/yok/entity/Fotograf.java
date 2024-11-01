@@ -1,6 +1,7 @@
 package com.sesasis.donusum.yok.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,11 +25,7 @@ public class Fotograf {
     private Long siraNo;
 
     @Column(name = "fotograf_url")
-    @Lob
     private String fotografUrl;
-
-    @Column(name = "kucukfotograf_url")
-    private String kucukFotografUrl;
 
     @Column(name = "created_date")
     private LocalDate createdDate;
@@ -41,6 +38,7 @@ public class Fotograf {
 
     @ManyToOne
     @JoinColumn(name = "slider_id")
+    @JsonIgnore
     private Slider slider;
 
 

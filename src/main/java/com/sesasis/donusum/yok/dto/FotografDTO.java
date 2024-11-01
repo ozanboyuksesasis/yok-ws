@@ -23,11 +23,10 @@ public class FotografDTO {
 
     private String fotografUrl;
 
-    private String kucukFotografUrl;
 
     private LocalDate createdDate;
 
-    private Long slideId;
+    private Long sliderId;
 
 }
 
