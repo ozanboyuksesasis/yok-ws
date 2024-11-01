@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 
 @RestController
@@ -23,7 +24,7 @@ public class PersonelController {
     private final GorevDonemiService gorevDonemiService;
 
     @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> save(@RequestBody PersonalDTO personalDTO) {
+    public ResponseEntity<?> save(@Valid  @RequestBody PersonalDTO personalDTO) {
         return ResponseEntity.ok(personelService.save(personalDTO));
     }
 
