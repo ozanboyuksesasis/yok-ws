@@ -26,7 +26,7 @@ public class HaberDTO {
     @Size(max = 100, message = "Başlık en fazla 100 karakter olabilir.")
     private String baslık;
 
-    @Size(max = 500, message = "Özet en fazla 1000 karakter olabilir.")
+    @Size(max = 500, message = "Özet en fazla 500 karakter olabilir.")
     private String ozet;
 
     @Lob

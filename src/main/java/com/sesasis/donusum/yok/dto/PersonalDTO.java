@@ -35,6 +35,7 @@ public class PersonalDTO {
     @NotBlank(message = "Kimlik numarası boş olamaz.")
     private String kimlikNumarasi;
 
+
     @NotBlank(message = "Soyisim boş olamaz.")
     private String soyisim;
 

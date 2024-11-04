@@ -27,16 +27,11 @@ public class GorevService implements IService<GorevDTO> {
 
     @Override
     public ApiResponse save(GorevDTO gorevDTO) {
-        ApiResponse apiResponse = saveControl(gorevDTO);
-        if (!apiResponse.getSuccess()) {
-            return apiResponse;
-        }
         Gorev gorev = this.modelMapperService.request().map(gorevDTO, Gorev.class);
-        if (gorev==null) {
-            return new ApiResponse<>(false, "Görev bulunamadı.", null);
-        }
         Gorev save = gorevRepository.save(gorev);
-        return new ApiResponse<>(true, "İşlem başarılı.", save);
+        GorevDTO dto = this.modelMapperService.response().map(save, GorevDTO.class);
+
+        return new ApiResponse<>(true, "İşlem başarılı.", dto);
     }
 
 
@@ -73,12 +68,7 @@ public class GorevService implements IService<GorevDTO> {
         }
     }
 
-    private ApiResponse saveControl(GorevDTO gorevDTO) {
-        if (gorevDTO.getName() == null || gorevDTO.getName().trim().isEmpty()) {
-            return new ApiResponse<>(false, "Hata :İsim boş bırakılamaz.", null);
-        }
-        return new ApiResponse<>(true, "İşlem başarılı.", null);
-    }
+
     public ApiResponse gorevVePersoneller(Long id) {
         Gorev gorev = gorevRepository.findById(id).orElse(null);
         if (gorev == null) {

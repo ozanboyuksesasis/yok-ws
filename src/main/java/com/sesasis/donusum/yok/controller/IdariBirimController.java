@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/idaribirim")
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class IdariBirimController {
     private final IdariBirimService idariBirimService;
 
     @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> save(@RequestBody IdariBirimDTO idariBirimDTO) {
+    public ResponseEntity<?> save(@Valid  @RequestBody IdariBirimDTO idariBirimDTO) {
         ApiResponse response = idariBirimService.save(idariBirimDTO);
         return ResponseEntity.ok(response);
     }

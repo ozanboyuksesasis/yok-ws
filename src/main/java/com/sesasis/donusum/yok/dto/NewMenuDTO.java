@@ -17,7 +17,7 @@ import java.util.List;
 public class NewMenuDTO {
     private Long id ;
 
-    @NotNull
+    @NotNull(message = "Domain id giriniz.")
     private Long domainId;
 
 

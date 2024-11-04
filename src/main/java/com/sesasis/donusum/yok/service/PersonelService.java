@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.print.DocFlavor;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -81,6 +82,7 @@ public class PersonelService implements IService<PersonalDTO> {
         IdariBirim idariBirim = idariBirimRepository.findById(personalDTO.getIdariBirimId())
                 .orElseThrow(() -> new IllegalArgumentException("Geçersiz İdari Birim ID"));
 
+        yeniPersonel.setKimlikNumarasi(encodeKimlikNumarasi(personalDTO.getKimlikNumarasi()));
         yeniPersonel.setAktif(true);
         yeniPersonel.setGorev(gorev);
         yeniPersonel.setIdariBirim(idariBirim);
@@ -187,4 +189,8 @@ public class PersonelService implements IService<PersonalDTO> {
         PersonalDTO dto = this.modelMapperService.response().map(personel, PersonalDTO.class);
         return new ApiResponse<>(true, "Personel bulundu.", dto);
     }
+    private String encodeKimlikNumarasi(String kimlikNumarasi) {
+        return Base64.getEncoder().encodeToString(kimlikNumarasi.getBytes());
+    }
+
 }

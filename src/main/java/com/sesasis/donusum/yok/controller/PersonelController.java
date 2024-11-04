@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/api/personel")
+@RequestMapping("/api/personels")
 @RequiredArgsConstructor
 public class PersonelController {
 
