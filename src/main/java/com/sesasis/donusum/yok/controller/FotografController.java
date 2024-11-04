@@ -27,15 +27,13 @@ public class FotografController {
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> findAll() {
         ApiResponse response = fotografService.findAll();
-        HttpStatus status = response.getSuccess()  ? HttpStatus.OK : HttpStatus.NO_CONTENT;
-        return new ResponseEntity<>(response, status);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> findById(@PathVariable Long id) {
         ApiResponse response = fotografService.findById(id);
-        HttpStatus status = response.getSuccess()  ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-        return new ResponseEntity<>(response, status);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -47,8 +45,7 @@ public class FotografController {
     @PutMapping(value = "/sira-no-guncelle", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> siraNoGuncelle() {
         ApiResponse response = fotografService.siraNoGuncelle();
-        HttpStatus status = response.getSuccess() ? HttpStatus.OK : HttpStatus.NO_CONTENT;
-        return new ResponseEntity<>(response, status);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping(value = "/{sliderId}/{fotografId}", produces = MediaType.APPLICATION_JSON_VALUE)
