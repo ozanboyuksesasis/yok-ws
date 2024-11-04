@@ -3,7 +3,6 @@ package com.sesasis.donusum.yok.service;
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.dto.FotografDTO;
-import com.sesasis.donusum.yok.entity.Duyuru;
 import com.sesasis.donusum.yok.entity.Fotograf;
 import com.sesasis.donusum.yok.entity.Slider;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
@@ -13,11 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,19 +46,15 @@ public class FotografService implements IService<FotografDTO> {
     @Override
     public ApiResponse findAll() {
 
-        try {
             List<Fotograf> fotografs = fotografRepository.findAll();
             if (fotografs.isEmpty()) {
-                throw new RuntimeException("Liste boş.");
+                return  new ApiResponse<>(false,"Liste boş.",null);
             }
             List<FotografDTO> dtos = fotografs.stream().map(fotograf ->
                     this.modelMapperService.response().map(fotograf, FotografDTO.class)).collect(Collectors.toList());
             return new ApiResponse<>(true, "İşlem başarılı.", dtos);
-        } catch (RuntimeException e) {
-            return new ApiResponse<>(false, e.getMessage(), null);
         }
 
-    }
 
     @Override
     public ApiResponse findById(Long id) {
