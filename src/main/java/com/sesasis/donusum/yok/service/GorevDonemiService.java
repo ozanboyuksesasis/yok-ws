@@ -60,6 +60,9 @@ public class GorevDonemiService implements IService<GorevDonemiDTO> {
     @Override
     public ApiResponse findAll() {
         List<Personel> personels = personalRepository.findAll();
+        if (personels.isEmpty()){
+            return new ApiResponse<>(false,"Liste boş.",null);
+        }
         List<PersonalDTO> personalDTOS = personels.stream().map(personel ->
             this.modelMapperServiceImpl.response().
                     map(personel, PersonalDTO.class)).collect(Collectors.toList());

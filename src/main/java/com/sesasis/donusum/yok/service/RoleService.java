@@ -40,6 +40,9 @@ public class RoleService  implements IService<RoleDTO> {
 	@Override
 	public ApiResponse findAll() {
 		List<Role> roles = roleRepository.findAll();
+		if (roles.isEmpty()) {
+			return new ApiResponse<>(false,"Liste boş.",null);
+		}
 		List<RoleDTO> dtos = roles.stream().map(role ->
 				this.modelMapperServiceImpl.response().map(role, RoleDTO.class)).collect(Collectors.toList());
 

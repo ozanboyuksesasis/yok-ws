@@ -10,8 +10,7 @@ public class TarihceDTO{
 
     private int id;
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "Hata : Tarih boş olamaz.")
     private String tarihce;
 
 }

@@ -34,9 +34,11 @@ public class FotografService implements IService<FotografDTO> {
         }
         Fotograf fotograf = this.modelMapperService.request().map(fotografDTO, Fotograf.class);
         Long maxSira = this.fotografRepository.findMaxSiraNo().orElse(0L);
+
         fotograf.setSlider(slider);
         fotograf.setSiraNo(maxSira + 1);
         fotograf.setCreatedDate(LocalDate.now());
+
         fotografRepository.save(fotograf);
         FotografDTO dto = this.modelMapperService.response().map(fotograf, FotografDTO.class);
 
