@@ -76,13 +76,12 @@ public class PersonelService implements IService<PersonalDTO> {
     private ApiResponse createNewPersonel(PersonalDTO personalDTO) {
         Personel yeniPersonel = this.modelMapperService.request().map(personalDTO, Personel.class);
 
-        Gorev gorev = gorevRepository.findById(personalDTO.getGorevId())
-                .orElseThrow(() -> new IllegalArgumentException("Geçersiz Görev ID"));
+        Gorev gorev = gorevRepository.findById(personalDTO.getGorevId()).orElse(null);
+        IdariBirim idariBirim = idariBirimRepository.findById(personalDTO.getIdariBirimId()).orElse(null);
+        if (gorev == null && idariBirim == null) {
+            return new ApiResponse(false,"Görev veya idaribirim bulunamadı.",null);
+        }
 
-        IdariBirim idariBirim = idariBirimRepository.findById(personalDTO.getIdariBirimId())
-                .orElseThrow(() -> new IllegalArgumentException("Geçersiz İdari Birim ID"));
-
-        yeniPersonel.setKimlikNumarasi(encodeKimlikNumarasi(personalDTO.getKimlikNumarasi()));
         yeniPersonel.setAktif(true);
         yeniPersonel.setGorev(gorev);
         yeniPersonel.setIdariBirim(idariBirim);
@@ -189,8 +188,6 @@ public class PersonelService implements IService<PersonalDTO> {
         PersonalDTO dto = this.modelMapperService.response().map(personel, PersonalDTO.class);
         return new ApiResponse<>(true, "Personel bulundu.", dto);
     }
-    private String encodeKimlikNumarasi(String kimlikNumarasi) {
-        return Base64.getEncoder().encodeToString(kimlikNumarasi.getBytes());
-    }
+
 
 }
