@@ -1,5 +1,6 @@
 package com.sesasis.donusum.yok.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sesasis.donusum.yok.entity.Menu;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class FotografDTO {
 
     private String fotografUrl;
 
-
+    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate createdDate;
 
     private Long sliderId;

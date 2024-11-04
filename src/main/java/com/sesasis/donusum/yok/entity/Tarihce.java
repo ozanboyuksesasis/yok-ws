@@ -16,7 +16,8 @@ public class Tarihce {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "tarihce", nullable = false, length = 20000)
+    @Lob
+    @Column(name = "tarihce",columnDefinition = "TEXT")
     private String tarihce;
 
 

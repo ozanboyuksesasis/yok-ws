@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/tarihce")
 @RequiredArgsConstructor
@@ -16,7 +18,7 @@ public class TarihceController {
     private final TarihceService tarihceService;
 
     @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> save(@RequestBody TarihceDTO tarihceDTO) {
+    public ResponseEntity<?> save(@Valid  @RequestBody TarihceDTO tarihceDTO) {
         return ResponseEntity.ok(tarihceService.save(tarihceDTO));
     }
 

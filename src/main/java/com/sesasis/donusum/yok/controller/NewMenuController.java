@@ -41,9 +41,9 @@ public class NewMenuController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/add",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> add(@RequestBody NewMenuDTO newMenuDTO) {
-        ApiResponse add = newMenuService.add(newMenuDTO);
+    @PostMapping(value = "/{newMenuId}/{fotografId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> add(@PathVariable Long newMenuId ,Long fotografId) {
+        ApiResponse add = newMenuService.fotografEkle(newMenuId,fotografId);
         return ResponseEntity.ok(add);
     }
 }
