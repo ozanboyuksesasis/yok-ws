@@ -35,16 +35,20 @@ public class NewDomain {
     @JsonIgnore
     private Role role;
 
-    @OneToMany(mappedBy = "newDomain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "newDomain", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<NewMenu> menuList;
 
-    @OneToMany(mappedBy = "newDomain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "newDomain", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Haber> duyuruHabers;
 
-
-    @OneToMany(mappedBy = "newDomain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "newDomain", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Slider> sliders;
 
-    @OneToMany(mappedBy = "newDomain", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "newDomain", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<DomainLogo> domainLogos;
 }
+

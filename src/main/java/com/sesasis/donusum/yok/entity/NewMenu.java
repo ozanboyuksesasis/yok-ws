@@ -38,7 +38,6 @@ public class NewMenu {
 
     @ManyToOne
     @JoinColumn(name = "new_domain_id")
-    @JsonIgnore
     private NewDomain newDomain;
 
     @ManyToOne
