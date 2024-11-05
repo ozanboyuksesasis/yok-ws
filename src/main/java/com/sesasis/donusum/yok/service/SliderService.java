@@ -11,7 +11,6 @@ import com.sesasis.donusum.yok.repository.NewDomainsRepository;
 import com.sesasis.donusum.yok.repository.SliderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;

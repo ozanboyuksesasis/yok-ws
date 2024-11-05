@@ -74,7 +74,6 @@ public class GorevService implements IService<GorevDTO> {
         if (gorev == null) {
             return new ApiResponse<>(false, "Görev bulunamadı.", null);
         }
-
         GorevDTO gDto = this.modelMapperService.response().map(gorev, GorevDTO.class);
 
         if (gorev.getPersonels() != null && !gorev.getPersonels().isEmpty()) {

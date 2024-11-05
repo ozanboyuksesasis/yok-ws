@@ -1,5 +1,6 @@
 package com.sesasis.donusum.yok.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,9 +31,11 @@ public class NewDomainDTO {
     @NotNull(message = "Role ID alanı boş olamaz.")
     private Long roleId;
 
-    private List<MenuDTO> menuList;
+    private List<NewMenuDTO> menuList;
 
-    private List<HaberDTO> duyuruHabers;
+    private List<HaberDTO> haberDTOS;
+
+    private List<DuyuruDTO> duyuruDTOS;
 
     private List<SliderDTO> sliders;
 

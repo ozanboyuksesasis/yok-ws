@@ -61,8 +61,10 @@ public class FotografService implements IService<FotografDTO> {
     @Override
     public ApiResponse findById(Long id) {
         try {
-            Fotograf fotograf = this.fotografRepository.findById(id).orElseThrow(() ->
-                    new RuntimeException("Fotoğraf bulunamadı."));
+            Fotograf fotograf = this.fotografRepository.findById(id).orElse(null);
+            if (fotograf==null){
+                return new ApiResponse<>(false,"Fotoğraf bulunamadı.",null);
+            }
             FotografDTO fotografDTO = this.modelMapperService.response().map(fotograf, FotografDTO.class);
             return new ApiResponse<>(true,"İşlem başarılı.", fotografDTO);
         } catch (RuntimeException e) {
@@ -95,10 +97,15 @@ public class FotografService implements IService<FotografDTO> {
     }
     public ApiResponse sliderNoEkle(Long sliderId,Long fotografId) {
         try {
-            Slider slider = sliderRepository.findById(sliderId)
-                    .orElseThrow(()-> new RuntimeException("Slider bulunamadı."));
-            Fotograf fotograf =this.fotografRepository.findById(fotografId)
-                    .orElseThrow(()-> new RuntimeException("Fotoğraf bulunamadı."));
+            Slider slider = sliderRepository.findById(sliderId).orElse(null);
+            if (slider==null){
+                return new ApiResponse<>(false,"Slider bulunamadı.",null);
+            }
+            Fotograf fotograf =this.fotografRepository.findById(fotografId).orElse(null);
+            if (fotograf==null){
+                return new ApiResponse<>(false,"Fotoğraf bulunamadı.",null);
+            }
+
             fotograf.setSlider(slider);
             fotografRepository.save(fotograf);
             FotografDTO fotografDTO = this.modelMapperService.response().map(fotograf, FotografDTO.class);
