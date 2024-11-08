@@ -31,7 +31,7 @@ public class IdariBirimController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> one(@PathVariable Long id) {
+    public ResponseEntity<?> findById(@PathVariable Long id) {
         return ResponseEntity.ok(idariBirimService.findById(id));
     }
 

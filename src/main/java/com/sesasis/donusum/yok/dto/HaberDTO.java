@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 @Data
@@ -21,6 +22,8 @@ public class HaberDTO {
 
     private Long newDomainId;
 
+    @NotNull(message = "Dil kategorisi boş olamaz.")
+    private Long haberDilId;
 
     @NotEmpty(message = "Başlık alanı boş olamaz.")
     @Size(max = 100, message = "Başlık en fazla 100 karakter olabilir.")

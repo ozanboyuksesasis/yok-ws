@@ -74,6 +74,7 @@ public class PersonelService implements IService<PersonalDTO> {
     }
 
     private ApiResponse createNewPersonel(PersonalDTO personalDTO) {
+        personalDTO.setIsim(personalDTO.getIsim().trim().toLowerCase());
         Personel yeniPersonel = this.modelMapperService.request().map(personalDTO, Personel.class);
 
         Gorev gorev = gorevRepository.findById(personalDTO.getGorevId()).orElse(null);

@@ -45,4 +45,9 @@ public class Haber {
     @JoinColumn(name = "new_domain_id")
     private NewDomain  newDomain;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "haber_dil_category_id")
+    private HaberDilCategory haberDilCategory;
+
 }
