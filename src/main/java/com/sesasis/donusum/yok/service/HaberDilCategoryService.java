@@ -48,9 +48,11 @@ public class HaberDilCategoryService implements IService<HaberDilCategoryDTO> {
         if (haberDilCategoryList.isEmpty()) {
             return new ApiResponse<>(false,"Liste boş.",null);
         }
+
         List<HaberDilCategoryDTO> dtos = haberDilCategoryList.stream().map(haberDilCategory -> {
             HaberDilCategoryDTO dto = this.modelMapperServiceImpl.response().map(haberDilCategory, HaberDilCategoryDTO.class);
-            dto.setHaberList(haberDilCategory.getHaberList().stream().map(haber -> this.modelMapperServiceImpl.response().map(haber, HaberDTO.class)).collect(Collectors.toList()));
+            dto.setHaberList(haberDilCategory.getHaberList().stream().sorted(Comparator.comparing(Haber::getSiraNo).
+                    reversed()).collect(Collectors.toList()).stream().map(haber-> this.modelMapperServiceImpl.response().map(haber, HaberDTO.class)).collect(Collectors.toList()));
             return dto;
         }).collect(Collectors.toList());
 
