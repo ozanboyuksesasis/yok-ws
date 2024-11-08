@@ -42,4 +42,9 @@ public class Duyuru {
     @JsonIgnore
     @JoinColumn(name = "new_domain_id")
     private NewDomain  newDomain;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "duyuru_dil_id")
+    private DuyuruDilCategory duyuruDilCategory;
 }

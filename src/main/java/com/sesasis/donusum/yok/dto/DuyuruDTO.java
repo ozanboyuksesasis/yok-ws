@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -23,6 +24,8 @@ public class DuyuruDTO {
 
     private Long newDomainId;
 
+    @NotNull(message = "Hata : Duyuru seçimi boş olamaz.")
+    private Long duyuruDilId;
 
     @NotEmpty(message = "Başlık alanı boş olamaz.")
     @Size(max = 100, message = "Başlık en fazla 100 karakter olabilir.")
