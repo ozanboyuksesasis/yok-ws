@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "haber_dil_category")
-public class HaberDilCategory {
+@Table(name = "duyuru_dil_category")
+public class DuyuruDilCategory {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,6 @@ public class HaberDilCategory {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "haberDilCategory", cascade = CascadeType.ALL)
-    private List<Haber> haberList;
-
+    @OneToMany(mappedBy = "duyuruDilCategory", cascade = CascadeType.ALL)
+    private List<Duyuru> duyuruList;
 }

@@ -4,8 +4,10 @@ import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.dto.DuyuruDTO;
 import com.sesasis.donusum.yok.entity.Duyuru;
+import com.sesasis.donusum.yok.entity.DuyuruDilCategory;
 import com.sesasis.donusum.yok.entity.NewDomain;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
+import com.sesasis.donusum.yok.repository.DuyuruDilCategoryRepository;
 import com.sesasis.donusum.yok.repository.DuyuruRepository;
 import com.sesasis.donusum.yok.repository.NewDomainsRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,7 @@ public class DuyuruService implements IService<DuyuruDTO> {
     private final DuyuruRepository duyuruRepository;
     private final NewDomainsRepository newDomainsRepository;
     private final ModelMapperServiceImpl modelMapperServiceImpl;
-
+    private final DuyuruDilCategoryRepository duyuruDilCategoryRepository;
 
     @Override
     public ApiResponse save(DuyuruDTO duyuruDTO) {
@@ -32,14 +34,17 @@ public class DuyuruService implements IService<DuyuruDTO> {
         if (duyuruDTO.getNewDomainId() != null) {
             newDomain = this.newDomainsRepository.findById(duyuruDTO.getNewDomainId()).orElse(null);
         }
-
+        DuyuruDilCategory dilCategory =this.duyuruDilCategoryRepository.findById(duyuruDTO.getDuyuruDilId()).orElse(null);
+        if (dilCategory == null) {
+            return new ApiResponse(false,"Dil seçimi bulunamadı.",null);
+        }
         Duyuru duyuru = this.modelMapperServiceImpl.request().map(duyuruDTO, Duyuru.class);
         duyuru.setNewDomain(newDomain);
         Long maxSiraNo = duyuruRepository.findMaxSiraNo().orElse(0L);
         duyuru.setSiraNo(maxSiraNo + 1);
 
         duyuru.setCreatedAt(ZonedDateTime.now(ZoneId.of("Europe/Istanbul")).toLocalDate());
-
+        duyuru.setDuyuruDilCategory(dilCategory);
         this.duyuruRepository.save(duyuru);
 
         DuyuruDTO dto = this.modelMapperServiceImpl.response().map(duyuru, DuyuruDTO.class);

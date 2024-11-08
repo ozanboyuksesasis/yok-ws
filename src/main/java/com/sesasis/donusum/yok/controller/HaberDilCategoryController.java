@@ -3,7 +3,6 @@ package com.sesasis.donusum.yok.controller;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.dto.HaberDilCategoryDTO;
-import com.sesasis.donusum.yok.dto.NameDTO;
 import com.sesasis.donusum.yok.service.HaberDilCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
