@@ -6,8 +6,11 @@ import com.sesasis.donusum.yok.dto.DuyuruDTO;
 import com.sesasis.donusum.yok.dto.HaberDTO;
 import com.sesasis.donusum.yok.entity.Duyuru;
 import com.sesasis.donusum.yok.entity.Haber;
+import com.sesasis.donusum.yok.entity.HaberDilCategory;
 import com.sesasis.donusum.yok.entity.NewDomain;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
+import com.sesasis.donusum.yok.repository.DuyuruRepository;
+import com.sesasis.donusum.yok.repository.HaberDilCategoryRepository;
 import com.sesasis.donusum.yok.repository.HaberRepository;
 import com.sesasis.donusum.yok.repository.NewDomainsRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +29,7 @@ public class HaberService implements IService<HaberDTO> {
     private final HaberRepository haberRepository;
     private final ModelMapperServiceImpl modelMapperServiceImpl;
     private final NewDomainsRepository newDomainsRepository;
-
+    private final HaberDilCategoryRepository  haberDilCategoryRepository;
     @Override
     public ApiResponse save(HaberDTO haberDTO) {
 
@@ -34,9 +37,13 @@ public class HaberService implements IService<HaberDTO> {
         if (haberDTO.getNewDomainId() != null) {
             newDomain = this.newDomainsRepository.findById(haberDTO.getNewDomainId()).orElse(null);
         }
-
+        HaberDilCategory haberDilCategory = this.haberDilCategoryRepository.findById(haberDTO.getHaberDilId()).orElse(null);
+        if (haberDilCategory == null) {
+            return new ApiResponse<>(false,"Dil kategorisi bulunamadı.",null);
+        }
         Haber haber = this.modelMapperServiceImpl.request().map(haberDTO, Haber.class);
         haber.setNewDomain(newDomain);
+        haber.setHaberDilCategory(haberDilCategory);
         Long maxSiraNo = haberRepository.findMaxSiraNo().orElse(0L);
         haber.setSiraNo(maxSiraNo + 1);
 
@@ -57,7 +64,6 @@ public class HaberService implements IService<HaberDTO> {
 
         List<HaberDTO> dtos = habers.stream().map(haber ->
                 this.modelMapperServiceImpl.response().map(haber, HaberDTO.class)).collect(Collectors.toList());
-
         return new ApiResponse<>(true,"İşlem başarılı.",dtos);
     }
 

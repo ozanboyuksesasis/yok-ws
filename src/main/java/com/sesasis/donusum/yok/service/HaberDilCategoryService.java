@@ -4,6 +4,7 @@ import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.dto.HaberDTO;
 import com.sesasis.donusum.yok.dto.HaberDilCategoryDTO;
+import com.sesasis.donusum.yok.dto.NameDTO;
 import com.sesasis.donusum.yok.entity.Haber;
 import com.sesasis.donusum.yok.entity.HaberDilCategory;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
@@ -13,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,11 +30,17 @@ public class HaberDilCategoryService implements IService<HaberDilCategoryDTO> {
 
     @Override
     public ApiResponse save(HaberDilCategoryDTO haberDilCategoryDTO) {
-        HaberDilCategory haberDilCategory =modelMapperServiceImpl.request().map(haberDilCategoryDTO, HaberDilCategory.class);
-        haberDilCategoryRepository.save(haberDilCategory);
-        HaberDilCategoryDTO dto = this.modelMapperServiceImpl.response().map(haberDilCategory, HaberDilCategoryDTO.class);
-        return new ApiResponse<>(true,"İşlem başarılı.",dto);
+        try {
+            haberDilCategoryDTO.setName(haberDilCategoryDTO.getName().trim().toUpperCase());
+            HaberDilCategory haberDilCategory = this.modelMapperServiceImpl.request().map(haberDilCategoryDTO, HaberDilCategory.class);
+            haberDilCategoryRepository.save(haberDilCategory);
+            HaberDilCategoryDTO dto = this.modelMapperServiceImpl.response().map(haberDilCategory, HaberDilCategoryDTO.class);
+            return new ApiResponse<>(true, "İşlem başarılı.", dto);
+        } catch (Exception e) {
+            return new ApiResponse<>(false, "İşlem başarısız oldu: " + e.getMessage(),null);
+        }
     }
+
 
     @Override
     public ApiResponse findAll() {
@@ -55,8 +63,10 @@ public class HaberDilCategoryService implements IService<HaberDilCategoryDTO> {
         if (haberDilCategory == null) {
             return new ApiResponse<>(false,"İşlem başarısız.",null);
         }
+        List<Haber> siralamaHaberList = haberDilCategory.getHaberList().stream().sorted(Comparator.comparing(Haber::getSiraNo).reversed()).collect(Collectors.toList());
+
         HaberDilCategoryDTO dto = this.modelMapperServiceImpl.response().map(haberDilCategory, HaberDilCategoryDTO.class);
-        dto.setHaberList(haberDilCategory.getHaberList().stream().map( haber ->this.modelMapperServiceImpl.response().map(haber, HaberDTO.class)).collect(Collectors.toList()));
+        dto.setHaberList(siralamaHaberList.stream().map(haber -> this.modelMapperServiceImpl.response().map(haber, HaberDTO.class)).collect(Collectors.toList()));
 
         return new ApiResponse<>(true,"İşlem başarılı.",dto);
     }
@@ -67,14 +77,6 @@ public class HaberDilCategoryService implements IService<HaberDilCategoryDTO> {
             haberDilCategoryRepository.deleteById(id);
         }
     }
-    public ApiResponse findByName(String name) {
-        HaberDilCategory haberDilCategory = haberDilCategoryRepository.findByNameContainingIgnoreCase(name);
-        if (haberDilCategory == null) {
-            return new ApiResponse<>(false,"İşlem başarısız.",null);
-        }
-        HaberDilCategoryDTO dto = this.modelMapperServiceImpl.response().map(haberDilCategory, HaberDilCategoryDTO.class);
-        dto.setHaberList(haberDilCategory.getHaberList().stream().map( haber ->this.modelMapperServiceImpl.response().map(haber, HaberDTO.class)).collect(Collectors.toList()));
-        return new ApiResponse<>(true,"İşlem başarılı.",dto);
-    }
+
 
 }
