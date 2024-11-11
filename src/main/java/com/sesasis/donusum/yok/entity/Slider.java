@@ -40,9 +40,11 @@ public class Slider {
     private NewDomain  newDomain;
 
 
-    @OneToMany(mappedBy = "slider")
+    @OneToMany(mappedBy = "slider",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Fotograf> fotograflar;
 
-
+    @ManyToOne
+    @JoinColumn(name = "slider_dil_category_id")
+    private SliderDilCategory sliderDilCategory;
     
 }

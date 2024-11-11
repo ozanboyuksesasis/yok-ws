@@ -3,6 +3,7 @@ package com.sesasis.donusum.yok.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,9 +11,8 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "idari_birimler")
-public class IdariBirim {
-
+@Table(name = "sliders_dil_category")
+public class SliderDilCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -21,8 +21,8 @@ public class IdariBirim {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "idariBirim",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Personel> personels;
+    @OneToMany(mappedBy = "sliderDilCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Slider> sliders;
 
 
 }
