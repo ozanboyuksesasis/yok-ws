@@ -19,6 +19,10 @@ public class SliderDTO {
 
     private Long siraNo;
 
+    private Long newDomainId;
+
+    private Long sliderCategoryId;
+
     @NotEmpty(message = "Başlık boş olamaz.")
     @Size(max = 100, message = "Başlık 100 karakterden uzun olamaz.")
     private String baslik;
@@ -32,7 +36,8 @@ public class SliderDTO {
     @URL(message = "Geçerli bir URL olmalıdır.")
     private String sayfaUrl;
 
-    private Long newDomainId;
+
+
 
     private List<FotografDTO> fotografDTOS;
 }

@@ -23,6 +23,8 @@ public class GeneralExceptionHandler {
         details.setErrorCode(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(details, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(NewDomainNotFoundException.class)
     public ResponseEntity<ProblemDetails> handleNewDomainNotFoundException(NewDomainNotFoundException e, WebRequest request) {
         ProblemDetails details = new ProblemDetails();
         details.setMessage(e.getMessage());
@@ -31,7 +33,6 @@ public class GeneralExceptionHandler {
         details.setErrorCode(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(details, HttpStatus.NOT_FOUND);
     }
-
 
 
 

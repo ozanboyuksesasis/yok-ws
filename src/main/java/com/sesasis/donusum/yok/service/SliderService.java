@@ -6,8 +6,10 @@ import com.sesasis.donusum.yok.dto.SliderDTO;
 import com.sesasis.donusum.yok.entity.Haber;
 import com.sesasis.donusum.yok.entity.NewDomain;
 import com.sesasis.donusum.yok.entity.Slider;
+import com.sesasis.donusum.yok.entity.SliderDilCategory;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.NewDomainsRepository;
+import com.sesasis.donusum.yok.repository.SliderDilCategoryRepository;
 import com.sesasis.donusum.yok.repository.SliderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,7 @@ public class SliderService implements IService<SliderDTO> {
     private final SliderRepository sliderRepository;
     private final ModelMapperServiceImpl modelMapperServiceImpl;
     private final NewDomainsRepository newDomainsRepository;
-
+    private final SliderDilCategoryRepository sliderDilCategoryRepository;
     @Override
     public ApiResponse save(SliderDTO sliderDTO) {
         try {
@@ -30,8 +32,14 @@ public class SliderService implements IService<SliderDTO> {
             if (sliderDTO.getNewDomainId() != null) {
                 newDomain = newDomainsRepository.findById(sliderDTO.getNewDomainId()).orElse(null);
             }
+            SliderDilCategory sliderDilCategory = this.sliderDilCategoryRepository.findById(sliderDTO.getSliderCategoryId()).orElse(null);
+            if (sliderDilCategory == null) {
+                return new ApiResponse<>(false,"Dil kategorisi bulunamadı.",null);
+            }
+
             Slider slider = this.modelMapperServiceImpl.request().map(sliderDTO, Slider.class);
             slider.setNewDomain(newDomain);
+            slider.setSliderDilCategory(sliderDilCategory);
 
             long number = sliderRepository.findMaxSiraNo().orElse(0L);
             slider.setSiraNo(number + 1);

@@ -22,6 +22,6 @@ public class Gorev {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "gorev",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "gorev",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Personel> personels;
 }

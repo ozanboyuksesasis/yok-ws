@@ -23,6 +23,6 @@ public class DuyuruDilCategory {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "duyuruDilCategory", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "duyuruDilCategory", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Duyuru> duyuruList;
 }
