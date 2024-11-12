@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "duyurular")
+@Table(name = "duyuru")
 public class Duyuru {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,8 +40,8 @@ public class Duyuru {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "new_domain_id")
-    private NewDomain  newDomain;
+    @JoinColumn(name = "domain_id")
+    private Domain  domain;
 
     @ManyToOne
     @JsonIgnore

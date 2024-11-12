@@ -1,10 +1,11 @@
 package com.sesasis.donusum.yok.core.security.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sesasis.donusum.yok.core.domain.BaseModel;
+import com.sesasis.donusum.yok.core.security.dto.RoleDTO;
 import com.sesasis.donusum.yok.entity.DashboardMenu;
-import lombok.AllArgsConstructor;
+import com.sesasis.donusum.yok.entity.Domain;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,16 +14,9 @@ import java.util.List;
 @Entity
 @Table(name = "roles")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Role {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@Column(unique = true, nullable = false)
-	private String ad;
+public class Role extends BaseModel<RoleDTO> {
+	@Column(unique = true)
+	String ad;
 
 	@JsonIgnore
 	@ManyToMany
@@ -30,6 +24,20 @@ public class Role {
 			name = "role_dashboard_menu",
 			joinColumns = @JoinColumn(name = "role_id"),
 			inverseJoinColumns = @JoinColumn(name = "dashboard_menu_id"))
-	private List<DashboardMenu> dashboardMenuList = new ArrayList<>();
+	List<DashboardMenu> dashboardMenuList = new ArrayList<>();
 
+	@Override
+	public RoleDTO toDTO() {
+		RoleDTO roleDTO = new RoleDTO();
+		roleDTO.setId(getId());
+		roleDTO.setAd(ad);
+		return roleDTO;
+	}
+
+	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	private List<Domain> domains;
 }
+
+
+
+

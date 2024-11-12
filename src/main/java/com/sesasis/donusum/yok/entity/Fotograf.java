@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "fotoğraflar")
+@Table(name = "fotoğraf")
 public class Fotograf {
 
     @Id
@@ -34,7 +34,7 @@ public class Fotograf {
     private List<DomainLogo> domainLogos;
 
     @OneToMany(mappedBy = "fotograf",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<NewMenu> menuler;
+    private List<Menu> menuler;
 
     @ManyToOne
     @JoinColumn(name = "slider_id")

@@ -1,48 +1,35 @@
 package com.sesasis.donusum.yok.entity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import javax.persistence.*;
-import java.util.List;
 
+import com.sesasis.donusum.yok.core.domain.BaseModel;
+import com.sesasis.donusum.yok.dto.MenuDTO;
+import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Data
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-public class Menu  {
-
-    @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-	private Long id ;
-
-	@Column(name = "parent_id")
-	private int parentId ;
-
-	@Column(name = "label")
-	private String label ;
-
-	@Column(name = "isim")
-	private String isim;
-
-	@Column(name ="menu_url" )
-	private  String menuUrl;
-
-	@Column(name = "ana_sayfa_mi")
-	private boolean anaSayfaMi;
-
+public class Menu extends BaseModel<MenuDTO> {
+	String ad;
+	String url;
+	boolean anaSayfaMi;
 	@ManyToOne
-	@JoinColumn(name = "new_domain_id")
-	private NewDomain newDomain;
+	Domain domain;
+	private int parentId ;
+	private String label ;
 
 	@ManyToOne
 	@JoinColumn(name = "fotograf_id")
 	private Fotograf fotograf;
 
-	@OneToMany(mappedBy = "anaMenu")
-	private  List<AltMenu> altMenus;
-
-
-
+	@Override
+	public MenuDTO toDTO() {
+		MenuDTO menuDTO = new MenuDTO();
+		menuDTO.setId(getId());
+		menuDTO.setAd(ad);
+		menuDTO.setUrl(url);
+		menuDTO.setAnaSayfaMi(anaSayfaMi);
+		return menuDTO;
+	}
 }

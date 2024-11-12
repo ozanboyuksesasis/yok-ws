@@ -3,6 +3,7 @@ package com.sesasis.donusum.yok.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "idari_birimler")
+@Table(name = "idari_birim")
 public class IdariBirim {
 
     @Id

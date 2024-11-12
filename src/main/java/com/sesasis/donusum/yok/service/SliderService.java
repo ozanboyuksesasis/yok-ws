@@ -3,16 +3,16 @@ package com.sesasis.donusum.yok.service;
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.dto.SliderDTO;
-import com.sesasis.donusum.yok.entity.Haber;
-import com.sesasis.donusum.yok.entity.NewDomain;
+import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Slider;
 import com.sesasis.donusum.yok.entity.SliderDilCategory;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
-import com.sesasis.donusum.yok.repository.NewDomainsRepository;
+import com.sesasis.donusum.yok.repository.DomainRepository;
 import com.sesasis.donusum.yok.repository.SliderDilCategoryRepository;
 import com.sesasis.donusum.yok.repository.SliderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,14 +23,14 @@ public class SliderService implements IService<SliderDTO> {
 
     private final SliderRepository sliderRepository;
     private final ModelMapperServiceImpl modelMapperServiceImpl;
-    private final NewDomainsRepository newDomainsRepository;
+    private final DomainRepository domainRepository;
     private final SliderDilCategoryRepository sliderDilCategoryRepository;
     @Override
     public ApiResponse save(SliderDTO sliderDTO) {
         try {
-            NewDomain newDomain = null;
+            Domain newDomain = null;
             if (sliderDTO.getNewDomainId() != null) {
-                newDomain = newDomainsRepository.findById(sliderDTO.getNewDomainId()).orElse(null);
+                newDomain = domainRepository.findById(sliderDTO.getNewDomainId()).orElse(null);
             }
             SliderDilCategory sliderDilCategory = this.sliderDilCategoryRepository.findById(sliderDTO.getSliderCategoryId()).orElse(null);
             if (sliderDilCategory == null) {
@@ -38,7 +38,7 @@ public class SliderService implements IService<SliderDTO> {
             }
 
             Slider slider = this.modelMapperServiceImpl.request().map(sliderDTO, Slider.class);
-            slider.setNewDomain(newDomain);
+            slider.setDomain(newDomain);
             slider.setSliderDilCategory(sliderDilCategory);
 
             long number = sliderRepository.findMaxSiraNo().orElse(0L);
@@ -85,13 +85,13 @@ public class SliderService implements IService<SliderDTO> {
 
     public ApiResponse domainEkle(Long newDomainId, Long sliderId) {
         try {
-            NewDomain newDomain = newDomainsRepository.findById(newDomainId)
+            Domain newDomain = domainRepository.findById(newDomainId)
                     .orElseThrow(() -> new RuntimeException("Domain bulunamadı: " + newDomainId));
 
             Slider slider = sliderRepository.findById(sliderId)
                     .orElseThrow(() -> new RuntimeException("Duyuru bulunamadı: " + sliderId));
 
-            slider.setNewDomain(newDomain);
+            slider.setDomain(newDomain);
             sliderRepository.save(slider);
 
             return new ApiResponse<>(true, "Domain ekleme işlemi başarılı.", null);

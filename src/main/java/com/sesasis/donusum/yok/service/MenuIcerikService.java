@@ -7,68 +7,49 @@ import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.MenuIcerikDTO;
 import com.sesasis.donusum.yok.entity.MenuIcerik;
-import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.MenuIcerikRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class MenuIcerikService implements IService<MenuIcerikDTO> {
+public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRepository> implements IService<MenuIcerikDTO> {
 
-	private final SecurityContextUtil securityContextUtil;
-    private final MenuIcerikRepository menuIcerikRepository;
-    private final ModelMapperServiceImpl modelMapperServiceImpl;
+    private final SecurityContextUtil securityContextUtil;
 
-	public MenuIcerikService(MenuIcerikRepository repository, SecurityContextUtil securityContextUtil, MenuIcerikRepository menuIcerikRepository, ModelMapperServiceImpl modelMapperServiceImpl) {
-
-		this.securityContextUtil = securityContextUtil;
-        this.menuIcerikRepository = menuIcerikRepository;
-        this.modelMapperServiceImpl = modelMapperServiceImpl;
+    public MenuIcerikService(MenuIcerikRepository repository, SecurityContextUtil securityContextUtil) {
+        super(repository);
+        this.securityContextUtil = securityContextUtil;
     }
 
 
-	@Override
-	@Transactional
-	public ApiResponse save(MenuIcerikDTO menuIcerikDTO) {
-		MenuIcerik menuIcerik = this.modelMapperServiceImpl.request().map(menuIcerikDTO, MenuIcerik.class);
-        menuIcerikRepository.save(menuIcerik);
+    @Override
+    @Transactional
+    public ApiResponse save(MenuIcerikDTO menuIcerikDTO) {
+
+        MenuIcerik menuIcerik = menuIcerikDTO.toEntity();
+        getRepository().save(menuIcerik);
+
         return new ApiResponse(true, MessageConstant.SAVE_MSG, null);
-	}
-
-	@Override
-    public ApiResponse findAll() {
-        Long domainId = securityContextUtil.getCurrentUser().getLoggedDomain().getId();
-        List<MenuIcerikDTO> menuIcerikDTOList = menuIcerikRepository
-                .findAllByAltMenuAnaMenuNewDomainId(domainId)
-                .stream()
-                .map(menuIcerik -> modelMapperServiceImpl.response().map(menuIcerik, MenuIcerikDTO.class)).collect(Collectors.toList());
-
-        return new ApiResponse(true, MessageConstant.SUCCESS, menuIcerikDTOList);
     }
 
-	@Override
-	public ApiResponse findById(Long id) {
-		return null;
-	}
+    @Override
+    public ApiResponse findAll() {
+        return new ApiResponse(true, MessageConstant.SUCCESS, getRepository().findAllByAltMenuAnaMenuDomainId(securityContextUtil.getCurrentUser().getLoggedDomain().getId()).stream().map(e->e.toDTO()).collect(Collectors.toList()));
+    }
 
-	@Override
-	public void deleteById(Long id) {
+    @Override
+    public ApiResponse findById(Long id) {
+        return null;
+    }
 
-	}
+    @Override
+    public void deleteById(Long id) {
+
+    }
 
     public ApiResponse getIcerikByAltMenuUrl(String altMenuUrl) {
-        Long domainId = securityContextUtil.getCurrentUser().getLoggedDomain().getId();
-        MenuIcerik menuIcerik = menuIcerikRepository.findOneByAltMenuAnaMenuNewDomainIdAndAltMenuUrl(domainId, altMenuUrl);
-
-        if (menuIcerik == null) {
-            return new ApiResponse(false, "Menü bulunamadı.", null);
-        }
-
-        MenuIcerikDTO menuIcerikDTO = modelMapperServiceImpl.response().map(menuIcerik, MenuIcerikDTO.class);
-        return new ApiResponse(true, MessageConstant.SUCCESS, menuIcerikDTO);
+        return new ApiResponse(true, MessageConstant.SUCCESS,getRepository().findOneByAltMenuAnaMenuDomainIdAndAltMenuUrl(securityContextUtil.getCurrentUser().getLoggedDomain().getId(),altMenuUrl).toDTO());
     }
-
 }

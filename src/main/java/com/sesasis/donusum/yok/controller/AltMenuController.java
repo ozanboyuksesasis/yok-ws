@@ -27,8 +27,7 @@ public class AltMenuController {
 
 	@DeleteMapping(MappingConstants.PATH_VARIABLE_ID)
 	public ResponseEntity<?> deleteById(@PathVariable Long id) {
-		altMenuService.deleteById(id);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(altMenuService.delete(id));
 	}
 
 

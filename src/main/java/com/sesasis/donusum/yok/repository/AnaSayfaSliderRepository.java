@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AnaSayfaSliderRepository extends JpaRepository<AnaSayfaSlider, Long> {
-	List<AnaSayfaSlider> findAllByMenuAnaSayfaMiAndMenuNewDomain_Id(boolean anaSayfaMi, Long domainId);
+	List<AnaSayfaSlider> findAllByMenuAnaSayfaMiAndMenuDomainId(boolean anaSayfami, Long domainId);
 }

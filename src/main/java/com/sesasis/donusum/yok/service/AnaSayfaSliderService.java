@@ -9,7 +9,6 @@ import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.AnaSayfaSliderDTO;
 import com.sesasis.donusum.yok.entity.AnaSayfaSlider;
 import com.sesasis.donusum.yok.entity.Menu;
-import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.AnaSayfaSliderRepository;
 import com.sesasis.donusum.yok.repository.MenuRepository;
 import org.springframework.stereotype.Service;
@@ -21,34 +20,30 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AnaSayfaSliderService implements IService<AnaSayfaSliderDTO> {
+public class AnaSayfaSliderService extends AbstractService<AnaSayfaSlider, AnaSayfaSliderRepository> implements IService<AnaSayfaSliderDTO> {
 
 	private final SecurityContextUtil securityContextUtil;
 	private final MenuRepository menuRepository;
 	private final FileService fileService;
-	private final ModelMapperServiceImpl modelMapperServiceImpl;
-	private final AnaSayfaSliderRepository anaSayfaSliderRepository;
-	public AnaSayfaSliderService(SecurityContextUtil securityContextUtil, MenuRepository menuRepository, FileService fileService, ModelMapperServiceImpl modelMapperServiceImpl, AnaSayfaSliderRepository anaSayfaSliderRepository) {
 
+	public AnaSayfaSliderService(AnaSayfaSliderRepository repository, SecurityContextUtil securityContextUtil, MenuRepository menuRepository, FileService fileService) {
+		super(repository);
 		this.securityContextUtil = securityContextUtil;
 		this.menuRepository = menuRepository;
 		this.fileService = fileService;
-        this.modelMapperServiceImpl = modelMapperServiceImpl;
-        this.anaSayfaSliderRepository = anaSayfaSliderRepository;
-    }
+	}
 
 
 	@Override
 	@Transactional
 	public ApiResponse save(AnaSayfaSliderDTO anaSayfaSliderDTO) {
-		/*getRepository().save(anaSayfaSliderDTO.toEntity());
-		return new ApiResponse(true, MessageConstant.SAVE_MSG, null);*/
-		return null;
+		getRepository().save(anaSayfaSliderDTO.toEntity());
+		return new ApiResponse(true, MessageConstant.SAVE_MSG, null);
 	}
 
 	@Override
 	public ApiResponse findAll() {
-		/*List<AnaSayfaSliderDTO> anaSayfaSliderDTOList = getRepository().findAllByMenuAnaSayfaMiAndMenuDomainId(Boolean.TRUE,securityContextUtil.getCurrentUser().getLoggedDomain().getId()).stream().map(e->{
+		List<AnaSayfaSliderDTO> anaSayfaSliderDTOList = getRepository().findAllByMenuAnaSayfaMiAndMenuDomainId(Boolean.TRUE,securityContextUtil.getCurrentUser().getLoggedDomain().getId()).stream().map(e->{
 			AnaSayfaSliderDTO anaSayfaSliderDTO = e.toDTO();
 			try {
 				anaSayfaSliderDTO.setBase64content(fileService.getFileAsBase64(e.getPath()));
@@ -59,8 +54,7 @@ public class AnaSayfaSliderService implements IService<AnaSayfaSliderDTO> {
 			return anaSayfaSliderDTO;
 		}).collect(Collectors.toList());
 
-		return new ApiResponse(true,MessageConstant.SUCCESS, anaSayfaSliderDTOList);*/
-		return null;
+		return new ApiResponse(true,MessageConstant.SUCCESS, anaSayfaSliderDTOList);
 	}
 
 	@Override
@@ -75,7 +69,7 @@ public class AnaSayfaSliderService implements IService<AnaSayfaSliderDTO> {
 
 	@Transactional
 	public ApiResponse saveWithFile(AnaSayfaSliderDTO anaSayfaSliderDTO, MultipartFile[] files) {
-		/*AnaSayfaSlider anaSayfaSlider = anaSayfaSliderDTO.toEntity();
+		AnaSayfaSlider anaSayfaSlider = anaSayfaSliderDTO.toEntity();
 		String path = null;
 
 		Menu anasayfa = menuRepository.findOneByDomainIdAndAnaSayfaMi(securityContextUtil.getCurrentUser().getLoggedDomain().getId(),Boolean.TRUE);
@@ -103,7 +97,6 @@ public class AnaSayfaSliderService implements IService<AnaSayfaSliderDTO> {
 			}
 			getRepository().save(anaSayfaSlider);
 			return new ApiResponse(true, MessageConstant.UPDATE_MSG, null);
-		}*/
-		return null;
+		}
 	}
 }

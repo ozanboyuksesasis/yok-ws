@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "haberler")
+@Table(name = "haber")
 public class Haber {
 
     @Id
@@ -42,8 +42,8 @@ public class Haber {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "new_domain_id")
-    private NewDomain  newDomain;
+    @JoinColumn(name = "domain_id")
+    private Domain  domain;
 
     @ManyToOne
     @JsonIgnore

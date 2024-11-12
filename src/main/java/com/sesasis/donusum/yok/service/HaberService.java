@@ -2,17 +2,14 @@ package com.sesasis.donusum.yok.service;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
-import com.sesasis.donusum.yok.dto.DuyuruDTO;
 import com.sesasis.donusum.yok.dto.HaberDTO;
-import com.sesasis.donusum.yok.entity.Duyuru;
+import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Haber;
 import com.sesasis.donusum.yok.entity.HaberDilCategory;
-import com.sesasis.donusum.yok.entity.NewDomain;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
-import com.sesasis.donusum.yok.repository.DuyuruRepository;
+import com.sesasis.donusum.yok.repository.DomainRepository;
 import com.sesasis.donusum.yok.repository.HaberDilCategoryRepository;
 import com.sesasis.donusum.yok.repository.HaberRepository;
-import com.sesasis.donusum.yok.repository.NewDomainsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,21 +25,21 @@ public class HaberService implements IService<HaberDTO> {
 
     private final HaberRepository haberRepository;
     private final ModelMapperServiceImpl modelMapperServiceImpl;
-    private final NewDomainsRepository newDomainsRepository;
+    private final DomainRepository domainRepository;
     private final HaberDilCategoryRepository  haberDilCategoryRepository;
     @Override
     public ApiResponse save(HaberDTO haberDTO) {
 
-        NewDomain newDomain = null;
+        Domain newDomain = null;
         if (haberDTO.getNewDomainId() != null) {
-            newDomain = this.newDomainsRepository.findById(haberDTO.getNewDomainId()).orElse(null);
+            newDomain = this.domainRepository.findById(haberDTO.getNewDomainId()).orElse(null);
         }
         HaberDilCategory haberDilCategory = this.haberDilCategoryRepository.findById(haberDTO.getHaberDilId()).orElse(null);
         if (haberDilCategory == null) {
             return new ApiResponse<>(false,"Dil kategorisi bulunamadı.",null);
         }
         Haber haber = this.modelMapperServiceImpl.request().map(haberDTO, Haber.class);
-        haber.setNewDomain(newDomain);
+        haber.setDomain(newDomain);
         haber.setHaberDilCategory(haberDilCategory);
         Long maxSiraNo = haberRepository.findMaxSiraNo().orElse(0L);
         haber.setSiraNo(maxSiraNo + 1);
@@ -85,11 +82,11 @@ public class HaberService implements IService<HaberDTO> {
     }
 
     public ApiResponse DomainEkle(Long newDomainId, Long duyuruId) {
-        NewDomain newDomain = newDomainsRepository.findById(newDomainId)
+        Domain newDomain = domainRepository.findById(newDomainId)
                 .orElseThrow(()-> new RuntimeException("Domain bulunamadı : "+newDomainId));
         Haber haber = haberRepository.findById(duyuruId)
                 .orElseThrow(()-> new RuntimeException("Duyuru bulunamadı : "+duyuruId));
-        haber.setNewDomain(newDomain);
+        haber.setDomain(newDomain);
         this.haberRepository.save(haber);
         return new ApiResponse<>(true,"Domain ekleme işlemi başarılı.",null);
     }
