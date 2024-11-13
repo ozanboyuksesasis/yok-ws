@@ -14,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService extends AbstractService<User, UserRepository> implements IService<UserDTO> {
 	private final PasswordEncoder encoder;
+	private final UserRepository userRepository;
 
-	public UserService(UserRepository repository, PasswordEncoder encoder) {
+	public UserService(UserRepository repository, PasswordEncoder encoder, UserRepository userRepository) {
 		super(repository);
 		this.encoder = encoder;
+		this.userRepository = userRepository;
 	}
 
 	@Override
@@ -39,7 +41,8 @@ public class UserService extends AbstractService<User, UserRepository> implement
 
 	@Override
 	public ApiResponse findAll() {
-		return null;
+		return new ApiResponse(true, MessageConstant.SUCCESS, userRepository.findAll());
+
 	}
 
 	@Override

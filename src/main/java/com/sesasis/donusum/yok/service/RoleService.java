@@ -13,8 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RoleService extends AbstractService<Role, RoleRepository> implements IService<RoleDTO> {
 
-	public RoleService(RoleRepository repository) {
+	private final RoleRepository roleRepository;
+
+	public RoleService(RoleRepository repository, RoleRepository roleRepository) {
 		super(repository);
+		this.roleRepository = roleRepository;
 	}
 
 	@Override
@@ -32,7 +35,7 @@ public class RoleService extends AbstractService<Role, RoleRepository> implement
 
 	@Override
 	public ApiResponse findAll() {
-		return null;
+		return new ApiResponse(true, MessageConstant.SUCCESS, roleRepository.findAll());
 	}
 
 	@Override
