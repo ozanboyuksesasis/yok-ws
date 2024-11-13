@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "domainlogolar")
+@Table(name = "domain_logo")
 public class DomainLogo {
 
     @Id
@@ -23,9 +23,7 @@ public class DomainLogo {
     private Fotograf fotograf;
 
     @ManyToOne
-    @JoinColumn(name = "new_domain_id")
-    private NewDomain  newDomain;
-
-
+    @JoinColumn(name = "domain_id")
+    private Domain  domain;
 
 }

@@ -1,20 +1,20 @@
 package com.sesasis.donusum.yok.dto;
 
 import com.sesasis.donusum.yok.core.domain.BaseDTO;
-import com.sesasis.donusum.yok.entity.AltMenu;
 import com.sesasis.donusum.yok.entity.MenuIcerik;
 import lombok.Data;
-import org.hibernate.annotations.Type;
-
-import javax.persistence.Lob;
-import javax.persistence.OneToOne;
 
 @Data
-public class MenuIcerikDTO {
+public class MenuIcerikDTO extends BaseDTO<MenuIcerik> {
+	String icerik;
+	AltMenuDTO altMenu;
 
-	private Long id;
-
-	private byte[] icerik;
-
-	private Long altMenuID;
+	@Override
+	public MenuIcerik toEntity() {
+		MenuIcerik menuIcerik = new MenuIcerik();
+		menuIcerik.setId(getId());
+		menuIcerik.setIcerik(icerik.getBytes());
+		menuIcerik.setAltMenu(altMenu != null ? altMenu.toEntity() : null);
+		return menuIcerik;
+	}
 }

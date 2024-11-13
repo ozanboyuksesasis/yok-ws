@@ -5,11 +5,9 @@ import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.dto.DomainLogoDTO;
 import com.sesasis.donusum.yok.entity.DomainLogo;
 import com.sesasis.donusum.yok.entity.Fotograf;
-import com.sesasis.donusum.yok.entity.NewDomain;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.DomainLogoRepository;
 import com.sesasis.donusum.yok.repository.FotografRepository;
-import com.sesasis.donusum.yok.repository.NewDomainsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,25 +19,11 @@ import java.util.stream.Collectors;
 public class DomainLogoService implements IService<DomainLogoDTO> {
     private final DomainLogoRepository domainLogoRepository;
     private ModelMapperServiceImpl modelMapperServiceImpl;
-    private final NewDomainsRepository newDomainsRepository;
     private final FotografRepository fotografRepository;
 
     @Override
     public ApiResponse save(DomainLogoDTO domainLogoDTO) {
-        try {
-            NewDomain newDomain = newDomainsRepository.findById(domainLogoDTO.getDomainId())
-                    .orElseThrow(() -> new RuntimeException("Domain bulunamadı."));
-            Fotograf fotograf = fotografRepository.findById(domainLogoDTO.getFotografId())
-                    .orElseThrow(() -> new RuntimeException("Fotograf bulunamadı."));
-            DomainLogo domainLogo = this.modelMapperServiceImpl.request().map(domainLogoDTO, DomainLogo.class);
-            domainLogo.setFotograf(fotograf);
-            domainLogo.setNewDomain(newDomain);
-            domainLogoRepository.save(domainLogo);
-        } catch (RuntimeException exception) {
-            return new ApiResponse<>(false, exception.getMessage(), null);
-        }
-
-        return new ApiResponse<>(true, "Kayıt başarılı.", null);
+        return null;
     }
 
     @Override

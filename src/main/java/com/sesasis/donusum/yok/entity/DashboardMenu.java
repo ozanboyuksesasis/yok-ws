@@ -1,36 +1,35 @@
 package com.sesasis.donusum.yok.entity;
 
-import lombok.AllArgsConstructor;
+import com.sesasis.donusum.yok.core.domain.BaseModel;
+import com.sesasis.donusum.yok.dto.DashboardMenuDTO;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Table(name = "dashboard_menus")
-public class DashboardMenu {
+public class DashboardMenu extends BaseModel<DashboardMenuDTO> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+	@Column(unique = true)
+	String name;
+	@OneToOne
+	DashboardMenu parent;
+	int number;
+	@Column(unique = true)
+	String path;
+	String iconName;
 
-	@Column(name = "name", unique = true, nullable = false)
-	private String name;
-
-	@ManyToOne
-	@JoinColumn(name = "parent_id", referencedColumnName = "id")
-	private DashboardMenu parent;
-
-	@Column(name = "number", nullable = false)
-	private int number;
-
-	@Column(name = "path", unique = true, nullable = false)
-	private String path;
-
-	@Column(name = "icon_name")
-	private String iconName;
+	@Override
+	public DashboardMenuDTO toDTO() {
+		DashboardMenuDTO dashboardMenuDTO = new DashboardMenuDTO();
+		dashboardMenuDTO.setId(getId());
+		dashboardMenuDTO.setName(name);
+		dashboardMenuDTO.setParent(parent);
+		dashboardMenuDTO.setNumber(number);
+		dashboardMenuDTO.setPath(path);
+		dashboardMenuDTO.setIconName(iconName);
+		return dashboardMenuDTO;
+	}
 }

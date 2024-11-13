@@ -1,4 +1,3 @@
-/*
 package com.sesasis.donusum.yok.controller;
 
 import com.sesasis.donusum.yok.constant.MappingConstants;
@@ -14,28 +13,27 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MenuIcerikController {
 
-	private final MenuIcerikService menuIcerikService;
+    private final MenuIcerikService menuIcerikService;
 
-	@PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> save(@RequestBody MenuIcerikDTO menuIcerikDTO) {
-		return ResponseEntity.ok(menuIcerikService.save(menuIcerikDTO));
-	}
+    @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> save(@RequestBody MenuIcerikDTO menuIcerikDTO) {
+        return ResponseEntity.ok(menuIcerikService.save(menuIcerikDTO));
+    }
 
-	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> findAll() {
-		return ResponseEntity.ok(menuIcerikService.findAll());
-	}
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findAll() {
+        return ResponseEntity.ok(menuIcerikService.findAll());
+    }
 
-	@DeleteMapping(MappingConstants.PATH_VARIABLE_ID)
-	public ResponseEntity<?> deleteById(@PathVariable Long id) {
-		return ResponseEntity.ok(menuIcerikService.delete(id));
-	}
+    @DeleteMapping(MappingConstants.PATH_VARIABLE_ID)
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        return ResponseEntity.ok(menuIcerikService.delete(id));
+    }
 
-	@GetMapping(value = "/by-alt-menu-url", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getIcerikByAltMenuUrl(@RequestParam String altMenuUrl) {
-		return ResponseEntity.ok(menuIcerikService.getIcerikByAltMenuUrl(altMenuUrl));
-	}
+    @GetMapping(value = "/by-alt-menu-url", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getIcerikByAltMenuUrl(@RequestParam String altMenuUrl) {
+        return ResponseEntity.ok(menuIcerikService.getIcerikByAltMenuUrl(altMenuUrl));
+    }
 
 
 }
-*/

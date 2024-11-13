@@ -36,9 +36,8 @@ public class Slider {
     private String sayfaUrl;
 
     @ManyToOne
-    @JoinColumn(name = "new_domain_id")
-    private NewDomain  newDomain;
-
+    @JoinColumn(name = "domain_id")
+    private Domain  domain;
 
     @OneToMany(mappedBy = "slider",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Fotograf> fotograflar;
