@@ -2,7 +2,9 @@ package com.sesasis.donusum.yok.service;
 
 import com.sesasis.donusum.yok.core.constant.MessageConstant;
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
+import com.sesasis.donusum.yok.core.security.dto.RoleDTO;
 import com.sesasis.donusum.yok.core.security.models.Role;
+import com.sesasis.donusum.yok.core.security.models.User;
 import com.sesasis.donusum.yok.core.security.repository.RoleRepository;
 import com.sesasis.donusum.yok.core.service.AbstractService;
 import com.sesasis.donusum.yok.core.service.IService;
@@ -20,10 +22,12 @@ import java.util.List;
 public class DomainService extends AbstractService<Domain, DomainRepository> implements IService<DomainDTO> {
 
 	private  final RoleRepository roleRepository;
+	private final DomainRepository domainRepository;
 
-	public DomainService(DomainRepository repository, RoleRepository roleRepository) {
+	public DomainService(DomainRepository repository, RoleRepository roleRepository, DomainRepository domainRepository) {
 		super(repository);
 		this.roleRepository = roleRepository;
+		this.domainRepository = domainRepository;
 	}
 
 
@@ -31,42 +35,70 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 	@Transactional
 	public ApiResponse save(DomainDTO domainDTO) {
 
-		if (getRepository().existsByAd(domainDTO.getAd())) {
-			return new ApiResponse(false, "Domain adı zaten kullanılıyor.", domainDTO.getAd());
-		}
+		if (domainDTO.getId() == null) {
+			if (getRepository().existsByAd(domainDTO.getAd())) {
+				return new ApiResponse(false, "Domain adı zaten kullanılıyor.", domainDTO.getAd());
+			}else{
 
-		getRepository().save(domainDTO.toEntity());
+				Domain existsAnaDomain = domainRepository.findOneByAnaDomainMi(Boolean.TRUE);
 
-		if (domainDTO.isAnaDomainMi()){//ana domain menüleri farklı olacak
+				if (existsAnaDomain != null && domainDTO.isAnaDomainMi()) {
+					return new ApiResponse(false, "Birden fazla ana domain kaydedemezsiniz.", null);
+				}
 
+				Domain domain = domainDTO.toEntity();
+				getRepository().save(domain);
+
+
+				if (domainDTO.isAnaDomainMi()){//ana domain menüleri farklı olacak
+
+				}else{
+					DashboardMenu tanimlamalar = new DashboardMenu();
+					tanimlamalar.setId(1L);
+					DashboardMenu menuOlustur = new DashboardMenu();
+					menuOlustur.setId(5L);
+					DashboardMenu altMenuOlustur = new DashboardMenu();
+					altMenuOlustur.setId(6L);
+					DashboardMenu anaSayfaMenuIcerik = new DashboardMenu();
+					anaSayfaMenuIcerik.setId(7L);
+					DashboardMenu altMenuIcerik = new DashboardMenu();
+					altMenuIcerik.setId(8L);
+					List<DashboardMenu> dashboardMenuList = new ArrayList<>();
+					dashboardMenuList.add(tanimlamalar);
+					dashboardMenuList.add(menuOlustur);
+					dashboardMenuList.add(altMenuOlustur);
+					dashboardMenuList.add(anaSayfaMenuIcerik);
+					dashboardMenuList.add(altMenuIcerik);
+					Role role = roleRepository.findById(domainDTO.getRole().getId()).get();
+					role.setDashboardMenuList(dashboardMenuList);
+					roleRepository.save(role);
+				}
+
+			}
 		}else{
-			DashboardMenu tanimlamalar = new DashboardMenu();
-			tanimlamalar.setId(1L);
-			DashboardMenu menuOlustur = new DashboardMenu();
-			menuOlustur.setId(5L);
-			DashboardMenu altMenuOlustur = new DashboardMenu();
-			altMenuOlustur.setId(6L);
-			DashboardMenu anaSayfaMenuIcerik = new DashboardMenu();
-			anaSayfaMenuIcerik.setId(7L);
-			DashboardMenu altMenuIcerik = new DashboardMenu();
-			altMenuIcerik.setId(8L);
-			List<DashboardMenu> dashboardMenuList = new ArrayList<>();
-			dashboardMenuList.add(tanimlamalar);
-			dashboardMenuList.add(menuOlustur);
-			dashboardMenuList.add(altMenuOlustur);
-			dashboardMenuList.add(anaSayfaMenuIcerik);
-			dashboardMenuList.add(altMenuIcerik);
-			Role role = roleRepository.findById(domainDTO.getRole().getId()).get();
-			role.setDashboardMenuList(dashboardMenuList);
-			roleRepository.save(role);
-		}
 
+			Domain existsAnaDomain = domainRepository.findOneByAnaDomainMiAndIdNot(Boolean.TRUE, domainDTO.getId());
+
+			if (existsAnaDomain != null && domainDTO.isAnaDomainMi()) {
+				return new ApiResponse(false, "Birden fazla ana domain kaydedemezsiniz.", null);
+			}
+
+			Domain existsDomain = domainRepository.findById(domainDTO.getId()).get();
+
+			existsDomain.setAd(domainDTO.getAd());
+			existsDomain.setUrl(domainDTO.getUrl());
+			existsDomain.setAnaDomainMi(domainDTO.isAnaDomainMi());
+			existsDomain.setRole(domainDTO.getRole().toEntity());
+
+			getRepository().save(existsDomain);
+
+		}
 		return new ApiResponse(true, MessageConstant.SAVE_MSG, null);
 	}
 
 	@Override
 	public ApiResponse findAll() {
-		return null;
+		return new ApiResponse(true, MessageConstant.SUCCESS, domainRepository.findAllByOrderByAnaDomainMiDesc());
 	}
 
 	@Override
