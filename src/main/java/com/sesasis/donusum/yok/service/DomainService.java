@@ -50,6 +50,7 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 			DashboardMenu anaSayfaSliderEkle = new DashboardMenu();
 			anaSayfaSliderEkle.setId(9L);
 
+
 		}else{
 
 			DashboardMenu tanimlamalar = new DashboardMenu();
