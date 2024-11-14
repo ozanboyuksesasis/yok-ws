@@ -29,8 +29,8 @@ public class SliderService implements IService<SliderDTO> {
     public ApiResponse save(SliderDTO sliderDTO) {
         try {
             Domain newDomain = null;
-            if (sliderDTO.getNewDomainId() != null) {
-                newDomain = domainRepository.findById(sliderDTO.getNewDomainId()).orElse(null);
+            if (sliderDTO.getDomainId() != null) {
+                newDomain = domainRepository.findById(sliderDTO.getDomainId()).orElse(null);
             }
             SliderDilCategory sliderDilCategory = this.sliderDilCategoryRepository.findById(sliderDTO.getSliderCategoryId()).orElse(null);
             if (sliderDilCategory == null) {

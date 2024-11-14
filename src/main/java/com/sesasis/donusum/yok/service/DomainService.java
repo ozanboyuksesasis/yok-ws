@@ -39,10 +39,13 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 		if (getRepository().existsByAd(domainDTO.getAd())) {
 			return new ApiResponse(false, "Domain adı zaten kullanılıyor.", domainDTO.getAd());
 		}
-
 		Domain domain =	getRepository().save(domainDTO.toEntity());
 
+
 		if (domainDTO.isAnaDomainMi()){//ana domain menüleri farklı olacak
+			DashboardMenu anaSayfaSliderEkle = new DashboardMenu();
+			anaSayfaSliderEkle.setId(9L);
+
 
 		}else{
 			DashboardMenu tanimlamalar = new DashboardMenu();
