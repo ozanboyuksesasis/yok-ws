@@ -30,4 +30,5 @@ public class UserDTO extends BaseDTO<User> {
         user.setRoleList(roleList);
         return user;
     }
+
 }

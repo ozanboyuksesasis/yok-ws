@@ -8,4 +8,8 @@ import java.util.List;
 public interface DomainRepository extends JpaRepository<Domain,Long> {
 	boolean existsByAd(String name);
 	List<Domain> findByRoleId(Long roleId);
+	Domain findOneByAnaDomainMi(boolean anaDomainMi);
+	Domain findOneByAnaDomainMiAndIdNot(boolean anaDomainMi, Long id);
+	List<Domain> findAllByOrderByAnaDomainMiDesc();
+
 }
