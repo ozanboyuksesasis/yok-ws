@@ -7,18 +7,34 @@ import com.sesasis.donusum.yok.core.security.models.Role;
 import com.sesasis.donusum.yok.core.security.repository.RoleRepository;
 import com.sesasis.donusum.yok.core.service.AbstractService;
 import com.sesasis.donusum.yok.core.service.IService;
+import com.sesasis.donusum.yok.dto.DomainDTO;
+import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleService extends AbstractService<Role, RoleRepository> implements IService<RoleDTO> {
 
 	private final RoleRepository roleRepository;
+<<<<<<< HEAD
+	private final ModelMapperServiceImpl modelMapperService;
+
+	public RoleService(RoleRepository repository,
+                       RoleRepository roleRepository, ModelMapperServiceImpl modelMapperService) {
+		super(repository);
+		this.roleRepository = roleRepository;
+        this.modelMapperService = modelMapperService;
+    }
+=======
 
 	public RoleService(RoleRepository repository, RoleRepository roleRepository) {
 		super(repository);
 		this.roleRepository = roleRepository;
 	}
+>>>>>>> main
 
 	@Override
 	@Transactional
@@ -35,7 +51,17 @@ public class RoleService extends AbstractService<Role, RoleRepository> implement
 
 	@Override
 	public ApiResponse findAll() {
+<<<<<<< HEAD
+		List<Role> roles = roleRepository.findAll();
+		if (roles.isEmpty()){
+			return new ApiResponse<>(false,"Rol listesi boş.",null);
+		}
+		List<RoleDTO> dtos = roles.stream().map(role -> this.modelMapperService.response().map(role, RoleDTO.class)).collect(Collectors.toList());
+
+		return new ApiResponse<>(true,"İşlem başarılı.",dtos);
+=======
 		return new ApiResponse(true, MessageConstant.SUCCESS, roleRepository.findAll());
+>>>>>>> main
 	}
 
 	@Override
@@ -45,7 +71,9 @@ public class RoleService extends AbstractService<Role, RoleRepository> implement
 
 	@Override
 	public void deleteById(Long id) {
-
+	if (roleRepository.existsById(id)){
+		roleRepository.deleteById(id);
+	}
 	}
 
 	public boolean existsByAd(String ad) {

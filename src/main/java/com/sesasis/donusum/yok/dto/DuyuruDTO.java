@@ -22,7 +22,7 @@ public class DuyuruDTO {
 
     private Long siraNo;
 
-    private Long newDomainId;
+    private Long domainId;
 
     @NotNull(message = "Hata : Duyuru seçimi boş olamaz.")
     private Long duyuruDilId;

@@ -20,7 +20,7 @@ public class HaberDTO {
 
     private Long siraNo;
 
-    private Long newDomainId;
+    private Long domainId;
 
     @NotNull(message = "Dil kategorisi boş olamaz.")
     private Long haberDilId;

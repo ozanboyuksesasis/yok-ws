@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sesasis.donusum.yok.core.domain.BaseModel;
 import com.sesasis.donusum.yok.core.security.models.Role;
 import com.sesasis.donusum.yok.dto.DomainDTO;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Domain extends BaseModel<DomainDTO> {
 	@Column(unique = true)
 	String ad;

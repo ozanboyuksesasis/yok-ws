@@ -31,8 +31,8 @@ public class DuyuruService implements IService<DuyuruDTO> {
     @Override
     public ApiResponse save(DuyuruDTO duyuruDTO) {
         Domain newDomain = null;
-        if (duyuruDTO.getNewDomainId() != null) {
-            newDomain = this.domainRepository.findById(duyuruDTO.getNewDomainId()).orElse(null);
+        if (duyuruDTO.getDomainId() != null) {
+            newDomain = this.domainRepository.findById(duyuruDTO.getDomainId()).orElse(null);
         }
         DuyuruDilCategory dilCategory =this.duyuruDilCategoryRepository.findById(duyuruDTO.getDuyuruDilId()).orElse(null);
         if (dilCategory == null) {

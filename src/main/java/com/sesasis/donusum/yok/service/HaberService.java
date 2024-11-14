@@ -31,8 +31,8 @@ public class HaberService implements IService<HaberDTO> {
     public ApiResponse save(HaberDTO haberDTO) {
 
         Domain newDomain = null;
-        if (haberDTO.getNewDomainId() != null) {
-            newDomain = this.domainRepository.findById(haberDTO.getNewDomainId()).orElse(null);
+        if (haberDTO.getDomainId() != null) {
+            newDomain = this.domainRepository.findById(haberDTO.getDomainId()).orElse(null);
         }
         HaberDilCategory haberDilCategory = this.haberDilCategoryRepository.findById(haberDTO.getHaberDilId()).orElse(null);
         if (haberDilCategory == null) {
