@@ -19,7 +19,7 @@ public class SliderDTO {
 
     private Long siraNo;
 
-    private Long newDomainId;
+    private Long domainId;
 
     private Long sliderCategoryId;
 
