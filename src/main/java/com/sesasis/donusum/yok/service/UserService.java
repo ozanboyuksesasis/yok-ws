@@ -14,32 +14,47 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService extends AbstractService<User, UserRepository> implements IService<UserDTO> {
 	private final PasswordEncoder encoder;
+	private final UserRepository userRepository;
 
-	public UserService(UserRepository repository, PasswordEncoder encoder) {
+	public UserService(UserRepository repository, PasswordEncoder encoder, UserRepository userRepository) {
 		super(repository);
 		this.encoder = encoder;
+		this.userRepository = userRepository;
 	}
 
 	@Override
 	@Transactional
 	public ApiResponse save(UserDTO userDTO) {
 
-		if (getRepository().existsByUsername(userDTO.getUsername())) {
-			return new ApiResponse(false, "Kullanıcı adı zaten kullanılıyor.", userDTO.getUsername());
-		}
+		if (userDTO.getId() == null) {
+			if (getRepository().existsByUsername(userDTO.getUsername())) {
+				return new ApiResponse(false, "Kullanıcı adı zaten kullanılıyor.", userDTO.getUsername());
+			}else{
+				User user = userDTO.toEntity();
+				user.setPassword(encoder.encode(userDTO.getPassword()));
+				getRepository().save(user);
+			}
+		}else{
+			User existsUser = userRepository.findById(userDTO.getId()).get();
 
-		User user = userDTO.toEntity();
-		user.setPassword(encoder.encode(userDTO.getPassword()));
-		user.setRoleList(userDTO.getRoleList());
-		user.setAktif(Boolean.TRUE);
-		getRepository().save(user);
+			existsUser.setAd(userDTO.getAd());
+			existsUser.setSoyad(userDTO.getSoyad());
+			existsUser.setUsername(userDTO.getUsername());
+			existsUser.setEmail(userDTO.getEmail());
+			existsUser.setAktif(userDTO.isAktif());
+			existsUser.setRoleList(userDTO.getRoleList());
+
+			getRepository().save(existsUser);
+
+		}
 
 		return new ApiResponse(true, MessageConstant.SAVE_MSG, null);
 	}
 
 	@Override
 	public ApiResponse findAll() {
-		return null;
+		return new ApiResponse(true, MessageConstant.SUCCESS, userRepository.findAll());
+
 	}
 
 	@Override
@@ -53,3 +68,5 @@ public class UserService extends AbstractService<User, UserRepository> implement
 	}
 
 }
+
+

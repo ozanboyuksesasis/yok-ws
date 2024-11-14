@@ -2,7 +2,9 @@ package com.sesasis.donusum.yok.service;
 
 import com.sesasis.donusum.yok.core.constant.MessageConstant;
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
+import com.sesasis.donusum.yok.core.security.dto.RoleDTO;
 import com.sesasis.donusum.yok.core.security.models.Role;
+import com.sesasis.donusum.yok.core.security.models.User;
 import com.sesasis.donusum.yok.core.security.repository.RoleRepository;
 import com.sesasis.donusum.yok.core.service.AbstractService;
 import com.sesasis.donusum.yok.core.service.IService;
@@ -13,7 +15,6 @@ import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.DomainRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,15 +25,17 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 	private  final RoleRepository roleRepository;
 	private final DomainRepository domainRepository;
 	private final ModelMapperServiceImpl modelMapperServiceImpl;
-	public DomainService(DomainRepository repository, RoleRepository roleRepository, DomainRepository domainRepository, ModelMapperServiceImpl modelMapperServiceImpl) {
-		super(repository);
-		this.roleRepository = roleRepository;
+
+    public DomainService(RoleRepository roleRepository, DomainRepository domainRepository, ModelMapperServiceImpl modelMapperServiceImpl) {
+        super(domainRepository);
+        this.roleRepository = roleRepository;
         this.domainRepository = domainRepository;
         this.modelMapperServiceImpl = modelMapperServiceImpl;
     }
 
 
-	@Override
+
+    @Override
 	@Transactional
 	public ApiResponse save(DomainDTO domainDTO) {
 
@@ -43,11 +46,12 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 
 
 		if (domainDTO.isAnaDomainMi()){//ana domain menüleri farklı olacak
+
 			DashboardMenu anaSayfaSliderEkle = new DashboardMenu();
 			anaSayfaSliderEkle.setId(9L);
 
-
 		}else{
+
 			DashboardMenu tanimlamalar = new DashboardMenu();
 			tanimlamalar.setId(1L);
 			DashboardMenu menuOlustur = new DashboardMenu();
@@ -74,11 +78,28 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 			role.setDomains(list);
 		}
 
+
+			Domain existsAnaDomain = domainRepository.findOneByAnaDomainMiAndIdNot(Boolean.TRUE, domainDTO.getId());
+
+			if (existsAnaDomain != null && domainDTO.isAnaDomainMi()) {
+				return new ApiResponse(false, "Birden fazla ana domain kaydedemezsiniz.", null);
+			}
+
+			Domain existsDomain = domainRepository.findById(domainDTO.getId()).get();
+
+			existsDomain.setAd(domainDTO.getAd());
+			existsDomain.setUrl(domainDTO.getUrl());
+			existsDomain.setAnaDomainMi(domainDTO.isAnaDomainMi());
+			existsDomain.setRole(domainDTO.getRole().toEntity());
+
+			getRepository().save(existsDomain);
+
 		return new ApiResponse(true, MessageConstant.SAVE_MSG, null);
 	}
 
 	@Override
 	public ApiResponse findAll() {
+
 		List<Domain> domains = this.domainRepository.findAll();
 		if (domains == null) {
 			return new ApiResponse<>(false, "Domain listesi boş.", null);
