@@ -2,10 +2,7 @@ package com.sesasis.donusum.yok.core.security.dto;
 
 import com.sesasis.donusum.yok.core.domain.BaseDTO;
 import com.sesasis.donusum.yok.core.security.models.Role;
-import com.sesasis.donusum.yok.dto.DomainDTO;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class RoleDTO extends BaseDTO<Role> {
@@ -18,5 +15,4 @@ public class RoleDTO extends BaseDTO<Role> {
         role.setAd(ad);
         return role;
     }
-    private List<DomainDTO > domainDTOS;
 }
