@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,7 +43,27 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 		if (getRepository().existsByAd(domainDTO.getAd())) {
 			return new ApiResponse(false, "Domain adı zaten kullanılıyor.", domainDTO.getAd());
 		}
-		Domain domain =	getRepository().save(domainDTO.toEntity());
+
+		Domain existsAnaDomain = domainRepository.findOneByAnaDomainMiAndIdNot(Boolean.TRUE, domainDTO.getId());
+
+		if (existsAnaDomain != null && domainDTO.isAnaDomainMi()) {
+			return new ApiResponse(false, "Birden fazla ana domain kaydedemezsiniz.", null);
+		}
+
+		Domain existingDomain = domainRepository.findById(domainDTO.getId()).get();
+
+		Domain domain;
+		if (existingDomain != null) {
+			domain = existingDomain;
+		} else {
+			domain = new Domain();
+		}
+
+		domain.setAd(domainDTO.getAd());
+		domain.setUrl(domainDTO.getUrl());
+		domain.setAnaDomainMi(domainDTO.isAnaDomainMi());
+		domain.setRole(domainDTO.getRole().toEntity());
+		getRepository().save(domain);
 
 
 		if (domainDTO.isAnaDomainMi()){//ana domain menüleri farklı olacak
@@ -79,21 +100,6 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 			role.setDomains(list);
 		}
 
-
-			Domain existsAnaDomain = domainRepository.findOneByAnaDomainMiAndIdNot(Boolean.TRUE, domainDTO.getId());
-
-			if (existsAnaDomain != null && domainDTO.isAnaDomainMi()) {
-				return new ApiResponse(false, "Birden fazla ana domain kaydedemezsiniz.", null);
-			}
-
-			Domain existsDomain = domainRepository.findById(domainDTO.getId()).get();
-
-			existsDomain.setAd(domainDTO.getAd());
-			existsDomain.setUrl(domainDTO.getUrl());
-			existsDomain.setAnaDomainMi(domainDTO.isAnaDomainMi());
-			existsDomain.setRole(domainDTO.getRole().toEntity());
-
-			getRepository().save(existsDomain);
 
 		return new ApiResponse(true, MessageConstant.SAVE_MSG, null);
 	}
