@@ -19,11 +19,20 @@ public class DomainBilgiController {
     private final DomainBilgiService domainBilgiService;
 
 
-    @GetMapping(value = "/getMenu/{domainId}")
-    public ResponseEntity<?> getDomainIdMenu(@PathVariable Long domainId) {
+    @GetMapping(value = "/getMenus/{domainId}")
+    public ResponseEntity<?> getAllMenusDomainId(@PathVariable Long domainId) {
         ApiResponse domainIdMenu = domainBilgiService.getAllMenusDomainId(domainId);
         return new ResponseEntity<>(domainIdMenu, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/getSliders/{domainId}")
+    public ResponseEntity<?> getAllSlidersDomainId(@PathVariable Long domainId) {
+        ApiResponse slidersDomainId = domainBilgiService.getAllSlidersDomainId(domainId);
+        return new ResponseEntity<>(slidersDomainId, HttpStatus.OK);
+    }
+
+
+
 
 
 }

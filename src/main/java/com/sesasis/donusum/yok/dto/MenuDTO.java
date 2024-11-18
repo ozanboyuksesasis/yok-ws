@@ -7,8 +7,11 @@ import lombok.Data;
 @Data
 public class MenuDTO extends BaseDTO<Menu> {
 	String ad;
+	Long domainId;
 	String url;
 	boolean anaSayfaMi;
+	private int parentId ;
+	private String label ;
 
 	@Override
 	public Menu toEntity() {

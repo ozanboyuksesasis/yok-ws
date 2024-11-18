@@ -14,8 +14,10 @@ public class Menu extends BaseModel<MenuDTO> {
 	String ad;
 	String url;
 	boolean anaSayfaMi;
+
 	@ManyToOne
 	Domain domain;
+
 	private int parentId ;
 	private String label ;
 

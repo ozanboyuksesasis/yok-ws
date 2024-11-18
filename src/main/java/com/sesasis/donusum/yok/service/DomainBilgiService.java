@@ -2,8 +2,10 @@ package com.sesasis.donusum.yok.service;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.dto.MenuDTO;
+import com.sesasis.donusum.yok.dto.SliderDilCategoryDTO;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Menu;
+import com.sesasis.donusum.yok.entity.SliderDilCategory;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +42,25 @@ public class DomainBilgiService {
 
            return new ApiResponse<>(true,"İşlem başarılı.",dtos);
         }
+
+
+      public ApiResponse getAllSlidersDomainId(Long domainId){
+        Domain domain = domainRepository.findById(domainId).orElse(null);
+        if (domain == null){
+            return new ApiResponse<>(false,"Domain bulunamadı.",null);
+        }
+        List<SliderDilCategory> sliderDilCategories = domain.getSliderDilCategories();
+        if (sliderDilCategories == null || sliderDilCategories.isEmpty()) {
+            return new ApiResponse<>(false, "Slider dil listesi bulunamadı.", null);
+        }
+        List<SliderDilCategoryDTO> dtos = sliderDilCategories.stream().map(localSlider ->
+                        this.modelMapperServiceImpl.response().map(localSlider, SliderDilCategoryDTO.class))
+                .collect(Collectors.toList());
+
+        return new ApiResponse<>(true,"İşlem başarılı.",dtos);
+    }
+
+
+
 
 }
