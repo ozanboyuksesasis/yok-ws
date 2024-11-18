@@ -13,12 +13,13 @@ import java.util.List;
 @NoArgsConstructor
 public class SliderDilCategoryDTO {
 
+    private Long domainId;
+
     private Long id;
 
     @NotBlank(message = "Hata : İsim boş bırakılamaz.")
     private String name;
 
-    private List<SliderDTO> slidersDto;
 
 
 }
