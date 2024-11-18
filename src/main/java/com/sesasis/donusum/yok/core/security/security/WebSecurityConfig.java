@@ -66,7 +66,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authorizeRequests()
-				.antMatchers("/**",//TODO : security şimdilik izin verdim geri al
+				.antMatchers("/api/auth/signin-one","/api/auth/signin-two",
 						"/favicon.ico",
 						"/**/*.png",
 						"/**/*.gif",

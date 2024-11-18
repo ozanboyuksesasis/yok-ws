@@ -31,7 +31,7 @@ public class DomainBilgiService {
             if (domain == null){
                 return new ApiResponse<>(false,"Domain bulunamadı.",null);
             }
-            List<Menu> menu = domain.getMenuList();
+            List<Menu> menu = domain.getMenus();
             if (menu == null || menu.isEmpty()) {
                 return new ApiResponse<>(false, "Menü bulunamadı.", null);
             }

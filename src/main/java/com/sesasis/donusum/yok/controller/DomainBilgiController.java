@@ -5,6 +5,7 @@ import com.sesasis.donusum.yok.service.DomainBilgiService;
 import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ public class DomainBilgiController {
     private final DomainBilgiService domainBilgiService;
 
 
-    @GetMapping(value = "/getMenus/{domainId}")
+    @GetMapping(value = "/getMenus/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllMenusDomainId(@PathVariable Long domainId) {
         ApiResponse domainIdMenu = domainBilgiService.getAllMenusDomainId(domainId);
         return new ResponseEntity<>(domainIdMenu, HttpStatus.OK);
