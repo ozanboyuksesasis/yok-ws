@@ -21,6 +21,10 @@ public class SliderDilCategory {
     @Column(name = "name")
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "domain_id")
+    private Domain domain ;
+
     @OneToMany(mappedBy = "sliderDilCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Slider> sliders;
 
