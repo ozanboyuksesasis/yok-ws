@@ -59,14 +59,13 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
-
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable()
 				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authorizeRequests()
-				.antMatchers("/api/auth/signin-one","/api/auth/signin-two",
+				.antMatchers("/**",//TODO : security şimdilik izin verdim geri al
 						"/favicon.ico",
 						"/**/*.png",
 						"/**/*.gif",
