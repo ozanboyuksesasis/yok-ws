@@ -59,14 +59,13 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
-
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable()
 				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authorizeRequests()
-				.antMatchers("/api/auth/signin-one","/api/auth/signin-two",
+				.antMatchers("/**",//TODO : security şimdilik izin verdim geri al
 						"/favicon.ico",
 						"/**/*.png",
 						"/**/*.gif",
@@ -74,7 +73,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 						"/**/*.jpg")
 				.permitAll()
 				.antMatchers("/health-check", "/api/public/**", "/api/auth/signin", "/api/auth/signup", "/v3/api-docs", "/api/basic/**").permitAll()
-				.antMatchers("/api-domain-bilgi/getmenus/**","/api/domain-bilgi-getSliders/**","/api/slider-dil/**","/api/sliders/**").permitAll().anyRequest().authenticated();
+				.anyRequest().authenticated();
 
 		http.authenticationProvider(authenticationProvider());
 
