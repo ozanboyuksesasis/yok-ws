@@ -74,7 +74,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 						"/**/*.jpg")
 				.permitAll()
 				.antMatchers("/health-check", "/api/public/**", "/api/auth/signin", "/api/auth/signup", "/v3/api-docs", "/api/basic/**").permitAll()
-				.anyRequest().authenticated();
+				.antMatchers("/api-domain-bilgi/getmenus/**","/api/domain-bilgi-getSliders/**","/api/slider-dil/**","/api/sliders/**").permitAll().anyRequest().authenticated();
 
 		http.authenticationProvider(authenticationProvider());
 

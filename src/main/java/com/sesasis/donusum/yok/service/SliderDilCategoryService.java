@@ -36,6 +36,7 @@ public class SliderDilCategoryService implements IService<SliderDilCategoryDTO> 
 
     @Override
     public ApiResponse findAll() {
+
         List<SliderDilCategory> sliderDilCategoryList = this.sliderDilCategoryRepository.findAll();
         if(sliderDilCategoryList.isEmpty()){
             return new ApiResponse<>(false,"Liste boş.",null);

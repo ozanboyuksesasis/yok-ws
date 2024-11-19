@@ -37,7 +37,5 @@ public class SliderDTO {
     private String sayfaUrl;
 
 
-
-
     private List<FotografDTO> fotografDTOS;
 }

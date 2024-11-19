@@ -81,12 +81,15 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
 
     @Override
     public ApiResponse findById(Long id) {
+       //Domain bilgi serviste yazıyor bu kodlar.
         return null;
     }
 
     @Override
     public void deleteById(Long id) {
-
+        if (menuRepository.existsById(id)){
+            menuRepository.deleteById(id);
+        }
     }
 
     public ApiResponse findAllWithoutAnasayfa() {
