@@ -42,7 +42,9 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
 	public ApiResponse save(MenuDTO menuDTO) {
 
 		Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
-
+        if (loggedDomain==null){
+            return new ApiResponse<>(false,"Domain bulunamadı, menü ekleme başarısız.",null);
+        }
 		Menu existMenu = getRepository().findOneByDomainIdAndAnaSayfaMi(loggedDomain.getId(),Boolean.TRUE);
 
 		if (existMenu!=null && menuDTO.isAnaSayfaMi()){
