@@ -26,6 +26,10 @@ public class Domain extends BaseModel<DomainDTO> {
 	@JsonIgnore
 	private Role role;
 
+	@OneToOne
+	private AnaBaslik anaBaslik;
+
+
 	@OneToMany(mappedBy = "domain", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Menu> menus;

@@ -1,8 +1,7 @@
-package com.sesasis.donusum.yok.controller;
+package com.sesasis.donusum.yok.controller.web;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.service.DomainBilgiService;
-import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/domain-bilgi")
 @RequiredArgsConstructor
 @RestController
-public class DomainBilgiController {
+public class DomainWebController {
 
     private final DomainBilgiService domainBilgiService;
 

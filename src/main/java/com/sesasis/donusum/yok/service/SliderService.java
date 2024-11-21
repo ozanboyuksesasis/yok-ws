@@ -2,6 +2,7 @@ package com.sesasis.donusum.yok.service;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
+import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.SliderDTO;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Slider;
@@ -25,10 +26,11 @@ public class SliderService implements IService<SliderDTO> {
     private final ModelMapperServiceImpl modelMapperServiceImpl;
     private final DomainRepository domainRepository;
     private final SliderDilCategoryRepository sliderDilCategoryRepository;
+    private final SecurityContextUtil securityContextUtil;
     @Override
     public ApiResponse save(SliderDTO sliderDTO) {
         try {
-            Domain newDomain = null;
+            Domain newDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
             if (sliderDTO.getDomainId() != null) {
                 newDomain = domainRepository.findById(sliderDTO.getDomainId()).orElse(null);
             }
