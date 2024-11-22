@@ -2,13 +2,11 @@ package com.sesasis.donusum.yok.dto;
 
 
 
-import com.sesasis.donusum.yok.entity.Domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -22,5 +20,7 @@ public class AnaBaslikDTO {
     @Size(min = 2, max = 70, message = "Hata: Başlık 2 ile 70 karakter arasında olmalı.")
     @Pattern(regexp = "^[^0-9]+$", message = "Hata: Başlık rakam içeremez.")
     private String baslik;
+
+    private Long id;
 
 }

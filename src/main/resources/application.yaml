@@ -32,5 +32,6 @@ springfox:
   documentation:
     enabled: true
 
+
 upload:
   dir : src/main/resources/static/uploads

@@ -115,8 +115,8 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 		if (domain == null) {
 			return new ApiResponse<>(false, "Domain bulunamadı.", null);
 		}
-		AnaBaslik anaBaslik = domain.getAnaBaslik();
-		domain.setAnaBaslik(anaBaslik);
+		//AnaBaslik anaBaslik = domain.getAnaBaslik();
+		//domain.setAnaBaslik(anaBaslik);
 
 		DomainDTO domainDTO = modelMapperService.response().map(domain, DomainDTO.class);
 
