@@ -112,4 +112,13 @@ public class DuyuruService implements IService<DuyuruDTO> {
         return new ApiResponse<>(true, "Sıra güncellendi.", null);
     }
 
+    public ApiResponse duyuruListDomainId(Long domainId,Long dilCategoryId){
+        List<Duyuru> duyuruList = duyuruRepository.findByDomain_IdAndDuyuruDilCategory_Id(domainId,dilCategoryId);
+
+        if (duyuruList.isEmpty()){
+            return new ApiResponse<>(false,"Liste boş",null);
+        }
+        List<DuyuruDTO> duyurus = duyuruList.stream().map(duyuru -> this.modelMapperServiceImpl.response().map(duyuru,DuyuruDTO.class)).collect(Collectors.toList());
+        return new ApiResponse<>(true,"İşlem başarılı.",duyurus);
+    }
 }

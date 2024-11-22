@@ -46,13 +46,9 @@ public class DuyuruDilCategoryService implements IService<DuyuruDilCategoryDTO> 
             return new ApiResponse<>(false, "Liste boş", null);
         }
 
-        List<DuyuruDilCategoryDTO> dtos = duyuruDilCategoryList.stream().map(duyuruDilCategory -> {
-            DuyuruDilCategoryDTO dto = this.modelMapperServiceImpl.response().map(duyuruDilCategory, DuyuruDilCategoryDTO.class);
+        List<DuyuruDilCategoryDTO> dtos = duyuruDilCategoryList.stream().map(duyuruDilCategory ->
+                modelMapperServiceImpl.response().map(duyuruDilCategory, DuyuruDilCategoryDTO.class)).collect(Collectors.toList());
 
-            dto.setHaberList(duyuruDilCategory.getDuyuruList().stream().sorted((Comparator.comparing(Duyuru::getSiraNo).reversed())).collect(Collectors.toList()).stream()
-                    .map(duyuru -> this.modelMapperServiceImpl.response().map(duyuru, DuyuruDTO.class)).collect(Collectors.toList()));
-            return dto;
-        }).collect(Collectors.toList());
 
         return new ApiResponse<>(true, "İşlem başarılı.", dtos);
     }
