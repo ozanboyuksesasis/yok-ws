@@ -1,7 +1,7 @@
 package com.sesasis.donusum.yok.controller.web;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
-import com.sesasis.donusum.yok.service.DomainBilgiService;
+import com.sesasis.donusum.yok.service.DomainWebService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,19 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DomainWebController {
 
-    private final DomainBilgiService domainBilgiService;
+    private final DomainWebService domainWebService;
 
 
     @GetMapping(value = "/getMenus/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllMenusDomainId(@PathVariable Long domainId) {
-        ApiResponse domainIdMenu = domainBilgiService.getAllMenusDomainId(domainId);
-        return new ResponseEntity<>(domainIdMenu, HttpStatus.OK);
+        ApiResponse allMenusDomainId = domainWebService.getAllMenusDomainId(domainId);
+        return new ResponseEntity<>(allMenusDomainId,HttpStatus.OK);
     }
 
     @GetMapping(value = "/getSliders/{domainId}")
     public ResponseEntity<?> getAllSlidersDomainId(@PathVariable Long domainId) {
-        ApiResponse slidersDomainId = domainBilgiService.getAllSlidersDomainId(domainId);
+        ApiResponse slidersDomainId = domainWebService.getAllSlidersDomainId(domainId);
         return new ResponseEntity<>(slidersDomainId, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/getBaslik/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> allBaslikDomainId(@PathVariable Long domainId){
+        ApiResponse getBaslikDomainId = domainWebService.getBaslikDomainId(domainId);
+        return new ResponseEntity<>(getBaslikDomainId,HttpStatus.OK);
     }
 
 

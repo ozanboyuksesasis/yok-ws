@@ -8,9 +8,13 @@ import com.sesasis.donusum.yok.core.security.models.User;
 import com.sesasis.donusum.yok.core.security.repository.RoleRepository;
 import com.sesasis.donusum.yok.core.service.AbstractService;
 import com.sesasis.donusum.yok.core.service.IService;
+import com.sesasis.donusum.yok.dto.AnaBaslikDTO;
 import com.sesasis.donusum.yok.dto.DomainDTO;
+import com.sesasis.donusum.yok.entity.AnaBaslik;
 import com.sesasis.donusum.yok.entity.DashboardMenu;
 import com.sesasis.donusum.yok.entity.Domain;
+import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
+import com.sesasis.donusum.yok.repository.AnaBaslikRepository;
 import com.sesasis.donusum.yok.repository.DomainRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +27,16 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 
 	private  final RoleRepository roleRepository;
 	private final DomainRepository domainRepository;
+	private final AnaBaslikRepository anaBaslikRepository;
+	private final ModelMapperServiceImpl modelMapperService;
 
-	public DomainService(DomainRepository repository, RoleRepository roleRepository, DomainRepository domainRepository) {
+	public DomainService(DomainRepository repository, RoleRepository roleRepository, DomainRepository domainRepository, AnaBaslikRepository anaBaslikRepository, ModelMapperServiceImpl modelMapperService) {
 		super(repository);
 		this.roleRepository = roleRepository;
 		this.domainRepository = domainRepository;
-	}
+        this.anaBaslikRepository = anaBaslikRepository;
+        this.modelMapperService = modelMapperService;
+    }
 
 
 	@Override
@@ -103,8 +111,18 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 
 	@Override
 	public ApiResponse findById(Long id) {
-		return null;
+		Domain domain = domainRepository.findById(id).orElse(null);
+		if (domain == null) {
+			return new ApiResponse<>(false, "Domain bulunamadı.", null);
+		}
+		AnaBaslik anaBaslik = domain.getAnaBaslik();
+		domain.setAnaBaslik(anaBaslik);
+
+		DomainDTO domainDTO = modelMapperService.response().map(domain, DomainDTO.class);
+
+		return new ApiResponse<>(true, "İşlem başarılı.", domainDTO);
 	}
+
 
 	@Override
 	public void deleteById(Long id) {

@@ -9,6 +9,7 @@ import com.sesasis.donusum.yok.entity.AnaBaslik;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.AnaBaslikRepository;
+import com.sesasis.donusum.yok.repository.DomainRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +20,18 @@ public class AnaBaslikService implements IService<AnaBaslikDTO> {
         private final AnaBaslikRepository anaBaslikRepository;
         private final ModelMapperServiceImpl modelMapperServiceImpl;
         private final SecurityContextUtil securityContextUtil;
-
+        private final DomainRepository domainRepository;
 
     @Override
     public ApiResponse save(AnaBaslikDTO anaBaslikDTO) {
         anaBaslikDTO.setBaslik(anaBaslikDTO.getBaslik().trim());
+
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         AnaBaslik anaBaslik = this.modelMapperServiceImpl.request().map(anaBaslikDTO, AnaBaslik.class);
+        domain.setAnaBaslik(anaBaslik);
         anaBaslik.setDomain(domain);
-        anaBaslikRepository.save(anaBaslik);
+
+        domainRepository.save(domain);
         AnaBaslikDTO dto = this.modelMapperServiceImpl.response().map(anaBaslik, AnaBaslikDTO.class);
         return new ApiResponse<>(true,"İşlem Bşarılı.",dto);
     }
