@@ -119,6 +119,7 @@ public class HaberService implements IService<HaberDTO> {
             haber.setSiraNo(index--);
         }
 
+
         List<HaberDTO> haberDTOS = habers.stream()
                 .map(haber -> this.modelMapperServiceImpl.response().map(haber, HaberDTO.class))
                 .collect(Collectors.toList());
