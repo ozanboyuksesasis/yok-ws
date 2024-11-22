@@ -6,6 +6,7 @@ import com.sesasis.donusum.yok.core.security.models.Role;
 import com.sesasis.donusum.yok.dto.DomainDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;

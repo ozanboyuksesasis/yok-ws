@@ -3,6 +3,7 @@ package com.sesasis.donusum.yok.service;
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.dto.MenuDTO;
 import com.sesasis.donusum.yok.dto.SliderDilCategoryDTO;
+import com.sesasis.donusum.yok.entity.AnaBaslik;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Menu;
 import com.sesasis.donusum.yok.entity.SliderDilCategory;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class DomainBilgiService {
+public class DomainWebService {
         private final DomainRepository domainRepository;
         private final HaberDilCategoryRepository haberDilCategoryRepository;
         private final DuyuruDilCategoryRepository duyuruDilCategoryRepository;
@@ -58,6 +59,15 @@ public class DomainBilgiService {
                 .collect(Collectors.toList());
 
         return new ApiResponse<>(true,"İşlem başarılı.",dtos);
+    }
+
+    public ApiResponse getBaslikDomainId(Long domainId){
+            Domain domain = domainRepository.findById(domainId).orElse(null);
+            if (domain==null){
+                return new ApiResponse<>(false,"Domain bulunamadı işlem başarısız.",null);
+            }
+
+            return new ApiResponse<>(true,"İşlem başarılı.",null);
     }
 
 

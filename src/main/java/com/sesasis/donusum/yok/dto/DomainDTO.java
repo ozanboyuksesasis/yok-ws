@@ -18,6 +18,7 @@ public class DomainDTO extends BaseDTO<Domain> {
     boolean anaDomainMi;
     RoleDTO role;
 
+    AnaBaslikDTO anaBaslikDTO;
 
     private List<MenuDTO> menuDTOS;
 

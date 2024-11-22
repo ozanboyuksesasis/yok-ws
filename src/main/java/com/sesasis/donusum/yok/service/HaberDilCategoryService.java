@@ -4,9 +4,11 @@ import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.dto.HaberDTO;
 import com.sesasis.donusum.yok.dto.HaberDilCategoryDTO;
+import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Haber;
 import com.sesasis.donusum.yok.entity.HaberDilCategory;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
+import com.sesasis.donusum.yok.repository.DomainRepository;
 import com.sesasis.donusum.yok.repository.HaberDilCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,20 +25,17 @@ public class HaberDilCategoryService implements IService<HaberDilCategoryDTO> {
 
     private final HaberDilCategoryRepository haberDilCategoryRepository;
     private final ModelMapperServiceImpl modelMapperServiceImpl;
-
+    private final DomainRepository domainRepository;
 
 
     @Override
     public ApiResponse save(HaberDilCategoryDTO haberDilCategoryDTO) {
-        try {
             haberDilCategoryDTO.setName(haberDilCategoryDTO.getName().trim().toUpperCase());
             HaberDilCategory haberDilCategory = this.modelMapperServiceImpl.request().map(haberDilCategoryDTO, HaberDilCategory.class);
             haberDilCategoryRepository.save(haberDilCategory);
             HaberDilCategoryDTO dto = this.modelMapperServiceImpl.response().map(haberDilCategory, HaberDilCategoryDTO.class);
             return new ApiResponse<>(true, "İşlem başarılı.", dto);
-        } catch (Exception e) {
-            return new ApiResponse<>(false, "İşlem başarısız oldu: " + e.getMessage(),null);
-        }
+
     }
 
 
