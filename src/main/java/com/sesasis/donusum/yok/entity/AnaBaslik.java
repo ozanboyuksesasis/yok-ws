@@ -20,7 +20,8 @@ public class AnaBaslik {
     @Column(name = "baslik")
     private String baslik;
 
-    @OneToOne(mappedBy = "anaBaslik")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "domain_id")
     private Domain domain;
 
 }

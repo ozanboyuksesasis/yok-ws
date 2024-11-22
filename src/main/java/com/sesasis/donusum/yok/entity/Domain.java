@@ -27,8 +27,7 @@ public class Domain extends BaseModel<DomainDTO> {
 	@JsonIgnore
 	private Role role;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "ana_baslik_id")
+	@OneToOne(mappedBy = "domain", cascade = CascadeType.ALL)
 	private AnaBaslik anaBaslik;
 
 
