@@ -23,11 +23,6 @@ public class HaberDilCategory {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "domain_id")
-    private Domain domain ;
 
-    @OneToMany(mappedBy = "haberDilCategory", cascade = CascadeType.ALL)
-    private List<Haber> haberList;
 
 }

@@ -3,6 +3,7 @@ package com.sesasis.donusum.yok.controller.web;
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.service.AnaBaslikService;
 import com.sesasis.donusum.yok.service.DomainWebService;
+import com.sesasis.donusum.yok.service.HaberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +20,7 @@ public class DomainWebController {
 
     private final DomainWebService domainWebService;
     private  final AnaBaslikService anaBaslikService;
+    private final HaberService haberService;
 
 
     @GetMapping(value = "/getMenus/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,10 +41,17 @@ public class DomainWebController {
         ApiResponse getBaslikDomainId = domainWebService.getBaslikDomainId(domainId);
         return new ResponseEntity<>(getBaslikDomainId,HttpStatus.OK);
     }
+
     @GetMapping(value = "/getBaslik/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<?> getAnaBaslik(@PathVariable Long id){
         ApiResponse byOneDomainIdAnaBaslik = anaBaslikService.findByOneDomainIdAnaBaslik(id);
         return new ResponseEntity<>(byOneDomainIdAnaBaslik,HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getHabers/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getHabersDomainId(@PathVariable Long domainId){
+        ApiResponse habersDomainId = haberService.getHabersDomainId(domainId);
+        return new ResponseEntity<>(habersDomainId,HttpStatus.OK);
     }
 
 
