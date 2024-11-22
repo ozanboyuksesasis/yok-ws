@@ -52,6 +52,8 @@ public class DomainWebController {
     public ResponseEntity<?> getHabersDomainId(@PathVariable Long domainId){
         ApiResponse habersDomainId = haberService.getHabersDomainId(domainId);
         return new ResponseEntity<>(habersDomainId,HttpStatus.OK);
+
+
     }
 
 
