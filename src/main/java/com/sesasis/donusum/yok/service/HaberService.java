@@ -2,6 +2,7 @@ package com.sesasis.donusum.yok.service;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
+import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.HaberDTO;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Haber;
@@ -27,19 +28,19 @@ public class HaberService implements IService<HaberDTO> {
     private final ModelMapperServiceImpl modelMapperServiceImpl;
     private final DomainRepository domainRepository;
     private final HaberDilCategoryRepository  haberDilCategoryRepository;
+    private final SecurityContextUtil securityContextUtil;
     @Override
     public ApiResponse save(HaberDTO haberDTO) {
 
-        Domain newDomain = null;
-        if (haberDTO.getDomainId() != null) {
-            newDomain = this.domainRepository.findById(haberDTO.getDomainId()).orElse(null);
-        }
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+
+
         HaberDilCategory haberDilCategory = this.haberDilCategoryRepository.findById(haberDTO.getHaberDilId()).orElse(null);
         if (haberDilCategory == null) {
             return new ApiResponse<>(false,"Dil kategorisi bulunamadı.",null);
         }
         Haber haber = this.modelMapperServiceImpl.request().map(haberDTO, Haber.class);
-        haber.setDomain(newDomain);
+        haber.setDomain(domain);
         haber.setHaberDilCategory(haberDilCategory);
         Long maxSiraNo = haberRepository.findMaxSiraNo().orElse(0L);
         haber.setSiraNo(maxSiraNo + 1);
@@ -96,7 +97,7 @@ public class HaberService implements IService<HaberDTO> {
         List<Haber> habers = this.haberRepository.findAllByOrderByCreatedAtDesc();
 
         if (habers.isEmpty()) {
-            return new ApiResponse(false, "Sıra güncellemesi yapılacak duyuru bulunamadı.", null);
+            return new ApiResponse(false, "Sıra güncellemesi yapılacak haber bulunamadı.", null);
         }
         long index = 1;
         for (Haber haber : habers) {
@@ -105,6 +106,25 @@ public class HaberService implements IService<HaberDTO> {
 
         haberRepository.saveAll(habers);
         return new ApiResponse<>(true, "Sıra güncellendi.", null);
+    }
+
+    public  ApiResponse getHabersDomainId(Long domainId){
+        List<Haber> habers = haberRepository.findAllByDomainId(domainId);
+        if (habers == null){
+            return new ApiResponse<>(false,"Haber listesi bulunamadı.",null);
+        }
+        long index = habers.size();
+
+        for (Haber haber : habers) {
+            haber.setSiraNo(index--);
+        }
+
+
+        List<HaberDTO> haberDTOS = habers.stream()
+                .map(haber -> this.modelMapperServiceImpl.response().map(haber, HaberDTO.class))
+                .collect(Collectors.toList());
+
+        return new ApiResponse<>(true,"İşlem başarılı.",haberDTOS);
     }
 
 

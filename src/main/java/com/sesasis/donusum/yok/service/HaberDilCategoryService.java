@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,14 +46,8 @@ public class HaberDilCategoryService implements IService<HaberDilCategoryDTO> {
         if (haberDilCategoryList.isEmpty()) {
             return new ApiResponse<>(false,"Liste boş.",null);
         }
-
-        List<HaberDilCategoryDTO> dtos = haberDilCategoryList.stream().map(haberDilCategory -> {
-            HaberDilCategoryDTO dto = this.modelMapperServiceImpl.response().map(haberDilCategory, HaberDilCategoryDTO.class);
-
-            dto.setHaberList(haberDilCategory.getHaberList().stream().sorted(Comparator.comparing(Haber::getSiraNo).
-                    reversed()).collect(Collectors.toList()).stream().map(haber-> this.modelMapperServiceImpl.response().map(haber, HaberDTO.class)).collect(Collectors.toList()));
-            return dto;
-        }).collect(Collectors.toList());
+   List<HaberDilCategoryDTO> dtos = haberDilCategoryList.stream().map(haberDilCategory ->
+           this.modelMapperServiceImpl.response().map(haberDilCategory, HaberDilCategoryDTO.class)).collect(Collectors.toList());
 
         return new ApiResponse<>(true,"İşlem başarılıdır.",dtos);
     }
@@ -63,11 +58,7 @@ public class HaberDilCategoryService implements IService<HaberDilCategoryDTO> {
         if (haberDilCategory == null) {
             return new ApiResponse<>(false,"İşlem başarısız.",null);
         }
-        List<Haber> siralamaHaberList = haberDilCategory.getHaberList().stream().sorted(Comparator.comparing(Haber::getSiraNo).reversed()).collect(Collectors.toList());
-
         HaberDilCategoryDTO dto = this.modelMapperServiceImpl.response().map(haberDilCategory, HaberDilCategoryDTO.class);
-        dto.setHaberList(siralamaHaberList.stream().map(haber -> this.modelMapperServiceImpl.response().map(haber, HaberDTO.class)).collect(Collectors.toList()));
-
         return new ApiResponse<>(true,"İşlem başarılı.",dto);
     }
 

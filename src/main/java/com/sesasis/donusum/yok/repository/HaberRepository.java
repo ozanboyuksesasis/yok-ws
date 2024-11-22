@@ -17,4 +17,6 @@ public interface HaberRepository extends JpaRepository<Haber, Long> {
 
     List<Haber> findAllByOrderBySiraNoDesc();
 
+    List<Haber> findAllByDomainId(Long domainId);
+
 }
