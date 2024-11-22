@@ -16,5 +16,5 @@ public interface HaberRepository extends JpaRepository<Haber, Long> {
     Optional<Long> findMaxSiraNo();
 
     List<Haber> findAllByOrderBySiraNoDesc();
-
+    List<Haber> findAllByDomainId(Long domainId);
 }

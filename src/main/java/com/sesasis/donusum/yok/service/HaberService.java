@@ -107,6 +107,23 @@ public class HaberService implements IService<HaberDTO> {
         return new ApiResponse<>(true, "Sıra güncellendi.", null);
     }
 
+    public  ApiResponse getHabersDomainId(Long domainId){
+        List<Haber> habers = haberRepository.findAllByDomainId(domainId);
+        if (habers == null){
+            return new ApiResponse<>(false,"Haber listesi bulunamadı.",null);
+        }
+        long index = habers.size();
 
+        for (Haber haber : habers) {
+            haber.setSiraNo(index--);
+        }
+
+
+        List<HaberDTO> haberDTOS = habers.stream()
+                .map(haber -> this.modelMapperServiceImpl.response().map(haber, HaberDTO.class))
+                .collect(Collectors.toList());
+
+        return new ApiResponse<>(true,"İşlem başarılı.",haberDTOS);
+    }
 
 }
