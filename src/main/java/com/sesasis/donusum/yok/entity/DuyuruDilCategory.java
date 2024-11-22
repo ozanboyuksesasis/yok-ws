@@ -23,10 +23,5 @@ public class DuyuruDilCategory {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "domain_id")
-    private Domain domain ;
 
-    @OneToMany(mappedBy = "duyuruDilCategory", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Duyuru> duyuruList;
 }

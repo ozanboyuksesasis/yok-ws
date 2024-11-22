@@ -31,9 +31,6 @@ public class Domain extends BaseModel<DomainDTO> {
 	@JsonIgnore
 	private List<Menu> menus;
 
-	@OneToMany(mappedBy = "domain", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JsonIgnore
-	private List<DuyuruDilCategory> duyuruDilCategories;
 
 	@OneToMany(mappedBy = "domain", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JsonIgnore
