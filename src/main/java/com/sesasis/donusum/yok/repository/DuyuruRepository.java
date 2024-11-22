@@ -16,7 +16,7 @@ public interface DuyuruRepository extends JpaRepository<Duyuru, Long> {
     Optional<Long> findMaxSiraNo();
 
     List<Duyuru> findAllByOrderBySiraNoDesc();
-    List<Duyuru> findByDomain_IdAndDuyuruDilCategory_Id(Long domainId, Long duyuruDilCategoryId);
+    List<Duyuru> findByDomain_IdAndDuyuruDilCategory_IdOrderBySiraNoDesc(Long domainId, Long dilCategoryId);
 
 
 }
