@@ -31,4 +31,10 @@ public class DuyuruDilCategoryController {
         ApiResponse all = duyuruDilCategoryService.findAll();
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
+
+    @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        duyuruDilCategoryService.deleteById(id);
+    return new ResponseEntity<>(new ApiResponse<>(true,"Silme işlemi başarılıdır.",null),HttpStatus.OK);
+    }
 }
