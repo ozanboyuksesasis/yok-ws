@@ -24,7 +24,6 @@ public class DomainWebController {
     private final HaberService haberService;
     private final DuyuruService duyuruService;
 
-
     @GetMapping(value = "/getMenus/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllMenusDomainId(@PathVariable Long domainId) {
         ApiResponse allMenusDomainId = domainWebService.getAllMenusDomainId(domainId);
@@ -61,6 +60,7 @@ public class DomainWebController {
         ApiResponse apiResponse = duyuruService.duyuruListDomainId(domainId, dilCategoryId);
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
+
 
     @GetMapping(value = "/getHabers/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> haberListDomainId(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){

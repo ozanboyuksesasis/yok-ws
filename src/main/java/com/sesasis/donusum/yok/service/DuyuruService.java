@@ -2,6 +2,7 @@ package com.sesasis.donusum.yok.service;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
+import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.DuyuruDTO;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Duyuru;
@@ -27,19 +28,18 @@ public class DuyuruService implements IService<DuyuruDTO> {
     private final DomainRepository domainRepository;
     private final ModelMapperServiceImpl modelMapperServiceImpl;
     private final DuyuruDilCategoryRepository duyuruDilCategoryRepository;
+    private final SecurityContextUtil securityContextUtil;
 
     @Override
     public ApiResponse save(DuyuruDTO duyuruDTO) {
-        Domain newDomain = null;
-        if (duyuruDTO.getDomainId() != null) {
-            newDomain = this.domainRepository.findById(duyuruDTO.getDomainId()).orElse(null);
-        }
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+
         DuyuruDilCategory dilCategory =this.duyuruDilCategoryRepository.findById(duyuruDTO.getDuyuruDilId()).orElse(null);
         if (dilCategory == null) {
             return new ApiResponse(false,"Dil seçimi bulunamadı.",null);
         }
         Duyuru duyuru = this.modelMapperServiceImpl.request().map(duyuruDTO, Duyuru.class);
-        duyuru.setDomain(newDomain);
+        duyuru.setDomain(domain);
         Long maxSiraNo = duyuruRepository.findMaxSiraNo().orElse(0L);
         duyuru.setSiraNo(maxSiraNo + 1);
 
@@ -112,4 +112,14 @@ public class DuyuruService implements IService<DuyuruDTO> {
         return new ApiResponse<>(true, "Sıra güncellendi.", null);
     }
 
+    public ApiResponse duyuruListDomainId(Long domainId,Long dilCategoryId){
+        List<Duyuru> duyuruList = duyuruRepository.findByDomain_IdAndDuyuruDilCategory_IdOrderBySiraNoDesc(domainId, dilCategoryId);
+
+        if (duyuruList.isEmpty()){
+            return new ApiResponse<>(false,"Liste boş",null);
+        }
+
+        List<DuyuruDTO> duyurus = duyuruList.stream().map(duyuru -> this.modelMapperServiceImpl.response().map(duyuru,DuyuruDTO.class)).collect(Collectors.toList());
+        return new ApiResponse<>(true,"İşlem başarılı.",duyurus);
+    }
 }
