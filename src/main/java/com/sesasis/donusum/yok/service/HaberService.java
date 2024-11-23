@@ -3,8 +3,10 @@ package com.sesasis.donusum.yok.service;
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
+import com.sesasis.donusum.yok.dto.DuyuruDTO;
 import com.sesasis.donusum.yok.dto.HaberDTO;
 import com.sesasis.donusum.yok.entity.Domain;
+import com.sesasis.donusum.yok.entity.Duyuru;
 import com.sesasis.donusum.yok.entity.Haber;
 import com.sesasis.donusum.yok.entity.HaberDilCategory;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
@@ -127,6 +129,17 @@ public class HaberService implements IService<HaberDTO> {
         return new ApiResponse<>(true,"İşlem başarılı.",haberDTOS);
     }
 
+
+    public ApiResponse haberListDomainId(Long domainId,Long dilCategoryId){
+        List<Haber> haberList = haberRepository.findByDomain_IdAndHaberDilCategory_IdOrderBySiraNoDesc(domainId, dilCategoryId);
+
+        if (haberList.isEmpty()){
+            return new ApiResponse<>(false,"Liste boş",null);
+        }
+
+        List<HaberDTO> haberDTOS = haberList.stream().map(haber -> this.modelMapperServiceImpl.response().map(haber,HaberDTO.class)).collect(Collectors.toList());
+        return new ApiResponse<>(true,"İşlem başarılı.",haberDTOS);
+    }
 
 
 }

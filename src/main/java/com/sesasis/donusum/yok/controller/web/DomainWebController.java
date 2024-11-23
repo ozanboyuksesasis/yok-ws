@@ -48,7 +48,7 @@ public class DomainWebController {
         ApiResponse byOneDomainIdAnaBaslik = anaBaslikService.findByOneDomainIdAnaBaslik(id);
         return new ResponseEntity<>(byOneDomainIdAnaBaslik,HttpStatus.OK);
     }
-
+//not : sadece domaindei haberlerin hepsi karışık gelir , dil seçimi için aşağıda var
     @GetMapping(value = "/getHabers/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getHabersDomainId(@PathVariable Long domainId){
         ApiResponse habersDomainId = haberService.getHabersDomainId(domainId);
@@ -61,6 +61,12 @@ public class DomainWebController {
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
+
+    @GetMapping(value = "/getHabers/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> haberListDomainId(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
+        ApiResponse apiResponse = haberService.haberListDomainId(domainId, dilCategoryId);
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+    }
 
 
 
