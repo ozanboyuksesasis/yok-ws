@@ -1,10 +1,7 @@
 package com.sesasis.donusum.yok.controller.web;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
-import com.sesasis.donusum.yok.service.AnaBaslikService;
-import com.sesasis.donusum.yok.service.DomainWebService;
-import com.sesasis.donusum.yok.service.DuyuruService;
-import com.sesasis.donusum.yok.service.HaberService;
+import com.sesasis.donusum.yok.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RequestMapping(value = "/api/domain-bilgi")
 @RequiredArgsConstructor
@@ -23,6 +22,7 @@ public class DomainWebController {
     private  final AnaBaslikService anaBaslikService;
     private final HaberService haberService;
     private final DuyuruService duyuruService;
+    private final OnemliBilgilerService onemliBilgilerService;
 
     @GetMapping(value = "/getMenus/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllMenusDomainId(@PathVariable Long domainId) {
@@ -61,12 +61,20 @@ public class DomainWebController {
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
-
     @GetMapping(value = "/getHabers/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> haberListDomainId(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
         ApiResponse apiResponse = haberService.haberListDomainId(domainId, dilCategoryId);
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
+
+    @GetMapping(value = "/getOnemliBilgi/{domainId}/{dilCategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getOnemliBilgi(
+            @PathVariable Long domainId,
+            @PathVariable Long dilCategoryId) {
+        ApiResponse apiResponse = onemliBilgilerService.onemliBilgilerListDomainId(domainId, dilCategoryId);
+        return ResponseEntity.ok(apiResponse);
+    }
+
 
 
 
