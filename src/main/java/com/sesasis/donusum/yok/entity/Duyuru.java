@@ -21,16 +21,15 @@ public class Duyuru {
     @Column(name = "sira_no")
     private Long siraNo;
 
-    @Column(name = "baslık")
-    private String baslık;
+    @Column(name = "baslik")
+    private String baslik;
 
-    @Column(name = "ozet")
-    private String ozet;
-
+    @Column(name = "alt_baslik")
+    private String altBaslik;
 
     @Lob
-    @Column(name = "detay", columnDefinition = "TEXT")
-    private String detay;
+    @Column(name = "haber_icerik", columnDefinition = "TEXT")
+    private String haberIcerik;
 
     @Column(name = "sayfa_url")
     private String sayfaUrl;
@@ -43,8 +42,8 @@ public class Duyuru {
     @JoinColumn(name = "domain_id")
     private Domain  domain;
 
-    @ManyToOne
+    @OneToOne
     @JsonIgnore
-    @JoinColumn(name = "duyuru_dil_id")
-    private DuyuruDilCategory duyuruDilCategory;
+    @JoinColumn(name = "dil_category_id")
+    private GenelDilCategory genelDilCategory;
 }

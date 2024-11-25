@@ -3,15 +3,12 @@ package com.sesasis.donusum.yok.service;
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
-import com.sesasis.donusum.yok.dto.HaberDTO;
 import com.sesasis.donusum.yok.dto.OnemliBilgilerDTO;
-import com.sesasis.donusum.yok.dto.OnemliBilgilerDilCategoryDTO;
 import com.sesasis.donusum.yok.entity.Domain;
-import com.sesasis.donusum.yok.entity.Haber;
+import com.sesasis.donusum.yok.entity.GenelDilCategory;
 import com.sesasis.donusum.yok.entity.OnemliBilgiler;
-import com.sesasis.donusum.yok.entity.OnemliBilgilerDilCategory;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
-import com.sesasis.donusum.yok.repository.OnemliBilgilerDilCategoryRepository;
+import com.sesasis.donusum.yok.repository.GenelDilCategoryRepository;
 import com.sesasis.donusum.yok.repository.OnemliBilgilerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,23 +24,23 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
     private final OnemliBilgilerRepository onemliBilgilerRepository;
     private final ModelMapperServiceImpl modelMapperService;
     private final SecurityContextUtil securityContextUtil;
-    private final OnemliBilgilerDilCategoryRepository onemliBilgilerDilCategoryRepository;
+    private final GenelDilCategoryRepository genelDilCategoryRepository;
 
     @Override
     public ApiResponse save(OnemliBilgilerDTO onemliBilgilerDTO) {
-        onemliBilgilerDTO.setBaslık(onemliBilgilerDTO.getBaslık().trim());
-        onemliBilgilerDTO.setOzet(onemliBilgilerDTO.getOzet().trim());
-        onemliBilgilerDTO.setDetay(onemliBilgilerDTO.getDetay().trim());
+        onemliBilgilerDTO.setBaslik(onemliBilgilerDTO.getBaslik().trim());
+        onemliBilgilerDTO.setAltBaslik(onemliBilgilerDTO.getAltBaslik().trim());
+        onemliBilgilerDTO.setOnemliBilgilerIcerik(onemliBilgilerDTO.getOnemliBilgilerIcerik().trim());
 
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
-        OnemliBilgilerDilCategory dilCategory = onemliBilgilerDilCategoryRepository
-                .findById(onemliBilgilerDTO.getOnemliBilgilerDilId()).orElse(null);
+        GenelDilCategory dilCategory = genelDilCategoryRepository
+                .findById(onemliBilgilerDTO.getGenelDilCategoryId()).orElse(null);
         if (dilCategory == null) {
             return new ApiResponse<>(false, "Dil kategorisi bulunamadı.", null);
         }
         OnemliBilgiler onemliBilgiler = this.modelMapperService.request().map(onemliBilgilerDTO, OnemliBilgiler.class);
         onemliBilgiler.setDomain(domain);
-        onemliBilgiler.setOnemliBilgilerDilCategory(dilCategory);
+        onemliBilgiler.setGenelDilCategory(dilCategory);
 
         Long maxSiraNo = onemliBilgilerRepository.findMaxSiraNo();
         onemliBilgiler.setSiraNo(maxSiraNo + 1);
@@ -71,23 +68,21 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
     }
     public ApiResponse onemliBilgilerListDomainId(Long domainId, Long dilCategoryId) {
         List<OnemliBilgiler> onemliBilgilers = onemliBilgilerRepository
-                .findByDomain_IdAndOnemliBilgilerDilCategory_IdOrderBySiraNoDesc(domainId, dilCategoryId);
+                .findByDomain_IdAndGenelDilCategory_IdOrderBySiraNoDesc(domainId, dilCategoryId);
 
         if (onemliBilgilers.isEmpty()) {
             return new ApiResponse<>(false, "Liste boş", null);
         }
 
-        // DTO dönüşümü sırasında 'siraNo' ve diğer alanları haritalayın
         List<OnemliBilgilerDTO> onemliBilgilerDTOS = onemliBilgilers.stream()
                 .map(onemliBilgiler -> {
                     OnemliBilgilerDTO dto = new OnemliBilgilerDTO();
                     dto.setId(onemliBilgiler.getId());
-                    dto.setSiraNo(onemliBilgiler.getSiraNo()); // 'siraNo' doğru şekilde ayarlanıyor
-                    dto.setDomainId(onemliBilgiler.getDomain().getId());
-                    dto.setOnemliBilgilerDilId(onemliBilgiler.getOnemliBilgilerDilCategory().getId());
-                    dto.setBaslık(onemliBilgiler.getBaslık());
-                    dto.setOzet(onemliBilgiler.getOzet());
-                    dto.setDetay(onemliBilgiler.getDetay());
+                    dto.setSiraNo(onemliBilgiler.getSiraNo());
+                    dto.setGenelDilCategoryId(onemliBilgiler.getGenelDilCategory().getId());
+                    dto.setBaslik(onemliBilgiler.getBaslik());
+                    dto.setAltBaslik(onemliBilgiler.getAltBaslik());
+                    dto.setOnemliBilgilerIcerik(onemliBilgiler.getOnemliBilgilerIcerik());
                     dto.setSayfaUrl(onemliBilgiler.getSayfaUrl());
                     dto.setCreatedAt(onemliBilgiler.getCreatedAt());
                     return dto;

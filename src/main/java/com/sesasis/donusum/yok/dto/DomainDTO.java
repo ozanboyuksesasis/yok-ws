@@ -23,14 +23,6 @@ public class DomainDTO extends BaseDTO<Domain> {
     private List<MenuDTO> menuDTOS;
 
 
-    private List<HaberDilCategoryDTO> haberDilCategoryDTOS;
-
-
-    private List<DuyuruDilCategoryDTO> duyuruDilCategoryDTOS;
-
-
-    private List<SliderDilCategoryDTO> sliderDilCategoryDTOS;
-
     @Override
     public Domain toEntity() {
         Domain domain = new Domain();

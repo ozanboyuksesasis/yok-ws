@@ -20,20 +20,18 @@ public class HaberDTO {
 
     private Long siraNo;
 
-    private Long domainId;
-
     @NotNull(message = "Dil kategorisi boş olamaz.")
-    private Long haberDilId;
+    private Long genelDilCategoryId;
 
     @NotEmpty(message = "Başlık alanı boş olamaz.")
     @Size(max = 100, message = "Başlık en fazla 100 karakter olabilir.")
-    private String baslık;
+    private String baslik;
 
     @Size(max = 500, message = "Özet en fazla 500 karakter olabilir.")
-    private String ozet;
+    private String altBaslik;
 
     @Lob
-    private String detay;
+    private String haberIcerik;
 
     @URL(message = "Geçerli bir URL giriniz.")
     private String sayfaUrl;;

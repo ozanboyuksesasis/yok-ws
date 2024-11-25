@@ -23,6 +23,7 @@ public class DomainWebController {
     private final HaberService haberService;
     private final DuyuruService duyuruService;
     private final OnemliBilgilerService onemliBilgilerService;
+    private final GenelDilCategoryService genelDilCategoryService;
 
     @GetMapping(value = "/getMenus/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllMenusDomainId(@PathVariable Long domainId) {
@@ -73,6 +74,13 @@ public class DomainWebController {
             @PathVariable Long dilCategoryId) {
         ApiResponse apiResponse = onemliBilgilerService.onemliBilgilerListDomainId(domainId, dilCategoryId);
         return ResponseEntity.ok(apiResponse);
+    }
+
+
+    @GetMapping(value = "/all-dil-category",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAll(){
+        ApiResponse all = genelDilCategoryService.findAll();
+        return ResponseEntity.ok(all);
     }
 
 

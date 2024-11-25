@@ -21,8 +21,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class DomainWebService {
         private final DomainRepository domainRepository;
-        private final HaberDilCategoryRepository haberDilCategoryRepository;
-        private final DuyuruDilCategoryRepository duyuruDilCategoryRepository;
         private final SliderDilCategoryRepository sliderDilCategoryRepository;
         private final ModelMapperServiceImpl modelMapperServiceImpl;
 

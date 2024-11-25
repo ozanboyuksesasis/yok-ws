@@ -5,13 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "önemli_bilgi_dil_category")
-public class OnemliBilgilerDilCategory {
+@Table(name = "haber_dil_category")
+public class GenelDilCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +22,7 @@ public class OnemliBilgilerDilCategory {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+
 
 }

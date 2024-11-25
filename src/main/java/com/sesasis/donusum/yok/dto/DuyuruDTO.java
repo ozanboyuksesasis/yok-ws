@@ -22,20 +22,18 @@ public class DuyuruDTO {
 
     private Long siraNo;
 
-    private Long domainId;
-
     @NotNull(message = "Hata : Duyuru seçimi boş olamaz.")
-    private Long duyuruDilId;
+    private Long genelDilCategoryId;
 
     @NotEmpty(message = "Başlık alanı boş olamaz.")
     @Size(max = 100, message = "Başlık en fazla 100 karakter olabilir.")
-    private String baslık;
+    private String baslik;
 
     @Size(max = 500, message = "Özet en fazla 1000 karakter olabilir.")
-    private String ozet;
+    private String altBaslik;
 
     @Lob
-    private String detay;
+    private String duyuruIcerik;
 
     @URL(message = "Geçerli bir URL giriniz.")
     private String sayfaUrl;;
