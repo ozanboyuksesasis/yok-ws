@@ -31,9 +31,9 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
 
     @Override
     public ApiResponse save(OnemliBilgilerDTO onemliBilgilerDTO) {
-        onemliBilgilerDTO.setBaslık(onemliBilgilerDTO.getBaslık().trim());
-        onemliBilgilerDTO.setOzet(onemliBilgilerDTO.getOzet().trim());
-        onemliBilgilerDTO.setDetay(onemliBilgilerDTO.getDetay().trim());
+        onemliBilgilerDTO.setBaslik(onemliBilgilerDTO.getBaslik().trim());
+        onemliBilgilerDTO.setAltBaslik(onemliBilgilerDTO.getAltBaslik().trim());
+        onemliBilgilerDTO.setOnemliBilgilerIcerik(onemliBilgilerDTO.getOnemliBilgilerIcerik().trim());
 
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         OnemliBilgilerDilCategory dilCategory = onemliBilgilerDilCategoryRepository
@@ -77,17 +77,15 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
             return new ApiResponse<>(false, "Liste boş", null);
         }
 
-        // DTO dönüşümü sırasında 'siraNo' ve diğer alanları haritalayın
         List<OnemliBilgilerDTO> onemliBilgilerDTOS = onemliBilgilers.stream()
                 .map(onemliBilgiler -> {
                     OnemliBilgilerDTO dto = new OnemliBilgilerDTO();
                     dto.setId(onemliBilgiler.getId());
-                    dto.setSiraNo(onemliBilgiler.getSiraNo()); // 'siraNo' doğru şekilde ayarlanıyor
-                    dto.setDomainId(onemliBilgiler.getDomain().getId());
+                    dto.setSiraNo(onemliBilgiler.getSiraNo());
                     dto.setOnemliBilgilerDilId(onemliBilgiler.getOnemliBilgilerDilCategory().getId());
-                    dto.setBaslık(onemliBilgiler.getBaslık());
-                    dto.setOzet(onemliBilgiler.getOzet());
-                    dto.setDetay(onemliBilgiler.getDetay());
+                    dto.setBaslik(onemliBilgiler.getBaslik());
+                    dto.setAltBaslik(onemliBilgiler.getAltBaslik());
+                    dto.setOnemliBilgilerIcerik(onemliBilgiler.getOnemliBilgilerIcerik());
                     dto.setSayfaUrl(onemliBilgiler.getSayfaUrl());
                     dto.setCreatedAt(onemliBilgiler.getCreatedAt());
                     return dto;

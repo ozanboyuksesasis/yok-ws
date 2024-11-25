@@ -23,15 +23,16 @@ public class OnemliBilgiler {
     @Column(name = "sira_no")
     private Long siraNo;
 
-    @Column(name = "baslık")
-    private String baslık;
 
-    @Column(name = "ozet")
-    private String ozet;
+    @Column(name = "baslik")
+    private String baslik;
+
+    @Column(name = "alt_baslik")
+    private String altBaslik;
 
     @Lob
-    @Column(name = "detay", columnDefinition = "TEXT")
-    private String detay;
+    @Column(name = "haber_icerik", columnDefinition = "TEXT")
+    private String OnemliBilgilerIcerik;
 
     @Column(name = "sayfa_url")
     private String sayfaUrl;
