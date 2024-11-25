@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "haber_dil_category")
+@Table(name = "genel_dil_category")
 public class GenelDilCategory {
 
     @Id
