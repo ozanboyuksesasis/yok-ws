@@ -7,11 +7,11 @@ import com.sesasis.donusum.yok.dto.DuyuruDTO;
 import com.sesasis.donusum.yok.dto.HaberDTO;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Duyuru;
+import com.sesasis.donusum.yok.entity.GenelDilCategory;
 import com.sesasis.donusum.yok.entity.Haber;
-import com.sesasis.donusum.yok.entity.HaberDilCategory;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.DomainRepository;
-import com.sesasis.donusum.yok.repository.HaberDilCategoryRepository;
+import com.sesasis.donusum.yok.repository.GenelDilCategoryRepository;
 import com.sesasis.donusum.yok.repository.HaberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class HaberService implements IService<HaberDTO> {
     private final HaberRepository haberRepository;
     private final ModelMapperServiceImpl modelMapperServiceImpl;
     private final DomainRepository domainRepository;
-    private final HaberDilCategoryRepository  haberDilCategoryRepository;
+    private final GenelDilCategoryRepository genelDilCategoryRepository;
     private final SecurityContextUtil securityContextUtil;
     @Override
     public ApiResponse save(HaberDTO haberDTO) {
@@ -37,13 +37,13 @@ public class HaberService implements IService<HaberDTO> {
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
 
 
-        HaberDilCategory haberDilCategory = this.haberDilCategoryRepository.findById(haberDTO.getHaberDilId()).orElse(null);
-        if (haberDilCategory == null) {
+        GenelDilCategory genelDilCategory = this.genelDilCategoryRepository.findById(haberDTO.getGenelDilCategoryId()).orElse(null);
+        if (genelDilCategory == null) {
             return new ApiResponse<>(false,"Dil kategorisi bulunamadı.",null);
         }
         Haber haber = this.modelMapperServiceImpl.request().map(haberDTO, Haber.class);
         haber.setDomain(domain);
-        haber.setHaberDilCategory(haberDilCategory);
+        haber.setGenelDilCategory(genelDilCategory);
         Long maxSiraNo = haberRepository.findMaxSiraNo().orElse(0L);
         haber.setSiraNo(maxSiraNo + 1);
 
@@ -131,7 +131,7 @@ public class HaberService implements IService<HaberDTO> {
 
 
     public ApiResponse haberListDomainId(Long domainId,Long dilCategoryId){
-        List<Haber> haberList = haberRepository.findByDomain_IdAndHaberDilCategory_IdOrderBySiraNoDesc(domainId, dilCategoryId);
+        List<Haber> haberList = haberRepository.findByDomain_IdAndGenelDilCategory_IdOrderBySiraNoDesc(domainId, dilCategoryId);
 
         if (haberList.isEmpty()){
             return new ApiResponse<>(false,"Liste boş",null);

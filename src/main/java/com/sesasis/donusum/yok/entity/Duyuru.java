@@ -42,8 +42,8 @@ public class Duyuru {
     @JoinColumn(name = "domain_id")
     private Domain  domain;
 
-    @ManyToOne
+    @OneToOne
     @JsonIgnore
-    @JoinColumn(name = "duyuru_dil_id")
-    private DuyuruDilCategory duyuruDilCategory;
+    @JoinColumn(name = "dil_category_id")
+    private GenelDilCategory genelDilCategory;
 }

@@ -23,7 +23,7 @@ public class DuyuruDTO {
     private Long siraNo;
 
     @NotNull(message = "Hata : Duyuru seçimi boş olamaz.")
-    private Long duyuruDilId;
+    private Long genelDilCategoryId;
 
     @NotEmpty(message = "Başlık alanı boş olamaz.")
     @Size(max = 100, message = "Başlık en fazla 100 karakter olabilir.")

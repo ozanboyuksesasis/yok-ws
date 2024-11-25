@@ -47,7 +47,7 @@ public class Haber {
 
     @OneToOne
     @JsonIgnore
-    @JoinColumn(name = "haber_dil_category_id")
-    private HaberDilCategory haberDilCategory;
+    @JoinColumn(name = "dil_category_id")
+    private GenelDilCategory genelDilCategory;
 
 }

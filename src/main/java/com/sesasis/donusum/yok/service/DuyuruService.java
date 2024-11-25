@@ -6,11 +6,11 @@ import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.DuyuruDTO;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Duyuru;
-import com.sesasis.donusum.yok.entity.DuyuruDilCategory;
+import com.sesasis.donusum.yok.entity.GenelDilCategory;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.DomainRepository;
-import com.sesasis.donusum.yok.repository.DuyuruDilCategoryRepository;
 import com.sesasis.donusum.yok.repository.DuyuruRepository;
+import com.sesasis.donusum.yok.repository.GenelDilCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +27,14 @@ public class DuyuruService implements IService<DuyuruDTO> {
     private final DuyuruRepository duyuruRepository;
     private final DomainRepository domainRepository;
     private final ModelMapperServiceImpl modelMapperServiceImpl;
-    private final DuyuruDilCategoryRepository duyuruDilCategoryRepository;
+    private final GenelDilCategoryRepository genelDilCategoryRepository;
     private final SecurityContextUtil securityContextUtil;
 
     @Override
     public ApiResponse save(DuyuruDTO duyuruDTO) {
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
 
-        DuyuruDilCategory dilCategory =this.duyuruDilCategoryRepository.findById(duyuruDTO.getDuyuruDilId()).orElse(null);
+        GenelDilCategory dilCategory =this.genelDilCategoryRepository.findById(duyuruDTO.getGenelDilCategoryId()).orElse(null);
         if (dilCategory == null) {
             return new ApiResponse(false,"Dil seçimi bulunamadı.",null);
         }
@@ -44,7 +44,7 @@ public class DuyuruService implements IService<DuyuruDTO> {
         duyuru.setSiraNo(maxSiraNo + 1);
 
         duyuru.setCreatedAt(ZonedDateTime.now(ZoneId.of("Europe/Istanbul")).toLocalDate());
-        duyuru.setDuyuruDilCategory(dilCategory);
+        duyuru.setGenelDilCategory(dilCategory);
         this.duyuruRepository.save(duyuru);
 
         DuyuruDTO dto = this.modelMapperServiceImpl.response().map(duyuru, DuyuruDTO.class);
@@ -113,7 +113,7 @@ public class DuyuruService implements IService<DuyuruDTO> {
     }
 
     public ApiResponse duyuruListDomainId(Long domainId,Long dilCategoryId){
-        List<Duyuru> duyuruList = duyuruRepository.findByDomain_IdAndDuyuruDilCategory_IdOrderBySiraNoDesc(domainId, dilCategoryId);
+        List<Duyuru> duyuruList = duyuruRepository.findByDomain_IdAndGenelDilCategory_IdOrderBySiraNoDesc(domainId, dilCategoryId);
 
         if (duyuruList.isEmpty()){
             return new ApiResponse<>(false,"Liste boş",null);

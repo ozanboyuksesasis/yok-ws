@@ -47,7 +47,7 @@ public class OnemliBilgiler {
 
     @OneToOne
     @JsonIgnore
-    @JoinColumn(name = "haber_dil_category_id")
-    private OnemliBilgilerDilCategory onemliBilgilerDilCategory;
+    @JoinColumn(name = "dil_category_id")
+    private GenelDilCategory genelDilCategory;
 
 }

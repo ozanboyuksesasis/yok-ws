@@ -21,7 +21,7 @@ public class HaberDTO {
     private Long siraNo;
 
     @NotNull(message = "Dil kategorisi boş olamaz.")
-    private Long haberDilId;
+    private Long genelDilCategoryId;
 
     @NotEmpty(message = "Başlık alanı boş olamaz.")
     @Size(max = 100, message = "Başlık en fazla 100 karakter olabilir.")

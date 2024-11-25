@@ -23,7 +23,7 @@ public class OnemliBilgilerDTO {
 
 
     @NotNull(message = "Dil kategorisi boş olamaz.")
-    private Long onemliBilgilerDilId;
+    private Long genelDilCategoryId;
 
     @NotEmpty(message = "Başlık alanı boş olamaz.")
     @Size(max = 100, message = "Başlık en fazla 100 karakter olabilir.")
