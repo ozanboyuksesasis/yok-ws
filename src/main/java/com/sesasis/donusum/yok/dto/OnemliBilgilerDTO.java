@@ -21,6 +21,8 @@ public class OnemliBilgilerDTO {
 
     private Long siraNo;
 
+    private Boolean aktifMi;
+
 
     @NotNull(message = "Dil kategorisi boş olamaz.")
     private Long genelDilCategoryId;

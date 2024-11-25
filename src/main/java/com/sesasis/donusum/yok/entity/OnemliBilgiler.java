@@ -23,6 +23,8 @@ public class OnemliBilgiler {
     @Column(name = "sira_no")
     private Long siraNo;
 
+    @Column(name = "aktif_mi")
+    private Boolean aktifMi;
 
     @Column(name = "baslik")
     private String baslik;
