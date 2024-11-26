@@ -49,18 +49,18 @@ public class DuyuruService implements IService<DuyuruDTO> {
                duyuru.setAltBaslik(duyuruDTO.getAltBaslik());
                duyuru.setDuyuruIcerik(duyuruDTO.getDuyuruIcerik());
                duyuru.setAktifMi(duyuruDTO.getAktifMi());
-               duyuru.setUpdateAt(ZonedDateTime.now(ZoneId.of("Europe/Istanbul")).toLocalDate());
-           }else {
-
-               duyuru = this.modelMapperServiceImpl.request().map(duyuruDTO, Duyuru.class);
-               duyuru.setDomain(domain);
-               Long maxSiraNo = duyuruRepository.findMaxSiraNo().orElse(0L);
-               duyuru.setSiraNo(maxSiraNo + 1);
-               duyuru.setCreatedAt(ZonedDateTime.now(ZoneId.of("Europe/Istanbul")).toLocalDate());
-               duyuru.setGenelDilCategory(dilCategory);
-               this.duyuruRepository.save(duyuru);
-
+               duyuru.setUpdateAt(LocalDate.now());
            }
+        }else {
+
+            duyuru = this.modelMapperServiceImpl.request().map(duyuruDTO, Duyuru.class);
+            duyuru.setDomain(domain);
+            Long maxSiraNo = duyuruRepository.findMaxSiraNo().orElse(0L);
+            duyuru.setSiraNo(maxSiraNo + 1);
+            duyuru.setCreatedAt(ZonedDateTime.now(ZoneId.of("Europe/Istanbul")).toLocalDate());
+            duyuru.setGenelDilCategory(dilCategory);
+            this.duyuruRepository.save(duyuru);
+
         }
 
         DuyuruDTO dto = this.modelMapperServiceImpl.response().map(duyuru, DuyuruDTO.class);

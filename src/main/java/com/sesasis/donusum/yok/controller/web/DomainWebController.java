@@ -81,13 +81,22 @@ public class DomainWebController {
 
 
 
-    @GetMapping(value = "/getOnemliBilgi/{domainId}/{dilCategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getOnemliBilgi(
+    @GetMapping(value = "/get-onemli-bilgi-aktif/{domainId}/{dilCategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getOnemliAktifBilgi(
             @PathVariable Long domainId,
             @PathVariable Long dilCategoryId) {
-        ApiResponse apiResponse = onemliBilgilerService.onemliBilgilerListDomainId(domainId, dilCategoryId);
+        ApiResponse apiResponse = onemliBilgilerService.onemliBilgilerListTrueTrueDomainId(domainId, dilCategoryId);
         return ResponseEntity.ok(apiResponse);
     }
+
+    @GetMapping(value = "/get-onemli-bilgi-pasif/{domainId}/{dilCategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getOnemliPasifBilgi(
+            @PathVariable Long domainId,
+            @PathVariable Long dilCategoryId) {
+        ApiResponse apiResponse = onemliBilgilerService.onemliBilgilerFalseTrueDomainId(domainId, dilCategoryId);
+        return ResponseEntity.ok(apiResponse);
+    }
+
 
 
     @GetMapping(value = "/all-dil-category",produces = MediaType.APPLICATION_JSON_VALUE)

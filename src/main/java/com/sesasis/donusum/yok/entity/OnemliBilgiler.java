@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "onemli_bilgiler")
+@Table(name = "onemli_bilgi")
 public class OnemliBilgiler {
 
     @Id
@@ -33,7 +33,7 @@ public class OnemliBilgiler {
     private String altBaslik;
 
     @Lob
-    @Column(name = "haber_icerik", columnDefinition = "TEXT")
+    @Column(name = "onemli_bilgi_icerik", columnDefinition = "TEXT")
     private String OnemliBilgilerIcerik;
 
     @Column(name = "sayfa_url")
@@ -41,6 +41,9 @@ public class OnemliBilgiler {
 
     @Column(name = "created_at")
     private LocalDate createdAt;
+
+    @Column(name = "update_at")
+    private LocalDate updateAt;
 
     @ManyToOne
     @JsonIgnore
