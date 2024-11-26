@@ -6,6 +6,7 @@ import com.sesasis.donusum.yok.core.service.AbstractService;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.MenuIcerikDTO;
+import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.MenuIcerik;
 import com.sesasis.donusum.yok.repository.MenuIcerikRepository;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,11 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
 
     @Override
     public ApiResponse findAll() {
-        return new ApiResponse(true, MessageConstant.SUCCESS, getRepository().findAllByAltMenuAnaMenuDomainId(securityContextUtil.getCurrentUser().getLoggedDomain().getId()).stream().map(e->e.toDTO()).collect(Collectors.toList()));
+        Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        if (loggedDomain == null) {
+            return new ApiResponse(false, "No domain context available", null);
+        }
+        return new ApiResponse(true, MessageConstant.SUCCESS, getRepository().findAllByAltMenuAnaMenuDomainId(loggedDomain.getId()).stream().map(e->e.toDTO()).collect(Collectors.toList()));
     }
 
     @Override
@@ -50,6 +55,10 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
     }
 
     public ApiResponse getIcerikByAltMenuUrl(String altMenuUrl) {
-        return new ApiResponse(true, MessageConstant.SUCCESS,getRepository().findOneByAltMenuAnaMenuDomainIdAndAltMenuUrl(securityContextUtil.getCurrentUser().getLoggedDomain().getId(),altMenuUrl).toDTO());
+        Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        if (loggedDomain == null) {
+            return new ApiResponse(false, "No domain context available", null);
+        }
+        return new ApiResponse(true, MessageConstant.SUCCESS, getRepository().findOneByAltMenuAnaMenuDomainIdAndAltMenuUrl(loggedDomain.getId(), altMenuUrl).toDTO());
     }
 }

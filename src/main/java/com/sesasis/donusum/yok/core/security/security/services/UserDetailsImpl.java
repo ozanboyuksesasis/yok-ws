@@ -40,21 +40,30 @@ public class UserDetailsImpl implements UserDetails {
 		this.loggedDomain = loggedDomain;
 	}
 
-	public static UserDetailsImpl build(User user,Set<Domain> domainList) {
+	public static UserDetailsImpl build(User user, Set<Domain> domainList) {
 		List<GrantedAuthority> authorities = user.getRoleList().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getAd()))
 				.collect(Collectors.toList());
 
 		Set<DashboardMenu> dashboardMenus = new HashSet<>();
 
-		user.getRoleList().stream().forEach(e->{
-			dashboardMenus.addAll(e.getDashboardMenuList());
+		user.getRoleList().stream().forEach(role->{
+			dashboardMenus.addAll(role.getDashboardMenuList());
 		});
-
 		Domain currentDomain = null;
-		if (domainList.size()==1){
+		if (domainList.size() == 1) {
 			currentDomain = domainList.stream().findAny().get();
 		}
+//		else if (domainList.size() > 1) {
+//			if (loggedDomain == null) {
+//				throw new IllegalArgumentException("Logged domain is not set");
+//			}
+//			currentDomain = domainList.stream()
+//					.filter(domain -> domain.equals(loggedDomain))
+//					.findFirst()
+//					.orElseThrow(() -> new IllegalArgumentException("Invalid Domain Selection"));
+//		}
+
 
 		return new UserDetailsImpl(
 				user.getId(),

@@ -92,8 +92,22 @@ public class AuthController {
 		String jwt = jwtUtils.generateJwtToken(authentication);
 
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		Domain loggedDomain = domainRepository.findById(loginRequest.getLoggedDomain().getId()).get();
+
+		Domain loggedDomain = null;
+		if (loginRequest.getLoggedDomain() != null && loginRequest.getLoggedDomain().getId() != null) {
+			loggedDomain = domainRepository.findById(loginRequest.getLoggedDomain().getId())
+					.orElseThrow(() -> new IllegalArgumentException("Domain not found."));
+		}
 		userDetails.setLoggedDomain(loggedDomain);
+
+		Authentication newAuth = new UsernamePasswordAuthenticationToken(
+				userDetails,
+				authentication.getCredentials(),
+				authentication.getAuthorities()
+		);
+
+		SecurityContextHolder.getContext().setAuthentication(newAuth);
+
 		List<String> roles = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
@@ -103,7 +117,7 @@ public class AuthController {
 				userDetails.getUsername(),
 				roles,
 				userDetails.getDomainList(),
-				userDetails.getLoggedDomain(),
+				loggedDomain,
 				userDetails.getDashboardMenuList()
 		)));
 	}

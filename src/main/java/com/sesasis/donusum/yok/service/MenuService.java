@@ -30,8 +30,10 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
 	public ApiResponse save(MenuDTO menuDTO) {
 
 		Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
-
-		Menu existMenu = getRepository().findOneByDomainIdAndAnaSayfaMi(loggedDomain.getId(),Boolean.TRUE);
+		if (loggedDomain == null) {
+			return new ApiResponse(false, "No domain context available", null);
+		}
+			Menu existMenu = getRepository().findOneByDomainIdAndAnaSayfaMi(loggedDomain.getId(),Boolean.TRUE);
 
 		if (existMenu!=null && menuDTO.isAnaSayfaMi()){
 			return new ApiResponse(false, "Sadece bir tane anasayfa tanımlayabilirsiniz.", null);
@@ -46,12 +48,16 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
 
 	@Override
 	public ApiResponse findAll() {
-		return new ApiResponse(true,MessageConstant.SUCCESS,getRepository().findAllByDomainId(securityContextUtil.getCurrentUser().getLoggedDomain().getId()).stream().map(e->e.toDTO()).collect(Collectors.toList()));
+		Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
+		if (loggedDomain == null) {
+			return new ApiResponse(false, "No domain context available", null);
+		}
+		return new ApiResponse(true,MessageConstant.SUCCESS,getRepository().findAllByDomainId(loggedDomain.getId()).stream().map(e->e.toDTO()).collect(Collectors.toList()));
 	}
 
 	@Override
 	public ApiResponse findById(Long id) {
-		return null;
+		return new ApiResponse(true,MessageConstant.SUCCESS,getRepository().findById(id).get().toDTO());
 	}
 
 	@Override
@@ -60,11 +66,19 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
 	}
 
 	public ApiResponse findAllWithoutAnasayfa() {
-		return new ApiResponse(true,MessageConstant.SUCCESS,getRepository().findAllByDomainIdAndAnaSayfaMi(securityContextUtil.getCurrentUser().getLoggedDomain().getId(),Boolean.FALSE).stream().map(e->e.toDTO()).collect(Collectors.toList()));
+		Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
+		if (loggedDomain == null) {
+			return new ApiResponse(false, "No domain context available", null);
+		}
+		return new ApiResponse(true,MessageConstant.SUCCESS,getRepository().findAllByDomainIdAndAnaSayfaMi(loggedDomain.getId(),Boolean.FALSE).stream().map(e->e.toDTO()).collect(Collectors.toList()));
 	}
 
 	public ApiResponse findDomainAnasayfa() {
-		Menu anasayfa = getRepository().findOneByDomainIdAndAnaSayfaMi(securityContextUtil.getCurrentUser().getLoggedDomain().getId(),Boolean.TRUE);
+		Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
+		if (loggedDomain == null) {
+			return new ApiResponse(false, "No domain context available", null);
+		}
+		Menu anasayfa = getRepository().findOneByDomainIdAndAnaSayfaMi(loggedDomain.getId(),Boolean.TRUE);
 
 		if (anasayfa == null){
 			return new ApiResponse(false,MessageConstant.ERROR,null);

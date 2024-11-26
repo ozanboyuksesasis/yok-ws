@@ -7,6 +7,7 @@ import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.AltMenuDTO;
 import com.sesasis.donusum.yok.entity.AltMenu;
+import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.repository.AltMenuRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +34,11 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
 
 	@Override
 	public ApiResponse findAll() {
-		return new ApiResponse(true,MessageConstant.SUCCESS,getRepository().findAllByAnaMenuDomainId(securityContextUtil.getCurrentUser().getLoggedDomain().getId()).stream().map(e->e.toDTO()).collect(Collectors.toList()));
+		Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
+		if (loggedDomain == null) {
+			return new ApiResponse(false, "No domain context available", null);
+		}
+		return new ApiResponse(true, MessageConstant.SUCCESS, getRepository().findAllByAnaMenuDomainId(loggedDomain.getId()).stream().map(e -> e.toDTO()).collect(Collectors.toList()));
 	}
 
 	@Override
