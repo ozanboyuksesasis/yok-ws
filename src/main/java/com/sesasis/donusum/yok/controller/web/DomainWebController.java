@@ -49,11 +49,22 @@ public class DomainWebController {
         ApiResponse byOneDomainIdAnaBaslik = anaBaslikService.findByOneDomainIdAnaBaslik(id);
         return new ResponseEntity<>(byOneDomainIdAnaBaslik,HttpStatus.OK);
     }
-//not : sadece domaindei haberlerin hepsi karışık gelir , dil seçimi için aşağıda var
+//not : sadece domaindei haberlerin hepsi karışık gelir , dil seçimi için aşağıda var.
     @GetMapping(value = "/getHabers/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getHabersDomainId(@PathVariable Long domainId){
         ApiResponse habersDomainId = haberService.getHabersDomainId(domainId);
         return new ResponseEntity<>(habersDomainId,HttpStatus.OK);
+    }
+    //not : domain ve dil e göre seçim yapan kısm.
+    @GetMapping(value = "/get-haber-aktif/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> haberListAktifDomainId(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
+        ApiResponse apiResponse = haberService.haberListTrueDomainId(domainId, dilCategoryId);
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+    }
+    @GetMapping(value = "/get-haber-pasif/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> haberListPasifDomainId(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
+        ApiResponse apiResponse = haberService.haberListFalseDomainId(domainId, dilCategoryId);
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
     @GetMapping(value = "/get-duyuru-aktif/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -68,11 +79,7 @@ public class DomainWebController {
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getHabers/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> haberListDomainId(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
-        ApiResponse apiResponse = haberService.haberListDomainId(domainId, dilCategoryId);
-        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
-    }
+
 
     @GetMapping(value = "/getOnemliBilgi/{domainId}/{dilCategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getOnemliBilgi(
@@ -88,9 +95,6 @@ public class DomainWebController {
         ApiResponse all = genelDilCategoryService.findAll();
         return ResponseEntity.ok(all);
     }
-
-
-
 
 
 }

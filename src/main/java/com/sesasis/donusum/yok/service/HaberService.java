@@ -130,8 +130,19 @@ public class HaberService implements IService<HaberDTO> {
     }
 
 
-    public ApiResponse haberListDomainId(Long domainId,Long dilCategoryId){
-        List<Haber> haberList = haberRepository.findByDomain_IdAndGenelDilCategory_IdOrderBySiraNoDesc(domainId, dilCategoryId);
+    public ApiResponse haberListTrueDomainId(Long domainId,Long dilCategoryId){
+        List<Haber> haberList = haberRepository.findByDomain_IdAndGenelDilCategory_IdAndAktifMiTrueOrderBySiraNoDesc(domainId, dilCategoryId);
+
+        if (haberList.isEmpty()){
+            return new ApiResponse<>(false,"Liste boş",null);
+        }
+
+        List<HaberDTO> haberDTOS = haberList.stream().map(haber -> this.modelMapperServiceImpl.response().map(haber,HaberDTO.class)).collect(Collectors.toList());
+        return new ApiResponse<>(true,"İşlem başarılı.",haberDTOS);
+    }
+
+    public ApiResponse haberListFalseDomainId(Long domainId,Long dilCategoryId){
+        List<Haber> haberList = haberRepository.findByDomain_IdAndGenelDilCategory_IdAndAktifMiFalseOrderBySiraNoDesc(domainId, dilCategoryId);
 
         if (haberList.isEmpty()){
             return new ApiResponse<>(false,"Liste boş",null);

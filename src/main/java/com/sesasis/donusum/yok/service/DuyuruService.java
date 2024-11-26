@@ -141,6 +141,7 @@ public class DuyuruService implements IService<DuyuruDTO> {
         List<DuyuruDTO> duyurus = duyuruList.stream().map(duyuru -> this.modelMapperServiceImpl.response().map(duyuru, DuyuruDTO.class)).collect(Collectors.toList());
         return new ApiResponse<>(true, "İşlem başarılı.", duyurus);
     }
+
     public ApiResponse duyuruListFalseDomainId(Long domainId, Long dilCategoryId) {
         List<Duyuru> duyuruList = duyuruRepository.findByDomain_IdAndGenelDilCategory_IdAndAktifMiFalseOrderBySiraNoDesc(domainId, dilCategoryId);
 
