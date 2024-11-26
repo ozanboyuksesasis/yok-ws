@@ -43,6 +43,10 @@ public class Haber {
     @Column(name = "created_at")
     private LocalDate createdAt;
 
+    @Column(name = "update_at")
+    private LocalDate updateAt;
+
+
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "domain_id")

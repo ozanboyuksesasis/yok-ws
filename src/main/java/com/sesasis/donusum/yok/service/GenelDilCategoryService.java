@@ -26,7 +26,7 @@ public class GenelDilCategoryService implements IService<GenelDilCategoryDTO> {
 
     @Override
     public ApiResponse save(GenelDilCategoryDTO genelDilCategoryDTO) {
-        genelDilCategoryDTO.setName(genelDilCategoryDTO.getName().trim().toUpperCase());
+          genelDilCategoryDTO.setName(genelDilCategoryDTO.getName().trim().toUpperCase());
             GenelDilCategory genelDilCategory = this.modelMapperServiceImpl.request().map(genelDilCategoryDTO, GenelDilCategory.class);
            genelDilCategoryRepository.save(genelDilCategory);
             GenelDilCategoryDTO dto = this.modelMapperServiceImpl.response().map(genelDilCategory, GenelDilCategoryDTO.class);

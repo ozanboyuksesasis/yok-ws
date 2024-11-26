@@ -56,9 +56,15 @@ public class DomainWebController {
         return new ResponseEntity<>(habersDomainId,HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getDuyurus/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/get-duyuru-aktif/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> duyuruListDomainId(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
-        ApiResponse apiResponse = duyuruService.duyuruListDomainId(domainId, dilCategoryId);
+        ApiResponse apiResponse = duyuruService.duyuruListTrueDomainId(domainId, dilCategoryId);
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/get-duyuru-pasif/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> duyuruListFalseDomainId(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
+        ApiResponse apiResponse = duyuruService.duyuruListFalseDomainId(domainId, dilCategoryId);
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
