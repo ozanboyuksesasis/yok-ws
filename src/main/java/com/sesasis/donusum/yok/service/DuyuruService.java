@@ -57,7 +57,7 @@ public class DuyuruService implements IService<DuyuruDTO> {
             duyuru.setDomain(domain);
             Long maxSiraNo = duyuruRepository.findMaxSiraNo().orElse(0L);
             duyuru.setSiraNo(maxSiraNo + 1);
-            duyuru.setCreatedAt(ZonedDateTime.now(ZoneId.of("Europe/Istanbul")).toLocalDate());
+            duyuru.setCreatedAt(LocalDate.now());
             duyuru.setGenelDilCategory(dilCategory);
             this.duyuruRepository.save(duyuru);
 

@@ -60,7 +60,7 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
             onemliBilgiler.setGenelDilCategory(dilCategory);
             onemliBilgiler.setAktifMi(onemliBilgilerDTO.getAktifMi());
             Long maxSiraNo = onemliBilgilerRepository.findMaxSiraNo().orElse(0L);
-            onemliBilgiler.setCreatedAt(ZonedDateTime.now(ZoneId.of("Europe/Istanbul")).toLocalDate());
+            onemliBilgiler.setCreatedAt(LocalDate.now());
             onemliBilgiler.setSiraNo(maxSiraNo + 1);
             onemliBilgilerRepository.save(onemliBilgiler);
         }
@@ -99,6 +99,7 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
                 .map(onemliBilgiler -> {
                     OnemliBilgilerDTO dto = new OnemliBilgilerDTO();
                     dto.setId(onemliBilgiler.getId());
+                    dto.setAktifMi(onemliBilgiler.getAktifMi());
                     dto.setSiraNo(onemliBilgiler.getSiraNo());
                     dto.setGenelDilCategoryId(onemliBilgiler.getGenelDilCategory().getId());
                     dto.setBaslik(onemliBilgiler.getBaslik());
@@ -106,6 +107,8 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
                     dto.setOnemliBilgilerIcerik(onemliBilgiler.getOnemliBilgilerIcerik());
                     dto.setSayfaUrl(onemliBilgiler.getSayfaUrl());
                     dto.setCreatedAt(onemliBilgiler.getCreatedAt());
+                    dto.setUpdateAt(onemliBilgiler.getUpdateAt());
+
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -124,6 +127,7 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
                 .map(onemliBilgiler -> {
                     OnemliBilgilerDTO dto = new OnemliBilgilerDTO();
                     dto.setId(onemliBilgiler.getId());
+                    dto.setAktifMi(onemliBilgiler.getAktifMi());
                     dto.setSiraNo(onemliBilgiler.getSiraNo());
                     dto.setGenelDilCategoryId(onemliBilgiler.getGenelDilCategory().getId());
                     dto.setBaslik(onemliBilgiler.getBaslik());
@@ -131,6 +135,7 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
                     dto.setOnemliBilgilerIcerik(onemliBilgiler.getOnemliBilgilerIcerik());
                     dto.setSayfaUrl(onemliBilgiler.getSayfaUrl());
                     dto.setCreatedAt(onemliBilgiler.getCreatedAt());
+                    dto.setUpdateAt(onemliBilgiler.getUpdateAt());
                     return dto;
                 })
                 .collect(Collectors.toList());

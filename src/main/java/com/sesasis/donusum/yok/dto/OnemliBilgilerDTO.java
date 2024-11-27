@@ -1,6 +1,7 @@
 package com.sesasis.donusum.yok.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OnemliBilgilerDTO {
 
     private Long id;
@@ -35,11 +37,14 @@ public class OnemliBilgilerDTO {
     private String altBaslik;
 
     @Lob
-    private String OnemliBilgilerIcerik;
+    private String onemliBilgilerIcerik;
 
     @URL(message = "Geçerli bir URL giriniz.")
     private String sayfaUrl;;
 
     @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate createdAt ;
+
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    private LocalDate updateAt;
 }
