@@ -34,7 +34,7 @@ public class OnemliBilgiler {
 
     @Lob
     @Column(name = "onemli_bilgi_icerik", columnDefinition = "TEXT")
-    private String OnemliBilgilerIcerik;
+    private String onemliBilgilerIcerik;
 
     @Column(name = "sayfa_url")
     private String sayfaUrl;
