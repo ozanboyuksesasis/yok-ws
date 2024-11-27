@@ -22,6 +22,8 @@ public class DuyuruDTO {
 
     private Long siraNo;
 
+    private Boolean aktifMi;
+
     @NotNull(message = "Hata : Duyuru seçimi boş olamaz.")
     private Long genelDilCategoryId;
 

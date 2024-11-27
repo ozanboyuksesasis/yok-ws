@@ -21,6 +21,9 @@ public class Duyuru {
     @Column(name = "sira_no")
     private Long siraNo;
 
+    @Column(name = "aktif_mi")
+    private Boolean aktifMi;
+
     @Column(name = "baslik")
     private String baslik;
 
@@ -28,14 +31,18 @@ public class Duyuru {
     private String altBaslik;
 
     @Lob
-    @Column(name = "haber_icerik", columnDefinition = "TEXT")
-    private String haberIcerik;
+    @Column(name = "duyuru_icerik", columnDefinition = "TEXT")
+    private String duyuruIcerik;
 
     @Column(name = "sayfa_url")
     private String sayfaUrl;
 
     @Column(name = "created_at")
     private LocalDate createdAt;
+
+    @Column(name = "update_at")
+    private LocalDate updateAt;
+
 
     @ManyToOne
     @JsonIgnore

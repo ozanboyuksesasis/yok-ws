@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,9 +31,7 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
 
     @Override
     public ApiResponse save(OnemliBilgilerDTO onemliBilgilerDTO) {
-        onemliBilgilerDTO.setBaslik(onemliBilgilerDTO.getBaslik().trim());
-        onemliBilgilerDTO.setAltBaslik(onemliBilgilerDTO.getAltBaslik().trim());
-        onemliBilgilerDTO.setOnemliBilgilerIcerik(onemliBilgilerDTO.getOnemliBilgilerIcerik().trim());
+        onemliBilgilerDTO.setBaslik(onemliBilgilerDTO.getBaslik().trim().toUpperCase());
 
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         GenelDilCategory dilCategory = genelDilCategoryRepository
@@ -38,16 +39,35 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
         if (dilCategory == null) {
             return new ApiResponse<>(false, "Dil kategorisi bulunamadı.", null);
         }
-        OnemliBilgiler onemliBilgiler = this.modelMapperService.request().map(onemliBilgilerDTO, OnemliBilgiler.class);
-        onemliBilgiler.setDomain(domain);
-        onemliBilgiler.setGenelDilCategory(dilCategory);
+        OnemliBilgiler onemliBilgiler = null;
+        if (onemliBilgilerDTO.getId() != null) {
+            onemliBilgiler = onemliBilgilerRepository.findById(onemliBilgilerDTO.getId()).orElse(null);
 
-        Long maxSiraNo = onemliBilgilerRepository.findMaxSiraNo();
-        onemliBilgiler.setSiraNo(maxSiraNo + 1);
+            if (onemliBilgiler != null) {
+                onemliBilgiler.setAktifMi(onemliBilgilerDTO.getAktifMi());
+                onemliBilgiler.setBaslik(onemliBilgilerDTO.getBaslik());
+                onemliBilgiler.setAltBaslik(onemliBilgilerDTO.getAltBaslik());
+                onemliBilgiler.setOnemliBilgilerIcerik(onemliBilgilerDTO.getOnemliBilgilerIcerik());
+                onemliBilgiler.setGenelDilCategory(dilCategory);
+                onemliBilgiler.setDomain(domain);
+               onemliBilgiler.setUpdateAt(LocalDate.now());
+            }
+        }else {
 
-        onemliBilgilerRepository.save(onemliBilgiler);
+            onemliBilgiler = this.modelMapperService.request().map(onemliBilgilerDTO, OnemliBilgiler.class);
+            onemliBilgiler.setOnemliBilgilerIcerik(onemliBilgilerDTO.getOnemliBilgilerIcerik());
+            onemliBilgiler.setDomain(domain);
+            onemliBilgiler.setGenelDilCategory(dilCategory);
+            onemliBilgiler.setAktifMi(onemliBilgilerDTO.getAktifMi());
+            Long maxSiraNo = onemliBilgilerRepository.findMaxSiraNo().orElse(0L);
+            onemliBilgiler.setCreatedAt(ZonedDateTime.now(ZoneId.of("Europe/Istanbul")).toLocalDate());
+            onemliBilgiler.setSiraNo(maxSiraNo + 1);
+            onemliBilgilerRepository.save(onemliBilgiler);
+        }
+        OnemliBilgilerDTO dto = this.modelMapperService.response().map(onemliBilgiler, OnemliBilgilerDTO.class);
 
-        return new ApiResponse<>(true, "İşlem başarılı.", null);
+
+        return new ApiResponse<>(true, "İşlem başarılı.", dto);
     }
 
     @Override
@@ -62,13 +82,14 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
 
     @Override
     public void deleteById(Long id) {
-        if (onemliBilgilerRepository.existsById(id)){
+        if (onemliBilgilerRepository.existsById(id)) {
             onemliBilgilerRepository.deleteById(id);
         }
     }
-    public ApiResponse onemliBilgilerListDomainId(Long domainId, Long dilCategoryId) {
+
+    public ApiResponse onemliBilgilerListTrueTrueDomainId(Long domainId, Long dilCategoryId) {
         List<OnemliBilgiler> onemliBilgilers = onemliBilgilerRepository
-                .findByDomain_IdAndGenelDilCategory_IdOrderBySiraNoDesc(domainId, dilCategoryId);
+                .findByDomain_IdAndGenelDilCategory_IdAndAktifMiTrueOrderBySiraNoDesc(domainId, dilCategoryId);
 
         if (onemliBilgilers.isEmpty()) {
             return new ApiResponse<>(false, "Liste boş", null);
@@ -88,7 +109,31 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
                     return dto;
                 })
                 .collect(Collectors.toList());
+        return new ApiResponse<>(true, "İşlem başarılı.", onemliBilgilerDTOS);
+    }
 
+    public ApiResponse onemliBilgilerFalseTrueDomainId(Long domainId, Long dilCategoryId) {
+        List<OnemliBilgiler> onemliBilgilers = onemliBilgilerRepository
+                .findByDomain_IdAndGenelDilCategory_IdAndAktifMiFalseOrderBySiraNoDesc(domainId, dilCategoryId);
+
+        if (onemliBilgilers.isEmpty()) {
+            return new ApiResponse<>(false, "Liste boş", null);
+        }
+
+        List<OnemliBilgilerDTO> onemliBilgilerDTOS = onemliBilgilers.stream()
+                .map(onemliBilgiler -> {
+                    OnemliBilgilerDTO dto = new OnemliBilgilerDTO();
+                    dto.setId(onemliBilgiler.getId());
+                    dto.setSiraNo(onemliBilgiler.getSiraNo());
+                    dto.setGenelDilCategoryId(onemliBilgiler.getGenelDilCategory().getId());
+                    dto.setBaslik(onemliBilgiler.getBaslik());
+                    dto.setAltBaslik(onemliBilgiler.getAltBaslik());
+                    dto.setOnemliBilgilerIcerik(onemliBilgiler.getOnemliBilgilerIcerik());
+                    dto.setSayfaUrl(onemliBilgiler.getSayfaUrl());
+                    dto.setCreatedAt(onemliBilgiler.getCreatedAt());
+                    return dto;
+                })
+                .collect(Collectors.toList());
         return new ApiResponse<>(true, "İşlem başarılı.", onemliBilgilerDTOS);
     }
 

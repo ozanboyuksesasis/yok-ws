@@ -39,7 +39,7 @@ public class GenelDilCategoryController {
     @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> delete (@PathVariable Long id){
         genelDilCategoryService.deleteById(id);
-        return ResponseEntity.ok(new ApiResponse<>(true,"Haber kategori başarı ile silindi.",null));
+        return ResponseEntity.ok(new ApiResponse<>(true,"Dil kategori başarı ile silindi.",null));
     }
 
 

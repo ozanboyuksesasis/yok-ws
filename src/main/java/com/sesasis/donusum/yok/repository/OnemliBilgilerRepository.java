@@ -14,8 +14,10 @@ import java.util.Optional;
 
 
 public interface OnemliBilgilerRepository extends JpaRepository<OnemliBilgiler,Long> {
-    List<OnemliBilgiler> findByDomain_IdAndGenelDilCategory_IdOrderBySiraNoDesc(Long domainId, Long dilCategoryId);
-    @Query("SELECT COALESCE(MAX(o.siraNo), 0) FROM OnemliBilgiler o")
-    Long findMaxSiraNo();
+List<OnemliBilgiler>  findByDomain_IdAndGenelDilCategory_IdAndAktifMiTrueOrderBySiraNoDesc(Long domainId , Long dilCategoryId);
+List<OnemliBilgiler>  findByDomain_IdAndGenelDilCategory_IdAndAktifMiFalseOrderBySiraNoDesc(Long domainId, Long dilCategoryId);
+
+    @Query("SELECT MAX(o.siraNo)  FROM OnemliBilgiler o")
+    Optional<Long> findMaxSiraNo();
 
 }
