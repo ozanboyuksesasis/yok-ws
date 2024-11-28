@@ -24,19 +24,23 @@ public class DuyuruDTO {
 
     private Long siraNo;
 
-    private Boolean aktifMi;
+
+    @NotNull(message = "Aktif durumu boş olamaz.")
+    private Boolean aktifMi ;
 
     @NotNull(message = "Dil kategorisi boş olamaz.")
     private Long genelDilCategoryId;
 
     @NotEmpty(message = "Başlık alanı boş olamaz.")
-    @Size(max = 100, message = "Başlık en fazla 100 karakter olabilir.")
+    @Size(max = 50, message = "Başlık en fazla 100 karakter olabilir.")
     private String baslik;
 
-    @Size(max = 500, message = "Özet en fazla 1000 karakter olabilir.")
+    @Size(max = 500, message = "Özet en fazla 500 karakter olabilir.")
     private String altBaslik;
 
     @Lob
+    @NotEmpty(message = "İçerik alanı boş olamaz.")
+    @Size(min = 100,message = "İçerik minimum yüz karakter olmalıdır.")
     private String duyuruIcerik;
 
     @URL(message = "Geçerli bir URL giriniz.")
