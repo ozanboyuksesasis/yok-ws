@@ -26,7 +26,7 @@ public class DuyuruDTO {
 
     private Boolean aktifMi;
 
-    @NotNull(message = "Hata : Duyuru seçimi boş olamaz.")
+    @NotNull(message = "Dil kategorisi boş olamaz.")
     private Long genelDilCategoryId;
 
     @NotEmpty(message = "Başlık alanı boş olamaz.")
