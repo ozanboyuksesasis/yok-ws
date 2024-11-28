@@ -32,11 +32,11 @@ public class DuyuruDTO {
     private Long genelDilCategoryId;
 
     @NotEmpty(message = "Başlık alanı boş olamaz.")
-    @Size(max = 50, message = "Başlık en fazla 100 karakter olabilir.")
     private String baslik;
 
-    @Size(max = 500, message = "Özet en fazla 500 karakter olabilir.")
+    @Size(max = 350, message = "Alt başlık en fazla üç yüz elli karakter olabilir.")
     private String altBaslik;
+
 
     @Lob
     @NotEmpty(message = "İçerik alanı boş olamaz.")
