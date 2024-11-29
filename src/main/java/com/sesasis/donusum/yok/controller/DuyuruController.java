@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/duyuru")
@@ -16,6 +17,22 @@ import javax.validation.Valid;
 public class DuyuruController {
 
     private final DuyuruService duyuruService;
+
+
+    @PostMapping(value = "/list-save",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> save(@Valid @RequestBody List<DuyuruDTO> duyuruDTO){
+        ApiResponse save = duyuruService.listSave(duyuruDTO);
+        return ResponseEntity.ok(save);
+    }
+
+
+    @PostMapping(value = "/update",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> update(@Valid @RequestBody DuyuruDTO duyuruDTO){
+        ApiResponse save = duyuruService.updateDuyuru(duyuruDTO);
+        return ResponseEntity.ok(save);
+    }
+
+
 
     @PostMapping(value = "/save",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@Valid @RequestBody DuyuruDTO duyuruDTO){
