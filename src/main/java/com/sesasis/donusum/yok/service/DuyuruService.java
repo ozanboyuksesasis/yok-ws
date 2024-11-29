@@ -18,7 +18,9 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -32,6 +34,70 @@ public class DuyuruService implements IService<DuyuruDTO> {
     private final GenelDilCategoryRepository genelDilCategoryRepository;
     private final SecurityContextUtil securityContextUtil;
 
+    public ApiResponse listSave(List<DuyuruDTO> duyuruDTOList) {
+
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+
+        List<GenelDilCategory> dilCategoryList = this.genelDilCategoryRepository.findAll();
+        if (dilCategoryList == null) {
+            return new ApiResponse(false, "Dil Listesi bulunamadı.", null);
+        }
+        Long count = duyuruRepository.findMaxSiraNo().get();
+        AtomicLong atomicLong = new AtomicLong(count + 1);
+        List<Duyuru> duyuruList = new ArrayList<>();
+        for (DuyuruDTO duyuruDTO : duyuruDTOList) {
+
+            Duyuru duyuru = new Duyuru();
+            duyuru.setDomain(domain);
+            duyuru.setAktifMi(duyuruDTO.getAktifMi());
+            duyuru.setDuyuruIcerik(duyuruDTO.getDuyuruIcerik());
+            duyuru.setBaslik(duyuruDTO.getBaslik());
+            duyuru.setSayfaUrl(duyuruDTO.getSayfaUrl());
+            duyuru.setCreatedAt(LocalDate.now());
+            duyuru.setAltBaslik(duyuruDTO.getAltBaslik());
+            duyuru.setSiraNo(atomicLong.getAndIncrement());
+
+            GenelDilCategory genelDilCategory = genelDilCategoryRepository.findById(duyuruDTO.getGenelDilCategoryId()).orElse(null);
+            if (genelDilCategory != null) {
+                duyuru.setGenelDilCategory(genelDilCategory);
+            } else {
+                return new ApiResponse<>(false, "Dil seçimi bulunamadı.", null);
+
+            }
+            duyuruList.add(duyuru);
+        }
+        duyuruRepository.saveAll(duyuruList);
+
+
+        return new ApiResponse<>(true, "Kayıt başarılı.", null);
+
+    }
+
+    public ApiResponse updateDuyuru(DuyuruDTO duyuruDTO) {
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        GenelDilCategory dilCategory = genelDilCategoryRepository.findById(duyuruDTO.getGenelDilCategoryId()).orElse(null);
+        if (dilCategory == null) {
+            return new ApiResponse<>(false, "Dil bulunamadı.", null);
+        }
+        if (duyuruDTO.getId() != null) {
+            Duyuru duyuru = duyuruRepository.findById(duyuruDTO.getId()).orElse(null);
+            if (duyuru != null) {
+                duyuru.setAktifMi(duyuruDTO.getAktifMi());
+                duyuru.setUpdateAt(LocalDate.now());
+                duyuru.setDomain(domain);
+                duyuru.setGenelDilCategory(dilCategory);
+                duyuru.setSayfaUrl(duyuruDTO.getSayfaUrl());
+                duyuru.setAltBaslik(duyuruDTO.getAltBaslik());
+                duyuru.setDuyuruIcerik(duyuru.getDuyuruIcerik());
+                duyuru.setBaslik(duyuruDTO.getBaslik());
+                duyuruRepository.save(duyuru);
+            }
+
+        }
+        return new ApiResponse<>(true, "Güncelleme başarılı.", null);
+
+    }
+
     @Override
     public ApiResponse save(DuyuruDTO duyuruDTO) {
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
@@ -39,19 +105,20 @@ public class DuyuruService implements IService<DuyuruDTO> {
         if (dilCategory == null) {
             return new ApiResponse(false, "Dil seçimi bulunamadı.", null);
         }
+
         Duyuru duyuru = null;
         if (duyuruDTO.getId() != null) {
             duyuru = duyuruRepository.findById(duyuruDTO.getId()).orElse(null);
-           if (duyuru != null){
-               duyuru.setDomain(domain);
-               duyuru.setGenelDilCategory(dilCategory);
-               duyuru.setBaslik(duyuruDTO.getBaslik());
-               duyuru.setAltBaslik(duyuruDTO.getAltBaslik());
-               duyuru.setDuyuruIcerik(duyuruDTO.getDuyuruIcerik());
-               duyuru.setAktifMi(duyuruDTO.getAktifMi());
-               duyuru.setUpdateAt(LocalDate.now());
-           }
-        }else {
+            if (duyuru != null) {
+                duyuru.setDomain(domain);
+                duyuru.setGenelDilCategory(dilCategory);
+                duyuru.setBaslik(duyuruDTO.getBaslik());
+                duyuru.setAltBaslik(duyuruDTO.getAltBaslik());
+                duyuru.setDuyuruIcerik(duyuruDTO.getDuyuruIcerik());
+                duyuru.setAktifMi(duyuruDTO.getAktifMi());
+                duyuru.setUpdateAt(LocalDate.now());
+            }
+        } else {
 
             duyuru = this.modelMapperServiceImpl.request().map(duyuruDTO, Duyuru.class);
             duyuru.setDomain(domain);
