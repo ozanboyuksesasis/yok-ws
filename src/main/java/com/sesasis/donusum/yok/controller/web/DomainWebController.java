@@ -30,61 +30,61 @@ public class DomainWebController {
 
 
     @GetMapping(value = "/domain-all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<?> domainAll() {
         return ResponseEntity.ok(domainService.findAll());
     }
 
 
-    @GetMapping(value = "/getMenus/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getAllMenusDomainId(@PathVariable Long domainId) {
+    @GetMapping(value = "/get-menu/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getMenu(@PathVariable Long domainId) {
         ApiResponse allMenusDomainId = domainWebService.getAllMenusDomainId(domainId);
         return new ResponseEntity<>(allMenusDomainId,HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getSliders/{domainId}")
-    public ResponseEntity<?> getAllSlidersDomainId(@PathVariable Long domainId) {
+    @GetMapping(value = "/get-slider/{domainId}")
+    public ResponseEntity<?> getSlider(@PathVariable Long domainId) {
         ApiResponse slidersDomainId = domainWebService.getAllSlidersDomainId(domainId);
         return new ResponseEntity<>(slidersDomainId, HttpStatus.OK);
     }
 
 
-    @GetMapping(value = "/getBaslik/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> allBaslikDomainId(@PathVariable Long domainId){
+    @GetMapping(value = "/get-baslik/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getBaslikDomainId(@PathVariable Long domainId){
         ApiResponse getBaslikDomainId = domainWebService.getBaslikDomainId(domainId);
         return new ResponseEntity<>(getBaslikDomainId,HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getBaslik/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<?> getAnaBaslik(@PathVariable Long id){
+    @GetMapping(value = "/get-baslik/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    private ResponseEntity<?> getBaslik(@PathVariable Long id){
         ApiResponse byOneDomainIdAnaBaslik = anaBaslikService.findByOneDomainIdAnaBaslik(id);
         return new ResponseEntity<>(byOneDomainIdAnaBaslik,HttpStatus.OK);
     }
 //not : sadece domaindei haberlerin hepsi karışık gelir , dil seçimi için aşağıda var.
-    @GetMapping(value = "/getHabers/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getHabersDomainId(@PathVariable Long domainId){
+    @GetMapping(value = "/get-haber/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getHaber(@PathVariable Long domainId){
         ApiResponse habersDomainId = haberService.getHabersDomainId(domainId);
         return new ResponseEntity<>(habersDomainId,HttpStatus.OK);
     }
     //not : domain ve dil e göre seçim yapan kısm.
     @GetMapping(value = "/get-haber-aktif/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> haberListAktifDomainId(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
+    public ResponseEntity<?> getHaberAktif(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
         ApiResponse apiResponse = haberService.haberListTrueDomainId(domainId, dilCategoryId);
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
     @GetMapping(value = "/get-haber-pasif/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> haberListPasifDomainId(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
+    public ResponseEntity<?> getHaberPasif(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
         ApiResponse apiResponse = haberService.haberListFalseDomainId(domainId, dilCategoryId);
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
     @GetMapping(value = "/get-duyuru-aktif/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> duyuruListDomainId(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
+    public ResponseEntity<?> getDuyuruAktif(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
         ApiResponse apiResponse = duyuruService.duyuruListTrueDomainId(domainId, dilCategoryId);
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
     @GetMapping(value = "/get-duyuru-pasif/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> duyuruListFalseDomainId(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
+    public ResponseEntity<?> getDuyuruPasif(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
         ApiResponse apiResponse = duyuruService.duyuruListFalseDomainId(domainId, dilCategoryId);
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
@@ -92,7 +92,7 @@ public class DomainWebController {
 
 
     @GetMapping(value = "/get-onemli-bilgi-aktif/{domainId}/{dilCategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getOnemliAktifBilgi(
+    public ResponseEntity<?> getOnemliBilgiAktif(
             @PathVariable Long domainId,
             @PathVariable Long dilCategoryId) {
         ApiResponse apiResponse = onemliBilgilerService.onemliBilgilerListTrueTrueDomainId(domainId, dilCategoryId);
@@ -100,7 +100,7 @@ public class DomainWebController {
     }
 
     @GetMapping(value = "/get-onemli-bilgi-pasif/{domainId}/{dilCategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getOnemliPasifBilgi(
+    public ResponseEntity<?> getOnemliBilgiPasif(
             @PathVariable Long domainId,
             @PathVariable Long dilCategoryId) {
         ApiResponse apiResponse = onemliBilgilerService.onemliBilgilerFalseTrueDomainId(domainId, dilCategoryId);
@@ -110,7 +110,7 @@ public class DomainWebController {
 
 
     @GetMapping(value = "/all-dil-category",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getAll(){
+    public ResponseEntity<?> allDilCategory(){
         ApiResponse all = genelDilCategoryService.findAll();
         return ResponseEntity.ok(all);
     }
