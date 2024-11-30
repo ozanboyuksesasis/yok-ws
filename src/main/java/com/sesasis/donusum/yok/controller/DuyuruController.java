@@ -26,15 +26,7 @@ public class DuyuruController {
     }
 
 
-    @PostMapping(value = "/update",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> update(@Valid @RequestBody DuyuruDTO duyuruDTO){
-        ApiResponse save = duyuruService.updateDuyuru(duyuruDTO);
-        return ResponseEntity.ok(save);
-    }
-
-
-
-    @PostMapping(value = "/save",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/update-save",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@Valid @RequestBody DuyuruDTO duyuruDTO){
         ApiResponse save = duyuruService.save(duyuruDTO);
     return ResponseEntity.ok(save);

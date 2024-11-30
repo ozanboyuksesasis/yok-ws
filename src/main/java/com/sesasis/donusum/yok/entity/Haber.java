@@ -35,7 +35,7 @@ public class Haber {
 
     @Lob
     @Column(name = "haber_icerik", columnDefinition = "TEXT")
-    private String haberIcerik;
+    private String icerik;
 
     @Column(name = "sayfa_url")
     private String sayfaUrl;

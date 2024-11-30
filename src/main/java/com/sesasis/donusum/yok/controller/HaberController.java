@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/haber")
@@ -19,9 +20,16 @@ public class HaberController {
 
     private final HaberService haberService;
 
+    @PostMapping(value = "/list-save",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> listSave(@Valid @RequestBody List<HaberDTO> haberDTO){
+        ApiResponse save = haberService.listSave(haberDTO);
+        return ResponseEntity.ok(save);
+    }
 
-    @PostMapping(value = "/save",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> save(@Valid @RequestBody HaberDTO haberDTO){
+
+
+    @PostMapping(value = "/update-save",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateSave(@Valid @RequestBody HaberDTO haberDTO){
         ApiResponse save = haberService.save(haberDTO);
         return ResponseEntity.ok(save);
     }
