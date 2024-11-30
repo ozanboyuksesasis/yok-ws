@@ -23,11 +23,6 @@ public class DomainController {
 		return ResponseEntity.ok(domainService.save(domainDTO));
 	}
 
-	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> findAll() {
-		return ResponseEntity.ok(domainService.findAll());
-	}
-
 
 	@GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getId(@PathVariable Long id){

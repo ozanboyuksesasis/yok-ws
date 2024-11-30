@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@RequestMapping(value = "/api/domain-bilgi")
+@RequestMapping(value = "/api/web")
 @RequiredArgsConstructor
 @RestController
 public class DomainWebController {
@@ -24,6 +25,15 @@ public class DomainWebController {
     private final DuyuruService duyuruService;
     private final OnemliBilgilerService onemliBilgilerService;
     private final GenelDilCategoryService genelDilCategoryService;
+    private final DomainService domainService;
+
+
+
+    @GetMapping(value = "/domain-all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findAll() {
+        return ResponseEntity.ok(domainService.findAll());
+    }
+
 
     @GetMapping(value = "/getMenus/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllMenusDomainId(@PathVariable Long domainId) {
