@@ -42,7 +42,7 @@ public class DuyuruService implements IService<DuyuruDTO> {
         if (dilCategoryList == null) {
             return new ApiResponse(false, "Dil Listesi bulunamadı.", null);
         }
-        Long count = duyuruRepository.findMaxSiraNo().get();
+        Long count = duyuruRepository.findMaxSiraNo().orElse(0L);
         AtomicLong atomicLong = new AtomicLong(count + 1);
         List<Duyuru> duyuruList = new ArrayList<>();
         for (DuyuruDTO duyuruDTO : duyuruDTOList) {

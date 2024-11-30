@@ -72,7 +72,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 						"/**/*.svg",
 						"/**/*.jpg")
 				.permitAll()
-				.antMatchers("/health-check", "/api/public/**", "/api/auth/signin", "/api/auth/signup", "/v3/api-docs", "/api/basic/**").permitAll()
+				.antMatchers("/health-check", "/api/public/**", "/api/auth/signin","	/api/web/**", "/api/auth/signup", "/v3/api-docs", "/api/basic/**").permitAll()
 				.anyRequest().authenticated();
 
 		http.authenticationProvider(authenticationProvider());
