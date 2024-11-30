@@ -17,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +30,39 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
     private final ModelMapperServiceImpl modelMapperService;
     private final SecurityContextUtil securityContextUtil;
     private final GenelDilCategoryRepository genelDilCategoryRepository;
+
+
+    public ApiResponse listSave(List<OnemliBilgilerDTO> dtoList) {
+
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+
+        Long count = onemliBilgilerRepository.findMaxSiraNo().orElse(0L);
+        AtomicLong atom = new AtomicLong(count + 1);
+
+        List<OnemliBilgiler> onemliBilgilers = new ArrayList<>();
+
+        for (OnemliBilgilerDTO dto : dtoList) {
+
+            OnemliBilgiler onemliBilgiler = new OnemliBilgiler();
+            onemliBilgiler.setDomain(domain);
+            onemliBilgiler.setIcerik(dto.getIcerik());
+            onemliBilgiler.setCreatedAt(LocalDate.now());
+            onemliBilgiler.setSiraNo(atom.getAndIncrement());
+            onemliBilgiler.setAktifMi(dto.getAktifMi());
+            onemliBilgiler.setBaslik(dto.getBaslik());
+            onemliBilgiler.setAltBaslik(dto.getAltBaslik());
+            onemliBilgiler.setSayfaUrl(dto.getSayfaUrl());
+            if (dto.getGenelDilCategoryId() != null) {
+                GenelDilCategory genelDilCategory = genelDilCategoryRepository.findById(dto.getGenelDilCategoryId()).orElse(null);
+                onemliBilgiler.setGenelDilCategory(genelDilCategory);
+            }
+            onemliBilgilers.add(onemliBilgiler);
+        }
+        onemliBilgilerRepository.saveAll(onemliBilgilers);
+
+        return new ApiResponse<>(true,"Kayıt başarılı.",null);
+    }
+
 
     @Override
     public ApiResponse save(OnemliBilgilerDTO onemliBilgilerDTO) {
@@ -47,27 +82,18 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
                 onemliBilgiler.setAktifMi(onemliBilgilerDTO.getAktifMi());
                 onemliBilgiler.setBaslik(onemliBilgilerDTO.getBaslik());
                 onemliBilgiler.setAltBaslik(onemliBilgilerDTO.getAltBaslik());
-                onemliBilgiler.setOnemliBilgilerIcerik(onemliBilgilerDTO.getOnemliBilgilerIcerik());
+                onemliBilgiler.setIcerik(onemliBilgilerDTO.getIcerik());
                 onemliBilgiler.setGenelDilCategory(dilCategory);
                 onemliBilgiler.setDomain(domain);
-               onemliBilgiler.setUpdateAt(LocalDate.now());
+                onemliBilgiler.setUpdateAt(LocalDate.now());
             }
-        }else {
+        } else {
+            return new ApiResponse<>(false, "Tek kayıt oluşturalamaz.Güncelleme yapılabilir.", null);
 
-            onemliBilgiler = this.modelMapperService.request().map(onemliBilgilerDTO, OnemliBilgiler.class);
-            onemliBilgiler.setOnemliBilgilerIcerik(onemliBilgilerDTO.getOnemliBilgilerIcerik());
-            onemliBilgiler.setDomain(domain);
-            onemliBilgiler.setGenelDilCategory(dilCategory);
-            onemliBilgiler.setAktifMi(onemliBilgilerDTO.getAktifMi());
-            Long maxSiraNo = onemliBilgilerRepository.findMaxSiraNo().orElse(0L);
-            onemliBilgiler.setCreatedAt(LocalDate.now());
-            onemliBilgiler.setSiraNo(maxSiraNo + 1);
-            onemliBilgilerRepository.save(onemliBilgiler);
         }
         OnemliBilgilerDTO dto = this.modelMapperService.response().map(onemliBilgiler, OnemliBilgilerDTO.class);
 
-
-        return new ApiResponse<>(true, "İşlem başarılı.", dto);
+        return new ApiResponse(true, "Güncelleme işlemi başarılı.", dto);
     }
 
     @Override
@@ -104,7 +130,7 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
                     dto.setGenelDilCategoryId(onemliBilgiler.getGenelDilCategory().getId());
                     dto.setBaslik(onemliBilgiler.getBaslik());
                     dto.setAltBaslik(onemliBilgiler.getAltBaslik());
-                    dto.setOnemliBilgilerIcerik(onemliBilgiler.getOnemliBilgilerIcerik());
+                    dto.setIcerik(onemliBilgiler.getIcerik());
                     dto.setSayfaUrl(onemliBilgiler.getSayfaUrl());
                     dto.setCreatedAt(onemliBilgiler.getCreatedAt());
                     dto.setUpdateAt(onemliBilgiler.getUpdateAt());
@@ -132,7 +158,7 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
                     dto.setGenelDilCategoryId(onemliBilgiler.getGenelDilCategory().getId());
                     dto.setBaslik(onemliBilgiler.getBaslik());
                     dto.setAltBaslik(onemliBilgiler.getAltBaslik());
-                    dto.setOnemliBilgilerIcerik(onemliBilgiler.getOnemliBilgilerIcerik());
+                    dto.setIcerik(onemliBilgiler.getIcerik());
                     dto.setSayfaUrl(onemliBilgiler.getSayfaUrl());
                     dto.setCreatedAt(onemliBilgiler.getCreatedAt());
                     dto.setUpdateAt(onemliBilgiler.getUpdateAt());

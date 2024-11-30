@@ -6,11 +6,14 @@ import com.sesasis.donusum.yok.core.service.AbstractService;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.MenuIcerikDTO;
+import com.sesasis.donusum.yok.entity.Domain;
+import com.sesasis.donusum.yok.entity.Haber;
 import com.sesasis.donusum.yok.entity.MenuIcerik;
 import com.sesasis.donusum.yok.repository.MenuIcerikRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +44,8 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
 
     @Override
     public ApiResponse findById(Long id) {
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+
         return null;
     }
 

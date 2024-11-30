@@ -14,13 +14,13 @@ import com.sesasis.donusum.yok.repository.DomainRepository;
 import com.sesasis.donusum.yok.repository.GenelDilCategoryRepository;
 import com.sesasis.donusum.yok.repository.HaberRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -33,13 +33,46 @@ public class HaberService implements IService<HaberDTO> {
     private final DomainRepository domainRepository;
     private final GenelDilCategoryRepository genelDilCategoryRepository;
     private final SecurityContextUtil securityContextUtil;
+    private final ModelMapper modelMapper;
+
+
+    public ApiResponse listSave(List<HaberDTO> haberDTOS) {
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        Long count = haberRepository.findMaxSiraNo().get();
+        AtomicLong atomicLong = new AtomicLong(count + 1);
+
+        List<Haber> habers = haberDTOS.stream().map(haberDTO -> {
+            Haber haber = new Haber();
+            haber.setDomain(domain);
+            haber.setBaslik(haberDTO.getBaslik());
+            haber.setIcerik(haberDTO.getIcerik());
+            haber.setAktifMi(haberDTO.getAktifMi());
+            haber.setAltBaslik(haberDTO.getAltBaslik());
+            haber.setCreatedAt(LocalDate.now());
+            if (haberDTO.getGenelDilCategoryId() != null) {
+                GenelDilCategory dilCategory = genelDilCategoryRepository.findById(haberDTO.getGenelDilCategoryId()).orElse(null);
+                if (dilCategory != null) {
+                    haber.setGenelDilCategory(dilCategory);
+                }
+
+            }
+
+            haber.setSayfaUrl(haberDTO.getSayfaUrl());
+            haber.setSiraNo(atomicLong.getAndIncrement());
+            return haber;
+        }).collect(Collectors.toList());
+
+        haberRepository.saveAll(habers);
+
+        return new ApiResponse<>(true, "Kayıt başarılı.", null);
+
+    }
+
 
     @Override
     public ApiResponse save(HaberDTO haberDTO) {
 
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
-
-
         GenelDilCategory genelDilCategory = this.genelDilCategoryRepository.findById(haberDTO.getGenelDilCategoryId()).orElse(null);
         if (genelDilCategory == null) {
             return new ApiResponse<>(false, "Dil kategorisi bulunamadı.", null);
@@ -51,23 +84,17 @@ public class HaberService implements IService<HaberDTO> {
                 haber.setGenelDilCategory(genelDilCategory);
                 haber.setDomain(domain);
                 haber.setBaslik(haberDTO.getBaslik());
-                haber.setHaberIcerik(haberDTO.getHaberIcerik());
+                haber.setIcerik(haberDTO.getIcerik());
                 haber.setAktifMi(haberDTO.getAktifMi());
                 haber.setAltBaslik(haberDTO.getAltBaslik());
                 haber.setUpdateAt(LocalDate.now());
             }
-        }else {
-            haber = this.modelMapperServiceImpl.request().map(haberDTO, Haber.class);
-            haber.setDomain(domain);
-            haber.setGenelDilCategory(genelDilCategory);
-            Long maxSiraNo = haberRepository.findMaxSiraNo().orElse(0L);
-            haber.setSiraNo(maxSiraNo + 1);
-            haber.setUpdateAt(LocalDate.now());
-            this.haberRepository.save(haber);
+        } else {
+            return new ApiResponse<>(false, "Tek kayıt oluşturalamaz.Güncelleme yapılabilir.", null);
         }
 
         HaberDTO dto = this.modelMapperServiceImpl.response().map(haber, HaberDTO.class);
-        return new ApiResponse(true, "Kayıt işlemi başarılı.", dto);
+        return new ApiResponse(true, "Güncelleme işlemi başarılı.", dto);
     }
 
     @Override

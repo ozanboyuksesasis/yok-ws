@@ -37,7 +37,7 @@ public class HaberDTO {
     @Lob
     @NotEmpty(message = "İçerik alanı boş olamaz.")
     @Size(min = 100,message = "İçerik minimum yüz karakter olmalıdır.")
-    private String haberIcerik;
+    private String icerik;
 
     @URL(message = "Geçerli bir URL giriniz.")
     private String sayfaUrl;;

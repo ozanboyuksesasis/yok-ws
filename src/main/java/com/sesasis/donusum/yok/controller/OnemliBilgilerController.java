@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Table;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/onemli-bilgi")
@@ -20,10 +22,18 @@ public class OnemliBilgilerController {
 
 
     @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> save(@RequestBody OnemliBilgilerDTO onemliBilgilerDTO) {
+    public ResponseEntity<?> save(@Valid @RequestBody OnemliBilgilerDTO onemliBilgilerDTO) {
         ApiResponse save = onemliBilgilerService.save(onemliBilgilerDTO);
         return ResponseEntity.ok(save);
     }
+
+
+    @PostMapping(value = "/list-save", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> listSave(@Valid @RequestBody List<OnemliBilgilerDTO> onemliBilgilerDTO) {
+        ApiResponse save = onemliBilgilerService.listSave(onemliBilgilerDTO);
+        return ResponseEntity.ok(save);
+    }
+
 
     @DeleteMapping(value = "/delete/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> delete(@PathVariable Long id){

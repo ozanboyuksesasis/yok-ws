@@ -50,7 +50,7 @@ public class DuyuruService implements IService<DuyuruDTO> {
             Duyuru duyuru = new Duyuru();
             duyuru.setDomain(domain);
             duyuru.setAktifMi(duyuruDTO.getAktifMi());
-            duyuru.setDuyuruIcerik(duyuruDTO.getDuyuruIcerik());
+            duyuru.setIcerik(duyuruDTO.getIcerik());
             duyuru.setBaslik(duyuruDTO.getBaslik());
             duyuru.setSayfaUrl(duyuruDTO.getSayfaUrl());
             duyuru.setCreatedAt(LocalDate.now());
@@ -73,30 +73,6 @@ public class DuyuruService implements IService<DuyuruDTO> {
 
     }
 
-    public ApiResponse updateDuyuru(DuyuruDTO duyuruDTO) {
-        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
-        GenelDilCategory dilCategory = genelDilCategoryRepository.findById(duyuruDTO.getGenelDilCategoryId()).orElse(null);
-        if (dilCategory == null) {
-            return new ApiResponse<>(false, "Dil bulunamadı.", null);
-        }
-        if (duyuruDTO.getId() != null) {
-            Duyuru duyuru = duyuruRepository.findById(duyuruDTO.getId()).orElse(null);
-            if (duyuru != null) {
-                duyuru.setAktifMi(duyuruDTO.getAktifMi());
-                duyuru.setUpdateAt(LocalDate.now());
-                duyuru.setDomain(domain);
-                duyuru.setGenelDilCategory(dilCategory);
-                duyuru.setSayfaUrl(duyuruDTO.getSayfaUrl());
-                duyuru.setAltBaslik(duyuruDTO.getAltBaslik());
-                duyuru.setDuyuruIcerik(duyuru.getDuyuruIcerik());
-                duyuru.setBaslik(duyuruDTO.getBaslik());
-                duyuruRepository.save(duyuru);
-            }
-
-        }
-        return new ApiResponse<>(true, "Güncelleme başarılı.", null);
-
-    }
 
     @Override
     public ApiResponse save(DuyuruDTO duyuruDTO) {
@@ -114,24 +90,16 @@ public class DuyuruService implements IService<DuyuruDTO> {
                 duyuru.setGenelDilCategory(dilCategory);
                 duyuru.setBaslik(duyuruDTO.getBaslik());
                 duyuru.setAltBaslik(duyuruDTO.getAltBaslik());
-                duyuru.setDuyuruIcerik(duyuruDTO.getDuyuruIcerik());
+                duyuru.setIcerik(duyuruDTO.getIcerik());
                 duyuru.setAktifMi(duyuruDTO.getAktifMi());
                 duyuru.setUpdateAt(LocalDate.now());
             }
-        } else {
-
-            duyuru = this.modelMapperServiceImpl.request().map(duyuruDTO, Duyuru.class);
-            duyuru.setDomain(domain);
-            Long maxSiraNo = duyuruRepository.findMaxSiraNo().orElse(0L);
-            duyuru.setSiraNo(maxSiraNo + 1);
-            duyuru.setCreatedAt(LocalDate.now());
-            duyuru.setGenelDilCategory(dilCategory);
-            this.duyuruRepository.save(duyuru);
-
+        }else {
+            return new ApiResponse<>(false,"Tek kayıt oluşturalamaz.Güncelleme yapılabilir.",null);
         }
 
         DuyuruDTO dto = this.modelMapperServiceImpl.response().map(duyuru, DuyuruDTO.class);
-        return new ApiResponse(true, "Kayıt işlemi başarılı.", dto);
+        return new ApiResponse(true, "Güncelleme işlemi başarılı.", dto);
     }
 
     @Transactional
