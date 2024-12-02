@@ -98,7 +98,14 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
 
     @Override
     public ApiResponse findAll() {
-        return null;
+      List<OnemliBilgiler> onemliBilgilers = onemliBilgilerRepository.findAll();
+      if (onemliBilgilers.isEmpty()){
+          return new ApiResponse<>(false,"Liste boş",null);
+      }
+      List<OnemliBilgilerDTO> dtos = onemliBilgilers.stream().map(onemliBilgiler -> this.modelMapperService.response()
+              .map(onemliBilgiler,OnemliBilgilerDTO.class)).collect(Collectors.toList());
+
+        return new ApiResponse<>(true,"İşlem başarılı.",dtos);
     }
 
     @Override
