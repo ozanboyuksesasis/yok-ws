@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -19,9 +20,10 @@ public class GenelDilCategoryDTO {
 
     private  Long id ;
 
-    @NotBlank(message = "Hata : Kısaltma eki boş olamaz.")
-    @Max(value = 3,message = "En fazla üç karakter girebilirsiniz.")
+    @NotBlank(message = "Hata: Kısaltma eki boş olamaz.")
+    @Size(max = 3, message = "En fazla üç karakter girebilirsiniz.")
     private String kisaltmaEki;
+
 
 
     @NotBlank(message = "Hata : İsim boş olamaz.")
