@@ -19,6 +19,9 @@ public class GenelDilCategory {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "kisaltma_eki", nullable = false)
+    private String kisaltmaEki;
+
 
     @Column(name = "name", nullable = false)
     private String name;
