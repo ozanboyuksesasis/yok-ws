@@ -18,4 +18,3 @@ INSERT INTO public.role_dashboard_menu (role_id, dashboard_menu_id) VALUES(1, 2)
 INSERT INTO public.role_dashboard_menu (role_id, dashboard_menu_id) VALUES(1, 3);
 INSERT INTO public.role_dashboard_menu (role_id, dashboard_menu_id) VALUES(1, 4);
 
-INSERT INTO public.genel_dil_category (name) VALUES('TR'),('EN'),('AR');
