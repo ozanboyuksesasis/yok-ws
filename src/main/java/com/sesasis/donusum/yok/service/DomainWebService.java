@@ -3,6 +3,7 @@ package com.sesasis.donusum.yok.service;
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.dto.AltMenuDTO;
 import com.sesasis.donusum.yok.dto.MenuDTO;
+import com.sesasis.donusum.yok.dto.MenuIcerikDTO;
 import com.sesasis.donusum.yok.dto.SliderDilCategoryDTO;
 import com.sesasis.donusum.yok.entity.AnaBaslik;
 import com.sesasis.donusum.yok.entity.Domain;
@@ -84,7 +85,17 @@ public class DomainWebService {
                 menuDTO.setDeleted(menu.getDeleted());
                 menuDTO.setParentId(menu.getParentId());
                 menuDTO.setUrl(menu.getUrl());
-                menuDTO.setAltMenuDTOS(menu.getAltMenus().stream().map(altMenu -> this.modelMapperServiceImpl.response().map(altMenu, AltMenuDTO.class)).collect(Collectors.toList()));
+                menuDTO.setAltMenuDTOS(menu.getAltMenus().stream().map(altMenu -> {
+                    AltMenuDTO dto = new AltMenuDTO();
+                    dto.setId(altMenu.getId());
+                    dto.setAnaMenu(altMenu.getAnaMenu().toDTO());
+                    dto.setAd(altMenu.getAd());
+                    dto.setUrl(altMenu.getUrl());
+                    dto.setDeleted(altMenu.getDeleted());
+                    dto.setMenuIcerikDTOS(altMenu.getMenuIceriks().stream().map(menuIcerik -> this.modelMapperServiceImpl.response().map(menuIcerik, MenuIcerikDTO.class)).collect(Collectors.toList()));
+                    return dto;
+                }).collect(Collectors.toList()));
+
                 return menuDTO;
             }).collect(Collectors.toList());
 

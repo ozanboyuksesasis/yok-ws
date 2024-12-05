@@ -4,8 +4,12 @@ import com.sesasis.donusum.yok.core.domain.BaseDTO;
 import com.sesasis.donusum.yok.entity.MenuIcerik;
 import lombok.Data;
 
+import javax.transaction.Transactional;
+
 @Data
+@Transactional
 public class MenuIcerikDTO extends BaseDTO<MenuIcerik> {
+	String baslik;
 	String icerik;
 	AltMenuDTO altMenu;
 

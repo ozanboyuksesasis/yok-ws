@@ -56,7 +56,6 @@ public class HaberService implements IService<HaberDTO> {
                 }
 
             }
-
             haber.setSayfaUrl(haberDTO.getSayfaUrl());
             haber.setSiraNo(atomicLong.getAndIncrement());
             return haber;
