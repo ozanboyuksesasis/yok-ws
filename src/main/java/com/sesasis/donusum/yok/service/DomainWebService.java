@@ -1,6 +1,7 @@
 package com.sesasis.donusum.yok.service;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
+import com.sesasis.donusum.yok.dto.AltMenuDTO;
 import com.sesasis.donusum.yok.dto.MenuDTO;
 import com.sesasis.donusum.yok.dto.SliderDilCategoryDTO;
 import com.sesasis.donusum.yok.entity.AnaBaslik;
@@ -66,6 +67,28 @@ public class DomainWebService {
             }
 
             return new ApiResponse<>(true,"İşlem başarılı.",null);
+    }
+
+    public ApiResponse getListAltMenuOrDomainId(Long domainId){
+            Domain domain = domainRepository.findById(domainId).orElse(null);
+            if (domain==null){
+                return new ApiResponse<>(false,"Domain bulunamadı.",null);
+            }
+            List<MenuDTO> menuList = domain.getMenus().stream().map(menu -> {
+                MenuDTO menuDTO = new MenuDTO();
+                menuDTO.setDomainId(menu.getDomain().getId());
+                menuDTO.setId(menu.getId());
+                menuDTO.setAd(menu.getAd());
+                menuDTO.setAnaSayfaMi(menu.isAnaSayfaMi());
+                menuDTO.setLabel(menu.getLabel());
+                menuDTO.setDeleted(menu.getDeleted());
+                menuDTO.setParentId(menu.getParentId());
+                menuDTO.setUrl(menu.getUrl());
+                menuDTO.setAltMenuDTOS(menu.getAltMenus().stream().map(altMenu -> this.modelMapperServiceImpl.response().map(altMenu, AltMenuDTO.class)).collect(Collectors.toList()));
+                return menuDTO;
+            }).collect(Collectors.toList());
+
+            return new ApiResponse<>(true,"İşlem başarılı.",menuList);
     }
 
 

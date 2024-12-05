@@ -1,12 +1,12 @@
 package com.sesasis.donusum.yok.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sesasis.donusum.yok.core.domain.BaseModel;
 import com.sesasis.donusum.yok.dto.MenuDTO;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -24,6 +24,9 @@ public class Menu extends BaseModel<MenuDTO> {
 	@ManyToOne
 	@JoinColumn(name = "fotograf_id")
 	private Fotograf fotograf;
+
+	@OneToMany(mappedBy = "anaMenu",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	private List<AltMenu> altMenus;
 
 	@Override
 	public MenuDTO toDTO() {

@@ -3,9 +3,9 @@ package com.sesasis.donusum.yok.entity;
 import com.sesasis.donusum.yok.core.domain.BaseModel;
 import com.sesasis.donusum.yok.dto.AltMenuDTO;
 import lombok.Data;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Data
@@ -15,7 +15,8 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 	@Column(unique = true)
 	String url;
 	@ManyToOne
-	Menu anaMenu;
+	@JoinColumn(name = "ana_menu_id", referencedColumnName = "id", nullable = false)
+	private Menu anaMenu;
 
 	@Override
 	public AltMenuDTO toDTO() {

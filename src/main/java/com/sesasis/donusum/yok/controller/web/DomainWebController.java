@@ -34,6 +34,12 @@ public class DomainWebController {
         return ResponseEntity.ok(domainService.findAll());
     }
 
+    @GetMapping(value = "/alt-menu-list/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getListAltMenuOrDomainId(@PathVariable Long domainId){
+        ApiResponse listAltMenuOrDomainId = domainWebService.getListAltMenuOrDomainId(domainId);
+        return new ResponseEntity<>(listAltMenuOrDomainId,HttpStatus.OK);
+    }
+
 
     @GetMapping(value = "/get-menu/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getMenu(@PathVariable Long domainId) {

@@ -41,7 +41,7 @@ public class OnemliBilgilerController {
     }
 
 
-    @DeleteMapping(value = "/delete/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> delete(@PathVariable Long id){
         onemliBilgilerService.deleteById(id);
         return new ResponseEntity<>(new ApiResponse<>(true,"Silme işlemi başarılıdır.",null), HttpStatus.OK);
