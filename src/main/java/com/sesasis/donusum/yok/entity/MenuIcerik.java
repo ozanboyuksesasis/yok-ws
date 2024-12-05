@@ -1,5 +1,7 @@
 package com.sesasis.donusum.yok.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sesasis.donusum.yok.core.domain.BaseModel;
 import com.sesasis.donusum.yok.dto.MenuIcerikDTO;
 import lombok.Data;
@@ -13,6 +15,9 @@ import java.nio.charset.StandardCharsets;
 @Data
 @Entity
 public class MenuIcerik extends BaseModel<MenuIcerikDTO> {
+
+	private String	baslik;
+
 	@Lob
 	@Type(type = "org.hibernate.type.ImageType")
 	private byte[] icerik;
