@@ -11,16 +11,20 @@ import com.sesasis.donusum.yok.repository.AltMenuRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> implements IService<AltMenuDTO> {
 
 	private final SecurityContextUtil securityContextUtil;
+	private final AltMenuRepository altMenuRepository;
 
-	public AltMenuService(AltMenuRepository repository, SecurityContextUtil securityContextUtil) {
+	public AltMenuService(AltMenuRepository repository, SecurityContextUtil securityContextUtil,
+						  AltMenuRepository altMenuRepository) {
 		super(repository);
 		this.securityContextUtil = securityContextUtil;
+		this.altMenuRepository = altMenuRepository;
 	}
 
 
