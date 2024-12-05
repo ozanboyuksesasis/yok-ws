@@ -92,7 +92,7 @@ public class DomainWebService {
                     dto.setAd(altMenu.getAd());
                     dto.setUrl(altMenu.getUrl());
                     dto.setDeleted(altMenu.getDeleted());
-                    dto.setMenuIcerikDTOS(altMenu.getMenuIceriks().stream().map(menuIcerik -> this.modelMapperServiceImpl.response().map(menuIcerik, MenuIcerikDTO.class)).collect(Collectors.toList()));
+                    dto.setMenuIcerikDTOS(altMenu.getMenuIceriks().stream().map(menuIcerik -> menuIcerik.toDTO()).collect(Collectors.toList()));
                     return dto;
                 }).collect(Collectors.toList()));
 

@@ -23,7 +23,6 @@ public class MenuIcerik extends BaseModel<MenuIcerikDTO> {
 	private byte[] icerik;
 
 	@OneToOne
-	@JsonBackReference
 	AltMenu altMenu;
 
 	@Override
