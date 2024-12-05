@@ -24,6 +24,12 @@ public class DomainController {
 	}
 
 
+	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> findAll() {
+		return ResponseEntity.ok(domainService.findAll());
+	}
+
+
 	@GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getId(@PathVariable Long id){
 		ApiResponse byId = domainService.findById(id);
