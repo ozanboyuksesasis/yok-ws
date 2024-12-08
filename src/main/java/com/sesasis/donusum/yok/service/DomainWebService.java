@@ -5,50 +5,71 @@ import com.sesasis.donusum.yok.dto.AltMenuDTO;
 import com.sesasis.donusum.yok.dto.MenuDTO;
 import com.sesasis.donusum.yok.dto.MenuIcerikDTO;
 import com.sesasis.donusum.yok.dto.SliderDilCategoryDTO;
-import com.sesasis.donusum.yok.entity.AnaBaslik;
-import com.sesasis.donusum.yok.entity.Domain;
-import com.sesasis.donusum.yok.entity.Menu;
-import com.sesasis.donusum.yok.entity.SliderDilCategory;
+import com.sesasis.donusum.yok.entity.*;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.fasterxml.jackson.databind.cfg.CoercionInputShape.String;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class DomainWebService {
-        private final DomainRepository domainRepository;
-        private final SliderDilCategoryRepository sliderDilCategoryRepository;
-        private final ModelMapperServiceImpl modelMapperServiceImpl;
+    private final DomainRepository domainRepository;
+    private final SliderDilCategoryRepository sliderDilCategoryRepository;
+    private final ModelMapperServiceImpl modelMapperServiceImpl;
+    private final MenuRepository menuRepository;
 
 
-        public ApiResponse getAllMenusDomainId(Long domainId){
-            Domain domain = domainRepository.findById(domainId).orElse(null);
-            if (domain == null){
-                return new ApiResponse<>(false,"Domain bulunamadı.",null);
-            }
-            List<Menu> menu = domain.getMenus();
-            if (menu == null || menu.isEmpty()) {
-                return new ApiResponse<>(false, "Menü bulunamadı.", null);
-            }
+    public ApiResponse getAllIcerikDomainId(Long domainId) {
 
-            List<MenuDTO> dtos = menu.stream().map(localMenu ->
-                    this.modelMapperServiceImpl.response().map(localMenu, MenuDTO.class))
-                    .collect(Collectors.toList());
-
-           return new ApiResponse<>(true,"İşlem başarılı.",dtos);
+        List<Menu> menus = menuRepository.findAllByDomainId(domainId);
+        if (menus.isEmpty()) {
+            return new ApiResponse<>(false, "Menü listesi boş.", null);
         }
 
+        List<MenuIcerik> iceriks = domainRepository.findAllByMenus(menus);
 
-      public ApiResponse getAllSlidersDomainId(Long domainId){
+        List<MenuIcerikDTO> dtos = iceriks.stream().map(menuIcerik -> {
+            MenuIcerikDTO dto = new MenuIcerikDTO();
+            dto.setBaslik(menuIcerik.getBaslik());
+            dto.setDeleted(menuIcerik.getDeleted());
+            dto.setId(menuIcerik.getId());
+            dto.setMenuId(menuIcerik.getMenu().getId());
+            dto.setIcerik(menuIcerik.getIcerik() != null ? new String(menuIcerik.getIcerik(), StandardCharsets.UTF_8) : null);
+            dto.setMenuDTO(menuIcerik.getMenu().toDTO());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return new ApiResponse<>(true, "İşlem başarılı.", dtos);
+    }
+
+    public ApiResponse getAllMenusDomainId(Long domainId) {
+
         Domain domain = domainRepository.findById(domainId).orElse(null);
-        if (domain == null){
-            return new ApiResponse<>(false,"Domain bulunamadı.",null);
+        if (domain == null) {
+            return new ApiResponse<>(false, "Domain bulunamadı.", null);
+        }
+        List<Menu> menu = menuRepository.findAllByDomainId(domainId);
+        List<MenuDTO> dtos = menu.stream().map(localMenu -> this.modelMapperServiceImpl.response().
+                map(localMenu, MenuDTO.class)).collect(Collectors.toList());
+
+
+        return new ApiResponse<>(true, "İşlem başarılı.", dtos);
+    }
+
+
+    public ApiResponse getAllSlidersDomainId(Long domainId) {
+        Domain domain = domainRepository.findById(domainId).orElse(null);
+        if (domain == null) {
+            return new ApiResponse<>(false, "Domain bulunamadı.", null);
         }
         List<SliderDilCategory> sliderDilCategories = domain.getSliderDilCategories();
         if (sliderDilCategories == null || sliderDilCategories.isEmpty()) {
@@ -58,19 +79,19 @@ public class DomainWebService {
                         this.modelMapperServiceImpl.response().map(localSlider, SliderDilCategoryDTO.class))
                 .collect(Collectors.toList());
 
-        return new ApiResponse<>(true,"İşlem başarılı.",dtos);
+        return new ApiResponse<>(true, "İşlem başarılı.", dtos);
     }
 
-    public ApiResponse getBaslikDomainId(Long domainId){
-            Domain domain = domainRepository.findById(domainId).orElse(null);
-            if (domain==null){
-                return new ApiResponse<>(false,"Domain bulunamadı işlem başarısız.",null);
-            }
+    public ApiResponse getBaslikDomainId(Long domainId) {
+        Domain domain = domainRepository.findById(domainId).orElse(null);
+        if (domain == null) {
+            return new ApiResponse<>(false, "Domain bulunamadı işlem başarısız.", null);
+        }
 
-            return new ApiResponse<>(true,"İşlem başarılı.",null);
+        return new ApiResponse<>(true, "İşlem başarılı.", null);
     }
 
-    public ApiResponse getListAltMenuOrDomainId(Long domainId){
+ /*   public ApiResponse getListAltMenuOrDomainId(Long domainId){
             Domain domain = domainRepository.findById(domainId).orElse(null);
             if (domain==null){
                 return new ApiResponse<>(false,"Domain bulunamadı.",null);
@@ -100,9 +121,7 @@ public class DomainWebService {
             }).collect(Collectors.toList());
 
             return new ApiResponse<>(true,"İşlem başarılı.",menuList);
-    }
-
-
+    }*/
 
 
 }

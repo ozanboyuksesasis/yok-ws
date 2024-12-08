@@ -10,4 +10,5 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 	Menu findOneByDomainIdAndAnaSayfaMi(Long domainId,boolean anaSayfaMi);
 	List<Menu> findAllByDomainIdAndAnaSayfaMi(Long domainId,boolean anaSayfaMi);
 
+
 }

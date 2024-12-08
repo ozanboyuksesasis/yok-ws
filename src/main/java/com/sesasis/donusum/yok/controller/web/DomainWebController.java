@@ -34,15 +34,20 @@ public class DomainWebController {
         return ResponseEntity.ok(domainService.findAll());
     }
 
-    @GetMapping(value = "/alt-menu-list/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
+/*    @GetMapping(value = "/alt-menu-list/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getListAltMenuOrDomainId(@PathVariable Long domainId){
         ApiResponse listAltMenuOrDomainId = domainWebService.getListAltMenuOrDomainId(domainId);
         return new ResponseEntity<>(listAltMenuOrDomainId,HttpStatus.OK);
-    }
+    }*/
 
 
-    @GetMapping(value = "/get-menu/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/get-icerik/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getMenu(@PathVariable Long domainId) {
+        ApiResponse allMenusDomainId = domainWebService.getAllIcerikDomainId(domainId);
+        return new ResponseEntity<>(allMenusDomainId,HttpStatus.OK);
+    }
+    @GetMapping(value = "/get-menus/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getMenus(@PathVariable Long domainId){
         ApiResponse allMenusDomainId = domainWebService.getAllMenusDomainId(domainId);
         return new ResponseEntity<>(allMenusDomainId,HttpStatus.OK);
     }
@@ -112,7 +117,6 @@ public class DomainWebController {
         ApiResponse apiResponse = onemliBilgilerService.onemliBilgilerFalseTrueDomainId(domainId, dilCategoryId);
         return ResponseEntity.ok(apiResponse);
     }
-
 
 
     @GetMapping(value = "/all-dil-category",produces = MediaType.APPLICATION_JSON_VALUE)
