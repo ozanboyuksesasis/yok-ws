@@ -31,6 +31,7 @@ public class MenuIcerik extends BaseModel<MenuIcerikDTO> {
 	@Override
 	public MenuIcerikDTO toDTO() {
 		MenuIcerikDTO menuIcerikDTO = new MenuIcerikDTO();
+		menuIcerikDTO.setBaslik(getBaslik());
 		menuIcerikDTO.setId(getId());
 		menuIcerikDTO.setIcerik(new String(icerik, StandardCharsets.UTF_8));
 		return menuIcerikDTO;
