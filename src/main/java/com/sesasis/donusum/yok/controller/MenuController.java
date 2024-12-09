@@ -5,6 +5,7 @@ import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.dto.MenuDTO;
 import com.sesasis.donusum.yok.service.MenuService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,10 +37,10 @@ public class MenuController {
 		return ResponseEntity.ok(menuService.findDomainAnasayfa());
 	}
 
-	@DeleteMapping(MappingConstants.PATH_VARIABLE_ID)
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteById(@PathVariable Long id) {
-		 menuService.deleteById(id);
-		return ResponseEntity.ok().build();
+		menuService.deleteById(id);
+		return ResponseEntity.ok(new ApiResponse<>(true, "Menü başarıyla silindi.", null));
 	}
 
 

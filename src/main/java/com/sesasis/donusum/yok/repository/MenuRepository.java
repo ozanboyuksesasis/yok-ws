@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 	List<Menu> findAllByDomainId(Long domainId);
+	Menu findOneByIdAndDomainId(Long menuId,Long domainId);
 	Menu findOneByDomainIdAndAnaSayfaMi(Long domainId,boolean anaSayfaMi);
 	List<Menu> findAllByDomainIdAndAnaSayfaMi(Long domainId,boolean anaSayfaMi);
 

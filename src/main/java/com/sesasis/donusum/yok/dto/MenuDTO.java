@@ -21,6 +21,7 @@ public class MenuDTO extends BaseDTO<Menu> {
 	private int parentId ;
 	private String label ;
 
+
 	@Override
 	public Menu toEntity() {
 		Menu menu = new Menu();
