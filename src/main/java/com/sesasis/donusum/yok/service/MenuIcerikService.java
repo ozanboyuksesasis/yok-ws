@@ -97,7 +97,9 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
 
     @Override
     public void deleteById(Long id) {
-
+        if (menuIcerikRepository.existsById(id)){
+            menuIcerikRepository.deleteById(id);
+        }
     }
 
     public ApiResponse getIcerikByAltMenuUrl(String altMenuUrl) {
