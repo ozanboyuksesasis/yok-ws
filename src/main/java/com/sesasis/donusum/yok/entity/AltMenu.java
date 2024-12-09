@@ -18,8 +18,7 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 	@JoinColumn(name = "ana_menu_id", referencedColumnName = "id", nullable = false)
 	private Menu anaMenu;
 
-	@OneToMany(mappedBy = "altMenu", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	private List<MenuIcerik> menuIceriks;
+
 
 	@Override
 	public AltMenuDTO toDTO() {

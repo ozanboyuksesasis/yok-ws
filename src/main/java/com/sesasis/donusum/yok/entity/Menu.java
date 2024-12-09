@@ -1,6 +1,7 @@
 package com.sesasis.donusum.yok.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sesasis.donusum.yok.core.domain.BaseModel;
 import com.sesasis.donusum.yok.dto.MenuDTO;
 import lombok.Data;
@@ -25,8 +26,7 @@ public class Menu extends BaseModel<MenuDTO> {
 	@JoinColumn(name = "fotograf_id")
 	private Fotograf fotograf;
 
-	@OneToMany(mappedBy = "anaMenu",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-	private List<AltMenu> altMenus;
+
 
 	@Override
 	public MenuDTO toDTO() {

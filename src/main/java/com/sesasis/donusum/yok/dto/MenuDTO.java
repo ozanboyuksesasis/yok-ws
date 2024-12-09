@@ -1,6 +1,7 @@
 package com.sesasis.donusum.yok.dto;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sesasis.donusum.yok.core.domain.BaseDTO;
@@ -11,6 +12,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MenuDTO extends BaseDTO<Menu> {
 	String ad;
 	Long domainId;
@@ -18,8 +20,6 @@ public class MenuDTO extends BaseDTO<Menu> {
 	boolean anaSayfaMi;
 	private int parentId ;
 	private String label ;
-	@JsonManagedReference
-	private List<AltMenuDTO> altMenuDTOS;
 
 	@Override
 	public Menu toEntity() {

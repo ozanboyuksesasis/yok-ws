@@ -18,9 +18,6 @@ public class AltMenuDTO extends BaseDTO<AltMenu> {
 	@JsonBackReference
 	MenuDTO anaMenu;
 
-	@JsonManagedReference
-	private List<MenuIcerikDTO > menuIcerikDTOS;
-
 	@Override
 	public AltMenu toEntity() {
 		AltMenu altMenu = new AltMenu();

@@ -10,18 +10,21 @@ import javax.transaction.Transactional;
 @Data
 @Transactional
 public class MenuIcerikDTO extends BaseDTO<MenuIcerik> {
+
+	private Long menuId;
 	String baslik;
 	String icerik;
 
+
 	@JsonBackReference
-	AltMenuDTO altMenu;
+	private MenuDTO menuDTO;
 
 	@Override
 	public MenuIcerik toEntity() {
 		MenuIcerik menuIcerik = new MenuIcerik();
+		menuIcerik.setBaslik(getBaslik());
 		menuIcerik.setId(getId());
 		menuIcerik.setIcerik(icerik.getBytes());
-		menuIcerik.setAltMenu(altMenu != null ? altMenu.toEntity() : null);
 		return menuIcerik;
 	}
 }
