@@ -12,16 +12,19 @@ import com.sesasis.donusum.yok.repository.MenuRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class MenuService extends AbstractService<Menu, MenuRepository> implements IService<MenuDTO> {
 
     private final SecurityContextUtil securityContextUtil;
+    private final MenuRepository menuRepository;
 
-    public MenuService(MenuRepository repository, SecurityContextUtil securityContextUtil) {
+    public MenuService(MenuRepository repository, SecurityContextUtil securityContextUtil, MenuRepository menuRepository) {
         super(repository);
         this.securityContextUtil = securityContextUtil;
+        this.menuRepository = menuRepository;
     }
 
 
@@ -61,8 +64,13 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
     }
 
     @Override
-    public void deleteById(Long id) {
-
+    public void deleteById(Long menuId) {
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        Menu menu = menuRepository.findOneByIdAndDomainId(menuId,domain.getId());
+        if (menu == null){
+            throw new IllegalArgumentException("Menü bulunamadı.");
+        }
+        menuRepository.deleteById(menu.getId());
     }
 
     public ApiResponse findAllWithoutAnasayfa() {
