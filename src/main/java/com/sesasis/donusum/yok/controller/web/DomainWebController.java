@@ -65,11 +65,6 @@ public class DomainWebController {
         return new ResponseEntity<>(getBaslikDomainId,HttpStatus.OK);
     }
 
-    @GetMapping(value = "/get-baslik/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<?> getBaslik(@PathVariable Long id){
-        ApiResponse byOneDomainIdAnaBaslik = anaBaslikService.findByOneDomainIdAnaBaslik(id);
-        return new ResponseEntity<>(byOneDomainIdAnaBaslik,HttpStatus.OK);
-    }
 //not : sadece domaindei haberlerin hepsi karışık gelir , dil seçimi için aşağıda var.
     @GetMapping(value = "/get-haber/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getHaber(@PathVariable Long domainId){

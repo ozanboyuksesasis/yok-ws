@@ -1,9 +1,11 @@
 package com.sesasis.donusum.yok.controller;
 
 import com.sesasis.donusum.yok.constant.MappingConstants;
+import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.dto.MenuIcerikDTO;
 import com.sesasis.donusum.yok.service.MenuIcerikService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +37,10 @@ public class MenuIcerikController {
         return ResponseEntity.ok(menuIcerikService.getIcerikByAltMenuUrl(altMenuUrl));
     }
 
+    @GetMapping(value = "/get-alt-menü-icerik",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getListAltMenuIcerik(){
+        ApiResponse listAltMenuIcerik = menuIcerikService.getListAltMenuIcerik();
+        return new ResponseEntity<>(listAltMenuIcerik, HttpStatus.OK);
+    }
 
 }

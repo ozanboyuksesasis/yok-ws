@@ -6,10 +6,7 @@ import com.sesasis.donusum.yok.dto.MenuIcerikDTO;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.nio.charset.StandardCharsets;
 
 @Data
@@ -22,10 +19,14 @@ public class MenuIcerik extends BaseModel<MenuIcerikDTO> {
 	@Type(type = "org.hibernate.type.ImageType")
 	private byte[] icerik;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "menü_id")
 	@JsonIgnore
 	private Menu menu;
+
+	@ManyToOne
+	@JoinColumn(name = "alt_menü_id")
+	private AltMenu altMenu;
 
 
 	@Override

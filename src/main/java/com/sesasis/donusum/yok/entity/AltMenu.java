@@ -14,9 +14,13 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 	String ad;
 	@Column(unique = true)
 	String url;
+
 	@ManyToOne
 	@JoinColumn(name = "ana_menu_id", referencedColumnName = "id", nullable = false)
-	private Menu anaMenu;
+	private Menu menu;
+
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "menu",orphanRemoval = true)
+	private List<MenuIcerik> menuIceriks;
 
 
 
@@ -26,7 +30,7 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 		altMenuDTO.setId(getId());
 		altMenuDTO.setAd(ad);
 		altMenuDTO.setUrl(url);
-		altMenuDTO.setAnaMenu(anaMenu != null ? anaMenu.toDTO() : null);
+		//altMenuDTO.setAnaMenu(anaMenu != null ? anaMenu.toDTO() : null);
 		return altMenuDTO;
 	}
 }

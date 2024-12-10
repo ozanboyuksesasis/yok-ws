@@ -50,10 +50,9 @@ public class AnaBaslikService implements IService<AnaBaslikDTO> {
 
     @Override
     public ApiResponse findById(Long id) {
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         AnaBaslik anaBaslik = anaBaslikRepository.findById(id).orElse(null);
-        if (anaBaslik==null){
-            return new ApiResponse<>(false,"Hata : Başlık bulunamadı.",null);
-        }
+
         AnaBaslikDTO dto = this.modelMapperServiceImpl.response().map(anaBaslik, AnaBaslikDTO.class);
         return new ApiResponse<>(true,"İşlem başarılı.",dto);
     }
@@ -66,8 +65,9 @@ public class AnaBaslikService implements IService<AnaBaslikDTO> {
 
     }
 
-    public ApiResponse findByOneDomainIdAnaBaslik(Long domainId){
-        AnaBaslik anaBaslik = anaBaslikRepository.findOneByDomainId(domainId);
+    public ApiResponse findByOneDomainIdAnaBaslik(){
+      Domain domain  = securityContextUtil.getCurrentUser().getLoggedDomain();
+        AnaBaslik anaBaslik = anaBaslikRepository.findOneByDomainId(domain.getId());
         if (anaBaslik==null){
             return new ApiResponse<>(false,"Başlık bulunamadı.",null);
         }
