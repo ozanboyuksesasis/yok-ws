@@ -30,6 +30,12 @@ public class AnaBaslikController {
         return new ResponseEntity<>(byId,HttpStatus.OK);
     }
 
+    @GetMapping(value = "/get-baslik",produces = MediaType.APPLICATION_JSON_VALUE)
+    private ResponseEntity<?> getBaslik(){
+        ApiResponse byOneDomainIdAnaBaslik = anaBaslikService.findByOneDomainIdAnaBaslik();
+        return new ResponseEntity<>(byOneDomainIdAnaBaslik,HttpStatus.OK);
+    }
+
 
     @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteById(@PathVariable Long id){

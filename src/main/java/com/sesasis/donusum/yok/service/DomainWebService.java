@@ -1,10 +1,7 @@
 package com.sesasis.donusum.yok.service;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
-import com.sesasis.donusum.yok.dto.AltMenuDTO;
-import com.sesasis.donusum.yok.dto.MenuDTO;
-import com.sesasis.donusum.yok.dto.MenuIcerikDTO;
-import com.sesasis.donusum.yok.dto.SliderDilCategoryDTO;
+import com.sesasis.donusum.yok.dto.*;
 import com.sesasis.donusum.yok.entity.*;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.*;
@@ -26,6 +23,7 @@ public class DomainWebService {
     private final SliderDilCategoryRepository sliderDilCategoryRepository;
     private final ModelMapperServiceImpl modelMapperServiceImpl;
     private final MenuRepository menuRepository;
+    private final AnaBaslikRepository anaBaslikRepository;
 
 
     public ApiResponse getAllIcerikDomainId(Long domainId) {
@@ -82,12 +80,10 @@ public class DomainWebService {
     }
 
     public ApiResponse getBaslikDomainId(Long domainId) {
-        Domain domain = domainRepository.findById(domainId).orElse(null);
-        if (domain == null) {
-            return new ApiResponse<>(false, "Domain bulunamadı işlem başarısız.", null);
-        }
 
-        return new ApiResponse<>(true, "İşlem başarılı.", null);
+        AnaBaslik anaBaslik = anaBaslikRepository.findOneByDomainId(domainId);
+        AnaBaslikDTO dto = this.modelMapperServiceImpl.response().map(anaBaslik,AnaBaslikDTO.class);
+        return new ApiResponse<>(true, "İşlem başarılı.", dto);
     }
 
  /*   public ApiResponse getListAltMenuOrDomainId(Long domainId){
