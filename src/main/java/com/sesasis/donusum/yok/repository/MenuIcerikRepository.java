@@ -10,4 +10,6 @@ public interface MenuIcerikRepository extends JpaRepository<MenuIcerik, Long> {
 	//MenuIcerik findOneByAltMenuAnaMenuDomainIdAndAltMenuUrl(Long domainId,String altMenuUrl);
     List<MenuIcerik> findAllByMenuDomainId(Long domainId);
     MenuIcerik findOneByMenuId(Long menuId);
+    List<MenuIcerik> findAllByAltMenuMenuDomainId(Long domainId);
+
 }

@@ -24,6 +24,9 @@ public class Menu extends BaseModel<MenuDTO> {
 	@JoinColumn(name = "fotograf_id")
 	private Fotograf fotograf;
 
+	@OneToMany(mappedBy = "menu",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	private List<AltMenu> altMenus;
+
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "menu",orphanRemoval = true)
 	private List<MenuIcerik> menuIceriks;
 

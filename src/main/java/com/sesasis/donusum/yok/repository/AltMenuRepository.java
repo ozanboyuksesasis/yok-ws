@@ -8,7 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface AltMenuRepository extends JpaRepository<AltMenu, Long> {
-	List<AltMenu> findAllByAnaMenuDomainId(Long altMenuDTO);
+	List<AltMenu> findAllByMenuDomainId(Long altMenuDTO);
+
+	AltMenu findOneByIdAndMenuId_DomainId(Long menuId,Long domainId);
 
 	@Query("SELECT COUNT(a) > 0 FROM AltMenu a WHERE a.url = :url")
 	boolean existsByUrl(@Param("url") String url);

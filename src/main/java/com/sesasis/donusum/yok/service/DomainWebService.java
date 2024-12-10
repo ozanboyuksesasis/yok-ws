@@ -44,7 +44,7 @@ public class DomainWebService {
             dto.setId(menuIcerik.getId());
             dto.setMenuId(menuIcerik.getMenu().getId());
             dto.setIcerik(menuIcerik.getIcerik() != null ? new String(menuIcerik.getIcerik(), StandardCharsets.UTF_8) : null);
-            dto.setMenuDTO(menuIcerik.getMenu().toDTO());
+           // dto.setMenuDTO(menuIcerik.getMenu().toDTO());
             return dto;
         }).collect(Collectors.toList());
 
@@ -64,7 +64,6 @@ public class DomainWebService {
 
         return new ApiResponse<>(true, "İşlem başarılı.", dtos);
     }
-
 
     public ApiResponse getAllSlidersDomainId(Long domainId) {
         Domain domain = domainRepository.findById(domainId).orElse(null);
