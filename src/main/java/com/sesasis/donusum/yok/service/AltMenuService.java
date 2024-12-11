@@ -54,7 +54,8 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
         }
         AltMenu altMenu = modelMapperService.request().map(altMenuDTO, AltMenu.class);
         altMenu.setMenu(menu);
-		altMenu.setUrl(altMenu.getUrl() + "-" + UUID.randomUUID().toString().substring(0, 8));
+
+		altMenu.setUrl();
 		altMenuRepository.save(altMenu);
 		return new ApiResponse(true, "Alt Menü başarıyla kaydedildi: " , null);
 	}

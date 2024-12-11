@@ -21,6 +21,5 @@ public class AnaBaslikDTO {
     @Pattern(regexp = "^[^0-9]+$", message = "Hata: Başlık rakam içeremez.")
     private String baslik;
 
-    private Long id;
 
 }

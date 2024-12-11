@@ -17,10 +17,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AnaBaslikService implements IService<AnaBaslikDTO> {
 
-        private final AnaBaslikRepository anaBaslikRepository;
-        private final ModelMapperServiceImpl modelMapperServiceImpl;
-        private final SecurityContextUtil securityContextUtil;
-        private final DomainRepository domainRepository;
+    private final AnaBaslikRepository anaBaslikRepository;
+    private final ModelMapperServiceImpl modelMapperServiceImpl;
+    private final SecurityContextUtil securityContextUtil;
+    private final DomainRepository domainRepository;
 
     @Override
     public ApiResponse save(AnaBaslikDTO anaBaslikDTO) {
@@ -28,19 +28,20 @@ public class AnaBaslikService implements IService<AnaBaslikDTO> {
 
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
 
-        AnaBaslik anaBaslik;
-        if (anaBaslikDTO.getId() != null){
-            anaBaslik = anaBaslikRepository.findById(anaBaslikDTO.getId()).get();
+        AnaBaslik anaBaslik = anaBaslikRepository.findOneByDomainId(domain.getId());
+
+        if (anaBaslik != null){
+            anaBaslik.setDomain(domain);
             anaBaslik.setBaslik(anaBaslikDTO.getBaslik());
             anaBaslikRepository.save(anaBaslik);
-        }else{
+        }else {
             anaBaslik = new AnaBaslik();
             anaBaslik.setBaslik(anaBaslikDTO.getBaslik());
             anaBaslik.setDomain(domain);
             anaBaslikRepository.save(anaBaslik);
         }
 
-        return new ApiResponse<>(true,"İşlem Başarılı.",null);
+        return new ApiResponse<>(true, "İşlem Başarılı.", null);
     }
 
     @Override
@@ -54,24 +55,24 @@ public class AnaBaslikService implements IService<AnaBaslikDTO> {
         AnaBaslik anaBaslik = anaBaslikRepository.findById(id).orElse(null);
 
         AnaBaslikDTO dto = this.modelMapperServiceImpl.response().map(anaBaslik, AnaBaslikDTO.class);
-        return new ApiResponse<>(true,"İşlem başarılı.",dto);
+        return new ApiResponse<>(true, "İşlem başarılı.", dto);
     }
 
     @Override
     public void deleteById(Long id) {
-        if (anaBaslikRepository.existsById(id)){
+        if (anaBaslikRepository.existsById(id)) {
             anaBaslikRepository.deleteById(id);
         }
 
     }
 
-    public ApiResponse findByOneDomainIdAnaBaslik(){
-      Domain domain  = securityContextUtil.getCurrentUser().getLoggedDomain();
+    public ApiResponse findByOneDomainIdAnaBaslik() {
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         AnaBaslik anaBaslik = anaBaslikRepository.findOneByDomainId(domain.getId());
-        if (anaBaslik==null){
-            return new ApiResponse<>(false,"Başlık bulunamadı.",null);
+        if (anaBaslik == null) {
+            return new ApiResponse<>(false, "Başlık bulunamadı.", null);
         }
         AnaBaslikDTO anaBaslikDTO = this.modelMapperServiceImpl.response().map(anaBaslik, AnaBaslikDTO.class);
-        return new ApiResponse<>(true,"İşlem başarılı.",anaBaslikDTO);
+        return new ApiResponse<>(true, "İşlem başarılı.", anaBaslikDTO);
     }
 }
