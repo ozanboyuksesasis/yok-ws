@@ -12,7 +12,6 @@ INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "num
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Alt Menü Tanımla', 5, 'alt-menu', 1,'FaCirclePlus');
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa İçerik Doldur', 6, 'ana-sayfa-menu-icerik', 1,'FaCirclePlus');
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Alt Menü İçerik Doldur', 7, 'alt-menu-icerik', 1,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Ana Menü İçerik doldur.', 8, 'ana-menu-icerik', 1,'FaCirclePlus');
 
 
 INSERT INTO public.role_dashboard_menu (role_id, dashboard_menu_id) VALUES(1, 1);
