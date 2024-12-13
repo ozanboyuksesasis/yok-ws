@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,10 +44,13 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
     public ApiResponse save(MenuIcerikDTO menuIcerikDTO) {
 
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
-        Menu menu = null;
+        List<Menu> menus = new ArrayList<>();
         if (menuIcerikDTO.getMenuId()!=null){
-            menuRepository.findOneByIdAndDomainId(menuIcerikDTO.getMenuId(), domain.getId());
+            menus = menuRepository.findAllByDomainId(domain.getId());
         }
+
+        Menu menu = menus.stream().filter(m->m.getId().equals(menuIcerikDTO.getMenuId())).findFirst().orElse(null);
+
 
         AltMenu altMenu = null;
         if (menuIcerikDTO.getAltMenuId() != null) {
@@ -59,6 +63,7 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
 
         MenuIcerik menuIcerik = this.modelMapperService.request().map(menuIcerikDTO, MenuIcerik.class);
         menuIcerik.setMenu(menu);
+        menuIcerik.setDomain(domain);
         menuIcerik.setAltMenu(altMenu);
         menuIcerik.setBaslik(menuIcerikDTO.getBaslik());
         menuIcerik.setIcerik(menuIcerikDTO.getIcerik().getBytes());
