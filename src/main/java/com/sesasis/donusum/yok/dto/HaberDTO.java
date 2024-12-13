@@ -31,13 +31,12 @@ public class HaberDTO {
     @NotEmpty(message = "Başlık alanı boş olamaz.")
     private String baslik;
 
-    @Size(max = 350, message = "Alt başlık en fazla üç yüz elli karakter olabilir.")
+    @NotEmpty(message = "Alt başlık alanı boş olamaz.")
     private String altBaslik;
 
     @Lob
     @NotEmpty(message = "İçerik alanı boş olamaz.")
-    @Size(min = 100,message = "İçerik minimum yüz karakter olmalıdır.")
-    private String icerik;
+     private String icerik;
 
     @URL(message = "Geçerli bir URL giriniz.")
     private String sayfaUrl;;
