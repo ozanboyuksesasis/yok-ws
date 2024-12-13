@@ -73,7 +73,6 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
 
     @Override
     public ApiResponse findAll() {
-        // return new ApiResponse(true, MessageConstant.SUCCESS, getRepository().findAllByAltMenuAnaMenuDomainId(securityContextUtil.getCurrentUser().getLoggedDomain().getId()).stream().map(e->e.toDTO()).collect(Collectors.toList()));
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         if (domain == null) {
             return new ApiResponse<>(false, "Domain bulunamadı.", null);
