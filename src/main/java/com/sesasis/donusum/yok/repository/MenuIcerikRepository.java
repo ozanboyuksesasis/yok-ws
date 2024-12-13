@@ -11,5 +11,5 @@ public interface MenuIcerikRepository extends JpaRepository<MenuIcerik, Long> {
     List<MenuIcerik> findAllByMenuDomainId(Long domainId);
     MenuIcerik findOneByMenuId(Long menuId);
     List<MenuIcerik> findAllByAltMenuMenuDomainId(Long domainId);
-
+    List<MenuIcerik> findAllByDomainId(Long domainId);
 }

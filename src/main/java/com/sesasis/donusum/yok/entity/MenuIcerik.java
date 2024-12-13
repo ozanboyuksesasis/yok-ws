@@ -21,6 +21,7 @@ public class MenuIcerik extends BaseModel<MenuIcerikDTO> {
 
 	@ManyToOne
 	@JoinColumn(name = "domain_id")
+	@JsonIgnore
 	private Domain domain;
 
 	@ManyToOne
