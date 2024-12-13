@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 public class AltMenu extends BaseModel<AltMenuDTO> {
 	String ad;
-	@Column(unique = true)
+	@Column(name = "url")
 	String url;
 
 	@ManyToOne
