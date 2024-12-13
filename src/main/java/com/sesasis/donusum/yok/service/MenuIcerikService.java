@@ -48,7 +48,6 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
         if (menuIcerikDTO.getMenuId()!=null){
             menus = menuRepository.findAllByDomainId(domain.getId());
         }
-
         Menu menu = menus.stream().filter(m->m.getId().equals(menuIcerikDTO.getMenuId())).findFirst().orElse(null);
 
 
