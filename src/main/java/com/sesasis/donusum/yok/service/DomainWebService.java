@@ -79,6 +79,30 @@ public class DomainWebService {
         return new ApiResponse<>(true, "İşlem başarılı.", dtos);
     }
 
+    public  ApiResponse getMenuAndAltMenuAndIcerik(Long domainId){
+
+        Domain domain = domainRepository.findById(domainId).orElse(null);
+        if (domain==null){
+            return new ApiResponse<>(false,"Domain bulunamadı.",null);
+        }
+        List<MenuDTO> menus = domain.getMenus().stream().map(menu -> {
+            MenuDTO dto = new MenuDTO();
+            dto.setId(menu.getId());
+            dto.setAd(menu.getAd());
+            dto.setUrl(menu.getUrl());
+            dto.setDomainId(menu.getDomain().getId());
+            dto.setLabel(menu.getLabel());
+            dto.setDeleted(menu.getDeleted());
+            dto.setParentId(menu.getParentId());
+            dto.setAnaSayfaMi(menu.isAnaSayfaMi());
+            dto.setGenelDilCategoryId(menu.getGenelDilCategory()!=null ? menu.getGenelDilCategory().getId() : null);
+            dto.setMenuIcerikDTOS(menu.getMenuIceriks().stream().map(menuIcerik -> this.modelMapperServiceImpl.response().map(menuIcerik, MenuIcerikDTO.class)).collect(Collectors.toList()));
+            dto.setAltMenuDTOS(menu.getAltMenus().stream().map(altMenu -> this.modelMapperServiceImpl.response().map(altMenu,AltMenuDTO.class)).collect(Collectors.toList()));
+            return dto;
+        }).collect(Collectors.toList());
+        return new ApiResponse<>(true,"İşlem başarılı.",menus);
+    }
+
     public ApiResponse getBaslikDomainId(Long domainId) {
 
         AnaBaslik anaBaslik = anaBaslikRepository.findOneByDomainId(domainId);

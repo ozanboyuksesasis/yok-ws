@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/menu")
 @RequiredArgsConstructor
@@ -20,6 +22,13 @@ public class MenuController {
 	@PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> save(@RequestBody MenuDTO menuDTO) {
 		return ResponseEntity.ok(menuService.save(menuDTO));
+	}
+
+	@PostMapping(value = "/list-save", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> save(@RequestBody List<MenuDTO> menuDTO) {
+		ApiResponse apiResponse = menuService.saveList(menuDTO);
+		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+
 	}
 
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)

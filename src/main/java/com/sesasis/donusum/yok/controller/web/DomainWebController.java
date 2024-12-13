@@ -41,6 +41,12 @@ public class DomainWebController {
     }*/
 
 
+    @GetMapping(value = "/list-menu-icerik/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getMenuAltMenu(@PathVariable Long domainId){
+        ApiResponse menuAndAltMenuAndIcerik = domainWebService.getMenuAndAltMenuAndIcerik(domainId);
+        return new ResponseEntity<>(menuAndAltMenuAndIcerik,HttpStatus.OK);
+    }
+
     @GetMapping(value = "/get-icerik/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getMenu(@PathVariable Long domainId) {
         ApiResponse allMenusDomainId = domainWebService.getAllIcerikDomainId(domainId);

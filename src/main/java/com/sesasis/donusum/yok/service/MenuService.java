@@ -7,11 +7,14 @@ import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.MenuDTO;
 import com.sesasis.donusum.yok.entity.Domain;
+import com.sesasis.donusum.yok.entity.GenelDilCategory;
 import com.sesasis.donusum.yok.entity.Menu;
+import com.sesasis.donusum.yok.repository.GenelDilCategoryRepository;
 import com.sesasis.donusum.yok.repository.MenuRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,11 +23,13 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
 
     private final SecurityContextUtil securityContextUtil;
     private final MenuRepository menuRepository;
+    private final GenelDilCategoryRepository genelDilCategoryRepository;
 
-    public MenuService(MenuRepository repository, SecurityContextUtil securityContextUtil, MenuRepository menuRepository) {
+    public MenuService(MenuRepository repository, SecurityContextUtil securityContextUtil, MenuRepository menuRepository, GenelDilCategoryRepository genelDilCategoryRepository) {
         super(repository);
         this.securityContextUtil = securityContextUtil;
         this.menuRepository = menuRepository;
+        this.genelDilCategoryRepository = genelDilCategoryRepository;
     }
 
 
@@ -58,6 +63,35 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
             return new ApiResponse(false, "No domain context available", null);
         }
         return new ApiResponse(true, MessageConstant.SUCCESS, getRepository().findAllByDomainId(loggedDomain.getId()).stream().map(e -> e.toDTO()).collect(Collectors.toList()));
+    }
+
+
+    public ApiResponse saveList(List<MenuDTO> menuDTOS){
+        Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        if (loggedDomain == null) {
+            return new ApiResponse(false, "Domain bulunamadı.", null);
+        }
+
+        List<Menu> menuList = menuDTOS.stream().map(dto -> {
+            Menu menu = new Menu();
+            menu.setDeleted(dto.getDeleted());
+            GenelDilCategory dilCategory =null;
+            if (dto.getGenelDilCategoryId() != null){
+                dilCategory = genelDilCategoryRepository.findById(dto.getGenelDilCategoryId()).orElse(null);
+            }
+            menu.setGenelDilCategory(dilCategory);
+            menu.setDomain(loggedDomain);
+            menu.setAd(dto.getAd());
+            menu.setAnaSayfaMi(dto.isAnaSayfaMi());
+            menu.setLabel(dto.getLabel());
+            menu.setParentId(dto.getParentId());
+            menu.setId(dto.getId());
+            menu.setUrl(dto.getUrl());
+            return menu;
+        }).collect(Collectors.toList());
+
+        menuRepository.saveAll(menuList);
+        return new ApiResponse<>(false,"Kayıt başarılı.",null);
     }
 
     @Override
