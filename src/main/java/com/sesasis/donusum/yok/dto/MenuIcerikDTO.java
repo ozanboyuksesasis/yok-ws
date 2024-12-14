@@ -19,7 +19,8 @@ public class MenuIcerikDTO extends BaseDTO<MenuIcerik> {
 	String baslik;
 	String icerik;
 
-
+	@JsonBackReference
+	private MenuDTO menu;
 
 	@Override
 	public MenuIcerik toEntity() {

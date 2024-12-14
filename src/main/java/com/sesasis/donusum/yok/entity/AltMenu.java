@@ -30,7 +30,7 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 		altMenuDTO.setId(getId());
 		altMenuDTO.setAd(ad);
 		altMenuDTO.setUrl(url);
-		//altMenuDTO.setAnaMenu(anaMenu != null ? anaMenu.toDTO() : null);
+		altMenuDTO.setMenuDTO(menu != null ? menu.toDTO() : null);
 		return altMenuDTO;
 	}
 }

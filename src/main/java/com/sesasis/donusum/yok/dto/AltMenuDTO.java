@@ -16,8 +16,8 @@ public class AltMenuDTO extends BaseDTO<AltMenu> {
 	String url;
 	private Long menuId;
 
-	/*@JsonBackReference
-	MenuDTO anaMenu;*/
+	@JsonBackReference
+	MenuDTO menuDTO;
 
 	@Override
 	public AltMenu toEntity() {
@@ -25,7 +25,7 @@ public class AltMenuDTO extends BaseDTO<AltMenu> {
 		altMenu.setId(getId());
 		altMenu.setAd(ad);
 		altMenu.setUrl(url);
-		//altMenu.setAnaMenu(anaMenu != null ? anaMenu.toEntity() : null);
+		altMenu.setMenu(menuDTO != null ? menuDTO.toEntity() : null);
 		return altMenu;
 	}
 }
