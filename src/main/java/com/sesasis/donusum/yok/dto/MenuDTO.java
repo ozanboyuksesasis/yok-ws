@@ -1,25 +1,33 @@
 package com.sesasis.donusum.yok.dto;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.sesasis.donusum.yok.core.domain.BaseDTO;
 import com.sesasis.donusum.yok.entity.AltMenu;
 import com.sesasis.donusum.yok.entity.Menu;
+import com.sesasis.donusum.yok.entity.MenuIcerik;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
+
 public class MenuDTO extends BaseDTO<Menu> {
 	String ad;
 	Long domainId;
+	Long genelDilCategoryId;
 	String url;
 	boolean anaSayfaMi;
 	private int parentId ;
 	private String label ;
+
+	@JsonManagedReference
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	private List<AltMenuDTO> altMenuDTOS;
+
+	@JsonManagedReference
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	private List<MenuIcerikDTO> menuIcerikDTOS;
 
 
 	@Override

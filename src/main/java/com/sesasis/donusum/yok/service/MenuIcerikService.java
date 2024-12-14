@@ -56,10 +56,6 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
             altMenu = altMenuRepository.findOneByIdAndMenuId_DomainId(menuIcerikDTO.getAltMenuId(), domain.getId());
         }
 
-        if (menu != null && altMenu != null) {
-            return new ApiResponse<>(false, "Bir içerik aynı anda hem Menü hem Alt Menü ile ilişkilendirilemez.", null);
-        }
-
         MenuIcerik menuIcerik = this.modelMapperService.request().map(menuIcerikDTO, MenuIcerik.class);
         menuIcerik.setMenu(menu);
         menuIcerik.setDomain(domain);

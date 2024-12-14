@@ -1,6 +1,7 @@
 package com.sesasis.donusum.yok.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sesasis.donusum.yok.core.domain.BaseDTO;
 import com.sesasis.donusum.yok.core.security.dto.RoleDTO;
 import com.sesasis.donusum.yok.entity.*;
@@ -18,8 +19,10 @@ public class DomainDTO extends BaseDTO<Domain> {
     boolean anaDomainMi;
     RoleDTO role;
 
+    @JsonIgnore
     AnaBaslikDTO anaBaslikDTO;
 
+    @JsonIgnore
     private List<MenuDTO> menuDTOS;
 
 

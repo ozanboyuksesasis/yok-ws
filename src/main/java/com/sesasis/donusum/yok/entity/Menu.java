@@ -20,11 +20,16 @@ public class Menu extends BaseModel<MenuDTO> {
 	private int parentId ;
 	private String label ;
 
+	@OneToOne
+	@JoinColumn(name = "dil_category_id")
+	private GenelDilCategory genelDilCategory;
+
 	@ManyToOne
 	@JoinColumn(name = "fotograf_id")
 	private Fotograf fotograf;
 
 	@OneToMany(mappedBy = "menu",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+
 	private List<AltMenu> altMenus;
 
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "menu",orphanRemoval = true)
