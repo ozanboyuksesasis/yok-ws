@@ -1,6 +1,5 @@
 package com.sesasis.donusum.yok.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sesasis.donusum.yok.core.domain.BaseModel;
 import com.sesasis.donusum.yok.dto.AltMenuDTO;
 import lombok.Data;
@@ -14,6 +13,13 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 	String ad;
 	@Column(name = "url")
 	String url;
+
+	@Column(name = "group_id")
+	private Long groupId;
+
+	@OneToOne
+	@JoinColumn(name = "dil_category_id")
+	private GenelDilCategory genelDilCategory;
 
 	@ManyToOne
 	@JoinColumn(name = "ana_menu_id", referencedColumnName = "id", nullable = false)

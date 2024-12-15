@@ -72,8 +72,7 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
         if (loggedDomain == null) {
             return new ApiResponse(false, "Domain bulunamadı.", null);
         }
-        Long countSiraNo = menuRepository.findMaxSiraNo().orElse(0L);
-        AtomicLong atomicLong = new AtomicLong(countSiraNo+1);
+        Long countSiraNo = menuRepository.findMaxGroupId().orElse(0L);
         List<Menu> menuList = menuDTOS.stream().map(dto -> {
             Menu menu = new Menu();
             menu.setDeleted(dto.getDeleted());
@@ -83,7 +82,7 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
             }
             menu.setGenelDilCategory(dilCategory);
             menu.setDomain(loggedDomain);
-            menu.setSiraNo(atomicLong.longValue());
+            menu.setGroupId(countSiraNo+1);
             menu.setAd(dto.getAd());
             menu.setAnaSayfaMi(dto.isAnaSayfaMi());
             menu.setLabel(dto.getLabel());

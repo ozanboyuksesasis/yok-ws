@@ -14,8 +14,8 @@ public class Menu extends BaseModel<MenuDTO> {
 	String url;
 	boolean anaSayfaMi;
 
-	@Column(name = "sira_no")
-	private Long siraNo;
+	@Column(name = "group_id")
+	private Long groupId;
 
 	@ManyToOne
 	Domain domain;

@@ -15,6 +15,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 	List<Menu> findAllByDomainIdAndAnaSayfaMi(Long domainId,boolean anaSayfaMi);
 	Boolean  existsByUrl(String url);
 
-	@Query("SELECT MAX(d.siraNo) FROM Menu d")
-	Optional<Long> findMaxSiraNo();
+	@Query("SELECT MAX(d.groupId) FROM Menu d")
+	Optional<Long> findMaxGroupId();
 }
