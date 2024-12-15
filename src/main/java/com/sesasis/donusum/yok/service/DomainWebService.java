@@ -96,7 +96,7 @@ public class DomainWebService {
             dto.setParentId(menu.getParentId());
             dto.setAnaSayfaMi(menu.isAnaSayfaMi());
             dto.setGenelDilCategoryId(menu.getGenelDilCategory()!=null ? menu.getGenelDilCategory().getId() : null);
-            dto.setMenuIcerikDTOS(menu.getMenuIceriks().stream().map(menuIcerik -> this.modelMapperServiceImpl.response().map(menuIcerik, MenuIcerikDTO.class)).collect(Collectors.toList()));
+            dto.setMenuIcerikDTOS(menu.getMenuIceriks().stream().map(menuIcerik -> menuIcerik.toDTO()).collect(Collectors.toList()));
             dto.setAltMenuDTOS(menu.getAltMenus().stream().map(altMenu -> this.modelMapperServiceImpl.response().map(altMenu,AltMenuDTO.class)).collect(Collectors.toList()));
             return dto;
         }).collect(Collectors.toList());
