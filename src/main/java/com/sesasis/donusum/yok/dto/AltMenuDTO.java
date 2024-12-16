@@ -16,12 +16,13 @@ public class AltMenuDTO extends BaseDTO<AltMenu> {
 	@NotBlank(message = "Url giriniz.")
 	String url;
 
-	@NotBlank(message = "Menü seçimi yapınız.")
-	private Long menuId;
+
 	@NotBlank(message = "Dil kategorisi seçiniz.")
 	private Long genelDilCategoryId;
 
-	private Long groupId;
+
+	@NotBlank(message = "Menü seçimi yapınız.")
+	private Long menuId;
 
 
 	@JsonBackReference

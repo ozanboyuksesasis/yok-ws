@@ -1,9 +1,7 @@
 package com.sesasis.donusum.yok.entity;
-
 import com.sesasis.donusum.yok.core.domain.BaseModel;
 import com.sesasis.donusum.yok.dto.AltMenuDTO;
 import lombok.Data;
-
 import javax.persistence.*;
 import java.util.List;
 

@@ -1,6 +1,7 @@
 package com.sesasis.donusum.yok.repository;
 
 import com.sesasis.donusum.yok.entity.AltMenu;
+import com.sesasis.donusum.yok.entity.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,5 +19,6 @@ public interface AltMenuRepository extends JpaRepository<AltMenu, Long> {
 
 	@Query("SELECT MAX(m.groupId) FROM AltMenu m")
 	Optional<Long> findMaxGroupId();
+
 
 }

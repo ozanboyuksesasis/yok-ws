@@ -62,42 +62,44 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
         return new ApiResponse(true, "Alt Menü başarıyla kaydedildi: ", null);
     }
 
-    public ApiResponse addListAltMenu(List<AltMenuDTO> altMenuDTO) {
+    public ApiResponse addListAltMenu(List<AltMenuDTO> altMenuDTOList, Long menuGroupId) {
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         if (domain == null) {
             return new ApiResponse<>(false, "Domain bulunamadı.", null);
         }
-        Long count = altMenuRepository.findMaxGroupId().orElse(0L);
 
+        Long count = altMenuRepository.findMaxGroupId().orElse(0L);
         List<AltMenu> altMenus = new ArrayList<>();
-        for (AltMenuDTO altMenuDTOS : altMenuDTO) {
+
+        List<Menu> menus = menuRepository.findAllByGroupIdAndDomain_Id(menuGroupId, domain.getId());
+        if (menus == null || menus.isEmpty()) {
+            return new ApiResponse<>(false, "Menü bulunamadı.", null);
+        }
+
+        for (int i = 0; i < altMenuDTOList.size() && i < menus.size(); i++) {
+            AltMenuDTO altMenuDTO = altMenuDTOList.get(i);
+            Menu menu = menus.get(i);
+
             AltMenu altMenu = new AltMenu();
-            altMenu.setAd(altMenuDTOS.getAd());
-            altMenu.setId(altMenuDTOS.getId());
-            altMenu.setUrl(altMenuDTOS.getUrl());
-            altMenu.setDeleted(altMenuDTOS.getDeleted());
+            altMenu.setAd(altMenuDTO.getAd());
+            altMenu.setUrl(altMenuDTO.getUrl());
+            altMenu.setDeleted(altMenuDTO.getDeleted());
             altMenu.setGroupId(count + 1);
-            Menu menu = null;
-            if (altMenuDTOS.getMenuId() != null) {
-                menu = menuRepository.findOneByIdAndDomainId(altMenuDTOS.getMenuId(), domain.getId());
-                if (menu == null) {
-                    return new ApiResponse<>(false, "Menü bulunamadı.", null);
-                }
-            }
+
             altMenu.setMenu(menu);
-            GenelDilCategory genelDilCategory = null;
-            if (altMenuDTOS.getGenelDilCategoryId() != null) {
-                genelDilCategory = genelDilCategoryRepository.findById(altMenuDTOS.getGenelDilCategoryId()).orElse(null);
+
+            if (altMenuDTO.getGenelDilCategoryId() != null) {
+                GenelDilCategory genelDilCategory = genelDilCategoryRepository.findById(altMenuDTO.getGenelDilCategoryId()).orElse(null);
                 if (genelDilCategory == null) {
                     return new ApiResponse<>(false, "Dil kategorisi bulunamadı.", null);
                 }
+                altMenu.setGenelDilCategory(genelDilCategory);
             }
-            altMenu.setGenelDilCategory(genelDilCategory);
+
             altMenus.add(altMenu);
         }
-
         altMenuRepository.saveAll(altMenus);
-        return null;
+        return new ApiResponse<>(true, "Alt menü kayıt başarılı.", null);
     }
 
 

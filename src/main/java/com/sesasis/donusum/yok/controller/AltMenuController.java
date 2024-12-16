@@ -24,9 +24,9 @@ public class AltMenuController {
 	public ResponseEntity<?> save(@Valid @RequestBody AltMenuDTO altMenuDTO) {
 		return ResponseEntity.ok(altMenuService.save(altMenuDTO));
 	}
-	@PostMapping(value = "/list-save",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> save(@Valid @RequestBody List<AltMenuDTO> altMenuDTOS){
-		ApiResponse apiResponse = altMenuService.addListAltMenu(altMenuDTOS);
+	@PostMapping(value = "/list-save/{menuGroupId}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> save(@Valid @RequestBody List<AltMenuDTO> altMenuDTOS,@PathVariable  Long menuGroupId){
+		ApiResponse apiResponse = altMenuService.addListAltMenu(altMenuDTOS,menuGroupId);
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 	}
 
