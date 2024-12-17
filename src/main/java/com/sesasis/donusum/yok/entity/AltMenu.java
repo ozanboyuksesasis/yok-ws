@@ -15,6 +15,10 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 	@Column(name = "group_id")
 	private Long groupId;
 
+	@ManyToOne
+	@JoinColumn(name = "domain_id")
+	private Domain domain;
+
 	@OneToOne
 	@JoinColumn(name = "dil_category_id")
 	private GenelDilCategory genelDilCategory;
@@ -25,6 +29,9 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "menu",orphanRemoval = true)
 	private List<MenuIcerik> menuIceriks;
+
+	@OneToMany(mappedBy = "altMenu",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	private List<NewAltMenu> newAltMenus;
 
 
 

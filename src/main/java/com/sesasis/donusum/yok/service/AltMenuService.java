@@ -85,6 +85,7 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
             altMenu.setUrl(altMenuDTO.getUrl());
             altMenu.setDeleted(altMenuDTO.getDeleted());
             altMenu.setGroupId(count + 1);
+            altMenu.setDomain(domain);
 
             altMenu.setMenu(menu);
 

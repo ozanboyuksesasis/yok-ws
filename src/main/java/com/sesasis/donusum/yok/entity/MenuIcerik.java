@@ -25,13 +25,17 @@ public class MenuIcerik extends BaseModel<MenuIcerikDTO> {
 	private Domain domain;
 
 	@ManyToOne
-	@JoinColumn(name = "menü_id")
+	@JoinColumn(name = "menu_id")
 	@JsonIgnore
 	private Menu menu;
 
 	@ManyToOne
-	@JoinColumn(name = "alt_menü_id")
+	@JoinColumn(name = "alt_menu_id")
 	private AltMenu altMenu;
+
+	@ManyToOne
+	@JoinColumn(name = "new_alt_menu_id")
+	private NewAltMenu newAltMenu;
 
 
 	@Override
