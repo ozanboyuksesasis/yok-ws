@@ -94,7 +94,12 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 					DashboardMenu anaSayfaMenuIcerik = new DashboardMenu();
 					anaSayfaMenuIcerik.setId(8L);
 					DashboardMenu menuIcerikDoldur = new DashboardMenu();
+          menuIcerikDoldur.setId(8L);
+					DashboardMenu IkinciSutunAltMenuEkle = new DashboardMenu();
 					menuIcerikDoldur.setId(9L);
+
+				
+
 
 					List<DashboardMenu> dashboardMenuList = new ArrayList<>();
 					dashboardMenuList.add(tanimlamalar);
@@ -102,6 +107,7 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 					dashboardMenuList.add(altMenuOlustur);
 					dashboardMenuList.add(anaSayfaMenuIcerik);
 					dashboardMenuList.add(menuIcerikDoldur);
+					dashboardMenuList.add(IkinciSutunAltMenuEkle);
 					Role role = roleRepository.findById(domainDTO.getRole().getId()).get();
 					role.setDashboardMenuList(dashboardMenuList);
 					roleRepository.save(role);

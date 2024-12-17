@@ -3,6 +3,7 @@ package com.sesasis.donusum.yok.dto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sesasis.donusum.yok.core.domain.BaseDTO;
 import com.sesasis.donusum.yok.entity.AltMenu;
+import com.sesasis.donusum.yok.entity.NewAltMenu;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -27,6 +28,9 @@ public class AltMenuDTO extends BaseDTO<AltMenu> {
 
 	@JsonBackReference
 	MenuDTO menuDTO;
+
+
+	private List<NewAltMenuDTO> newAltMenuDTOS;
 
 	@Override
 	public AltMenu toEntity() {

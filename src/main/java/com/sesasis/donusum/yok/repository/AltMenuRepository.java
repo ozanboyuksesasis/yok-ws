@@ -20,5 +20,6 @@ public interface AltMenuRepository extends JpaRepository<AltMenu, Long> {
 	@Query("SELECT MAX(m.groupId) FROM AltMenu m")
 	Optional<Long> findMaxGroupId();
 
+	List<AltMenu> findAllByGroupIdAndDomain_Id(Long groupId, Long domainId);
 
 }

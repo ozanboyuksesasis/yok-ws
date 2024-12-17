@@ -13,10 +13,7 @@ import com.sesasis.donusum.yok.repository.GenelDilCategoryRepository;
 import com.sesasis.donusum.yok.repository.MenuRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
