@@ -59,18 +59,42 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 
 
 				if (domainDTO.isAnaDomainMi()){//ana domain menüleri farklı olacak
+					DashboardMenu yok = new DashboardMenu();
+					yok.setId(10L);
+					DashboardMenu anasayfaSlider = new DashboardMenu();
+					anasayfaSlider.setId(11L);
+					DashboardMenu anasayfaStory = new DashboardMenu();
+					anasayfaStory.setId(12L);
+					DashboardMenu anasayfaHizliBaglantilar = new DashboardMenu();
+					anasayfaHizliBaglantilar.setId(13L);
+					DashboardMenu anasayfaDuyuru = new DashboardMenu();
+					anasayfaDuyuru.setId(14L);
+					DashboardMenu anasayfaHaber = new DashboardMenu();
+					anasayfaHaber.setId(15L);
 
+					List<DashboardMenu> dashboardMenuList = new ArrayList<>();
+					dashboardMenuList.add(yok);
+					dashboardMenuList.add(anasayfaSlider);
+					dashboardMenuList.add(anasayfaStory);
+					dashboardMenuList.add(anasayfaHizliBaglantilar);
+					dashboardMenuList.add(anasayfaDuyuru);
+					dashboardMenuList.add(anasayfaHaber);
+
+
+					Role role = roleRepository.findById(domainDTO.getRole().getId()).get();
+					role.setDashboardMenuList(dashboardMenuList);
+					roleRepository.save(role);
 				}else{
 					DashboardMenu tanimlamalar = new DashboardMenu();
 					tanimlamalar.setId(1L);
 					DashboardMenu menuOlustur = new DashboardMenu();
-					menuOlustur.setId(5L);
+					menuOlustur.setId(6L);
 					DashboardMenu altMenuOlustur = new DashboardMenu();
-					altMenuOlustur.setId(6L);
+					altMenuOlustur.setId(7L);
 					DashboardMenu anaSayfaMenuIcerik = new DashboardMenu();
-					anaSayfaMenuIcerik.setId(7L);
+					anaSayfaMenuIcerik.setId(8L);
 					DashboardMenu menuIcerikDoldur = new DashboardMenu();
-					menuIcerikDoldur.setId(8L);
+					menuIcerikDoldur.setId(9L);
 
 					List<DashboardMenu> dashboardMenuList = new ArrayList<>();
 					dashboardMenuList.add(tanimlamalar);
