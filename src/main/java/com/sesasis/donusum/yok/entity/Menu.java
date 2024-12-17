@@ -42,6 +42,7 @@ public class Menu extends BaseModel<MenuDTO> {
 	@Override
 	public MenuDTO toDTO() {
 		MenuDTO menuDTO = new MenuDTO();
+		menuDTO.setGroupId(groupId);
 		menuDTO.setId(getId());
 		menuDTO.setAd(ad);
 		menuDTO.setUrl(url);
