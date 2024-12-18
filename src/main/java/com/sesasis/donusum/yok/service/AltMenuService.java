@@ -55,6 +55,12 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
         if (menu == null) {
             return new ApiResponse<>(false, "Menü bulunamadı.", null);
         }
+        if (altMenuDTO.getUrl()!=null){
+            boolean exists = altMenuRepository.existsByUrlAndDomain_Id(altMenuDTO.getUrl(), domain.getId());
+            if (exists){
+                return new ApiResponse<>(false,"Bu url daha önce kullanılmıştır.",altMenuDTO.getUrl());
+            }
+        }
         AltMenu altMenu = modelMapperService.request().map(altMenuDTO, AltMenu.class);
         altMenu.setMenu(menu);
 
@@ -79,16 +85,19 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
         for (int i = 0; i < altMenuDTOList.size() && i < menus.size(); i++) {
             AltMenuDTO altMenuDTO = altMenuDTOList.get(i);
             Menu menu = menus.get(i);
-
+            if (altMenuDTO.getUrl()!=null){
+                boolean exists = altMenuRepository.existsByUrlAndDomain_Id(altMenuDTO.getUrl(), domain.getId());
+                if (exists){
+                    return new ApiResponse<>(false,"Bu url daha önce kullanılmıştır.",altMenuDTO.getUrl());
+                }
+            }
             AltMenu altMenu = new AltMenu();
             altMenu.setAd(altMenuDTO.getAd());
             altMenu.setUrl(altMenuDTO.getUrl());
             altMenu.setDeleted(altMenuDTO.getDeleted());
             altMenu.setGroupId(count + 1);
             altMenu.setDomain(domain);
-
             altMenu.setMenu(menu);
-
             if (altMenuDTO.getGenelDilCategoryId() != null) {
                 GenelDilCategory genelDilCategory = genelDilCategoryRepository.findById(altMenuDTO.getGenelDilCategoryId()).orElse(null);
                 if (genelDilCategory == null) {
@@ -96,7 +105,6 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
                 }
                 altMenu.setGenelDilCategory(genelDilCategory);
             }
-
             altMenus.add(altMenu);
         }
         altMenuRepository.saveAll(altMenus);
@@ -112,7 +120,6 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
         }
         List<AltMenu> altMenus = altMenuRepository.findAllByMenuDomainId(domain.getId());
         List<AltMenuDTO> dtos = altMenus.stream().map(altMenu -> this.modelMapperService.response().map(altMenu, AltMenuDTO.class)).collect(Collectors.toList());
-
 
         return new ApiResponse<>(true, "İşlem başarılı.", dtos);
 

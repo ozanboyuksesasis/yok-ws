@@ -51,9 +51,9 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
         if (existMenu != null && menuDTO.isAnaSayfaMi()) {
             return new ApiResponse(false, "Sadece bir tane anasayfa tanımlayabilirsiniz.", null);
         }
-      /*  if (!menuDTO.isAnaSayfaMi()){
+        if (!menuDTO.isAnaSayfaMi()){
             return new ApiResponse<>(false,"Sadece  ana sayfa tanımlanır.",null);
-        }*/
+        }
         Boolean existByUrl = menuRepository.existsByUrlAndDomain_Id(menuDTO.getUrl(), loggedDomain.getId());
         if (existByUrl) {
             return new ApiResponse<>(false, "Bu url daha önce kullanılmış.", null);
@@ -93,22 +93,19 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
         return new ApiResponse<>(false,"İşlem başarılı.",dtos);
     }
 
-
     public ApiResponse saveList(List<MenuDTO> menuDTOS) {
         Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
         if (loggedDomain == null) {
             return new ApiResponse(false, "Domain bulunamadı.", null);
         }
-
         Long countSiraNo = menuRepository.findMaxGroupId().orElse(0L);
         List<Menu> menuList = menuDTOS.stream().map(dto -> {
             if (dto.getUrl() != null) {
                 Boolean existByUrl = menuRepository.existsByUrlAndDomain_Id(dto.getUrl(), loggedDomain.getId());
                 if (existByUrl) {
-                    throw new IllegalArgumentException("Bu URL daha önce kullanılmış: " + dto.getUrl());
+                    throw new IllegalArgumentException("Bu URL daha önce farklı menü'de  kullanılmış:" + dto.getUrl());
                 }
             }
-
             Menu menu = new Menu();
             menu.setDeleted(dto.getDeleted());
             GenelDilCategory dilCategory = null;
