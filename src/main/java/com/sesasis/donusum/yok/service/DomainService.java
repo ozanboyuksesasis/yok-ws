@@ -98,9 +98,6 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 					DashboardMenu IkinciSutunAltMenuEkle = new DashboardMenu();
 					IkinciSutunAltMenuEkle.setId(10L);
 
-				
-
-
 					List<DashboardMenu> dashboardMenuList = new ArrayList<>();
 					dashboardMenuList.add(tanimlamalar);
 					dashboardMenuList.add(menuOlustur);
