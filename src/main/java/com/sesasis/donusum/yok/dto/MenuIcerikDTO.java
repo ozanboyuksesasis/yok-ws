@@ -17,6 +17,10 @@ public class MenuIcerikDTO extends BaseDTO<MenuIcerik> {
 	private Long altMenuId;
 	private Long newAltMenuId;
 
+	Long menuGroupId;
+	Long altMenuGroupId;
+	Long newAltMenuGroupId;
+
 	String baslik;
 	String icerik;
 

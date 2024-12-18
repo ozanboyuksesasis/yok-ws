@@ -4,6 +4,7 @@ import com.sesasis.donusum.yok.entity.NewAltMenu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface NewAltMenuRepository extends JpaRepository<NewAltMenu,Long> {
@@ -12,5 +13,5 @@ public interface NewAltMenuRepository extends JpaRepository<NewAltMenu,Long> {
     Optional<Long> findMaxGroupId();
 
     NewAltMenu findOneByIdAndDomainId(Long newAltmenuId,Long domainId);
-
+    List<NewAltMenu> findAllByGroupIdAndDomain_Id(Long groupId , Long domainId);
 }

@@ -67,12 +67,9 @@ public class NewAltMenuService implements IService<NewAltMenuDTO> {
                     return new ApiResponse<>(false, "Dil bulunamadı.", null);
                 }
                 newAltMenu.setGenelDilCategory(genelDilCategory);
-
             }
-
             newAltMenus.add(newAltMenu);
         }
-
         newAltMenuRepository.saveAll(newAltMenus);
 
         return new ApiResponse<>(true, "Diğer alt menü kayıt başarılı.", null);
