@@ -18,7 +18,7 @@ public class MenuDTO extends BaseDTO<Menu> {
 	Long genelDilCategoryId;
 	String url;
 	private Long groupId;
-	boolean anaSayfaMi;
+	boolean anaSayfaMi ;
 	private int parentId ;
 	private String label ;
 
