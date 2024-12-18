@@ -16,11 +16,6 @@ INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "num
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', ' Menü İçerik Doldur', 7, 'menu-icerik-doldur', 1,'FaCirclePlus');
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', ' Ikinci Sutun Alt Menu  Ekle', 8, 'ikinci-sutun-alt-menu-ekle', 1,'FaCirclePlus');
 
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Menü Tanımla', 5, 'menu', 1,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Alt Menü Tanımla', 6, 'alt-menu', 1,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa İçerik Doldur', 7, 'ana-sayfa-menu-icerik', 1,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', ' Menü İçerik Doldur', 8, 'menu-icerik-doldur', 1,'FaCirclePlus');
-
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Yok', 1, 'yok', NULL,'FaClipboardList');
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Slider', 9, 'anasayfa-slider', 10,'FaCirclePlus');
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Story', 10, 'anasayfa-story', 10,'FaCirclePlus');

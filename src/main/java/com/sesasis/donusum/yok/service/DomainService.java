@@ -94,7 +94,7 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 					DashboardMenu anaSayfaMenuIcerik = new DashboardMenu();
 					anaSayfaMenuIcerik.setId(8L);
 					DashboardMenu menuIcerikDoldur = new DashboardMenu();
-          menuIcerikDoldur.setId(8L);
+        			  menuIcerikDoldur.setId(8L);
 					DashboardMenu IkinciSutunAltMenuEkle = new DashboardMenu();
 					menuIcerikDoldur.setId(9L);
 
