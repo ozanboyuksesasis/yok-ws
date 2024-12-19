@@ -109,8 +109,13 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
     }
 
     @Override
-    public ApiResponse findById(Long id) {
-        return null;
+    public ApiResponse findById(Long onemliBilgiId) {
+        OnemliBilgiler onemliBilgi = onemliBilgilerRepository.findById(onemliBilgiId).orElse(null);
+        if (onemliBilgi == null) {
+            return new ApiResponse(false, "Önemli bilgi bulunamadı.", null);
+        }
+        OnemliBilgilerDTO dto = modelMapperService.response().map(onemliBilgi, OnemliBilgilerDTO.class);
+        return new ApiResponse(true, "İşlem başarılı.", dto);
     }
 
     @Override

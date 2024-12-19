@@ -163,6 +163,7 @@ public class HaberService implements IService<HaberDTO> {
         }
 
 
+
         List<HaberDTO> haberDTOS = habers.stream()
                 .map(haber -> this.modelMapperServiceImpl.response().map(haber, HaberDTO.class))
                 .collect(Collectors.toList());
@@ -170,6 +171,14 @@ public class HaberService implements IService<HaberDTO> {
         return new ApiResponse<>(true, "İşlem başarılı.", haberDTOS);
     }
 
+    public ApiResponse getHaberById(Long haberId) {
+        Haber haber = haberRepository.findById(haberId).orElse(null);
+        if (haber == null) {
+            return new ApiResponse(false, "Haber bulunamadı.", null);
+        }
+        HaberDTO dto = modelMapperServiceImpl.response().map(haber, HaberDTO.class);
+        return new ApiResponse(true, "İşlem başarılı.", dto);
+    }
 
     public ApiResponse haberListTrueDomainId(Long domainId, Long dilCategoryId) {
         List<Haber> haberList = haberRepository.findByDomain_IdAndGenelDilCategory_IdAndAktifMiTrueOrderBySiraNoDesc(domainId, dilCategoryId);

@@ -17,11 +17,11 @@ INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "num
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Ikinci Sutun Alt Menu  Ekle',9, 'ikinci-sutun-alt-menu-ekle', 1,'FaCirclePlus');
 
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Yok', 1, 'yok', NULL,'FaClipboardList');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Slider', 10, 'anasayfa-slider', 10,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Story', 11, 'anasayfa-story', 10,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Hızlı Bağlantılar', 12, 'anasayfa-hizli-baglantilar', 10,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Duyuru', 13, 'anasayfa-duyuru', 10,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Haber', 14, 'anasayfa-haber', 10,'FaCirclePlus');
+INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Slider', 10, 'anasayfa-slider', 11,'FaCirclePlus');
+INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Story', 11, 'anasayfa-story', 11,'FaCirclePlus');
+INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Hızlı Bağlantılar', 12, 'anasayfa-hizli-baglantilar', 11,'FaCirclePlus');
+INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Duyuru', 13, 'anasayfa-duyuru', 11,'FaCirclePlus');
+INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Haber', 14, 'anasayfa-haber', 11,'FaCirclePlus');
 
 
 

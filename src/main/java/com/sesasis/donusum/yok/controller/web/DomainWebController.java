@@ -88,7 +88,23 @@ public class DomainWebController {
         ApiResponse apiResponse = haberService.haberListFalseDomainId(domainId, dilCategoryId);
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
+    @GetMapping(value = "/get-haber-by-id/{haberId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getHaberById(@PathVariable Long haberId) {
+        ApiResponse apiResponse = haberService.getHaberById(haberId);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 
+    @GetMapping(value = "/get-duyuru-by-id/{duyuruId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getDuyuruById(@PathVariable Long duyuruId) {
+        ApiResponse apiResponse = duyuruService.findById(duyuruId);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/get-onemli-bilgi-by-id/{onemliBilgiId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getOnemliBilgiById(@PathVariable Long onemliBilgiId) {
+        ApiResponse apiResponse = onemliBilgilerService.findById(onemliBilgiId);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
     @GetMapping(value = "/get-duyuru-aktif/{domainId}/{dilCategoryId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getDuyuruAktif(@PathVariable Long domainId ,@PathVariable Long dilCategoryId){
         ApiResponse apiResponse = duyuruService.duyuruListTrueDomainId(domainId, dilCategoryId);
