@@ -15,6 +15,9 @@ public class MenuIcerik extends BaseModel<MenuIcerikDTO> {
 
 	private String	baslik;
 
+	@Column(name = "accordion")
+	private Boolean accordion;
+
 	@Lob
 	@Type(type = "org.hibernate.type.ImageType")
 	private byte[] icerik;

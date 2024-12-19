@@ -60,6 +60,7 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
         MenuIcerik menuIcerik = this.modelMapperService.request().map(menuIcerikDTO, MenuIcerik.class);
         menuIcerik.setMenu(menu);
         menuIcerik.setNewAltMenu(newAltMenu);
+        menuIcerik.setAccordion(menuIcerikDTO.getAccordion());
         menuIcerik.setDomain(domain);
         menuIcerik.setAltMenu(altMenu);
         menuIcerik.setBaslik(menuIcerikDTO.getBaslik());
