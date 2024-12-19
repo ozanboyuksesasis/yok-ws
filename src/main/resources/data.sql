@@ -23,6 +23,7 @@ INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "num
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Haber', 13, 'anasayfa-haber', 10,'FaCirclePlus');
 
 
+
 INSERT INTO public.role_dashboard_menu (role_id, dashboard_menu_id) VALUES(1, 1);
 INSERT INTO public.role_dashboard_menu (role_id, dashboard_menu_id) VALUES(1, 2);
 INSERT INTO public.role_dashboard_menu (role_id, dashboard_menu_id) VALUES(1, 3);
