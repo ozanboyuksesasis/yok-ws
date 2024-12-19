@@ -15,22 +15,15 @@ import java.util.List;
 public class AltMenuDTO extends BaseDTO<AltMenu> {
 	@NotBlank(message = "İsim giriniz.")
 	String ad;
-
 	@NotBlank(message = "Url giriniz.")
 	String url;
-
-
 	@NotBlank(message = "Dil kategorisi seçiniz.")
 	private Long genelDilCategoryId;
 
-
 	@NotBlank(message = "Menü seçimi yapınız.")
 	private Long menuId;
-
 	private Long menuGroupId;
-
 	private Long groupId;
-
 
 	@JsonBackReference
 	MenuDTO menuDTO;

@@ -13,9 +13,13 @@ import javax.transaction.Transactional;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MenuIcerikDTO extends BaseDTO<MenuIcerik> {
 
-	private Long menuId;
+
 	private Long altMenuId;
+	private Long altMenuGroupId;
+	private Long menuId;
+	private Long menuGroupId;
 	private Long newAltMenuId;
+	private Long newAltMenuGroupId;
 
 	private Long genelDilCategoryId;
 	String baslik;
