@@ -6,6 +6,7 @@ import lombok.Data;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import java.nio.charset.StandardCharsets;
@@ -21,7 +22,8 @@ public class AnaSayfaSlider extends BaseModel<AnaSayfaSliderDTO> {
 	@Lob
 	@Type(type = "org.hibernate.type.ImageType")
 	private byte[] contentDetay;
-	@ManyToOne
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	Menu menu;//ana sayfa olan menu ile ilişkilendirilecek
 
 	@Override

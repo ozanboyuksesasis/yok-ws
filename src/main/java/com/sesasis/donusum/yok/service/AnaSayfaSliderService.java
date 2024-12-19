@@ -43,7 +43,7 @@ public class AnaSayfaSliderService extends AbstractService<AnaSayfaSlider, AnaSa
 
 	@Override
 	public ApiResponse findAll() {
-		List<AnaSayfaSliderDTO> anaSayfaSliderDTOList = getRepository().findAllByMenuAnaSayfaMiAndMenuDomainId(Boolean.TRUE,securityContextUtil.getCurrentUser().getLoggedDomain().getId()).stream().map(e->{
+		List<AnaSayfaSliderDTO> anaSayfaSliderDTOList = getRepository().findAllByOrderBySiraAsc().stream().map(e->{
 			AnaSayfaSliderDTO anaSayfaSliderDTO = e.toDTO();
 			try {
 				anaSayfaSliderDTO.setBase64content(fileService.getFileAsBase64(e.getPath()));
@@ -72,9 +72,9 @@ public class AnaSayfaSliderService extends AbstractService<AnaSayfaSlider, AnaSa
 		AnaSayfaSlider anaSayfaSlider = anaSayfaSliderDTO.toEntity();
 		String path = null;
 
-		Menu anasayfa = menuRepository.findOneByDomainIdAndAnaSayfaMi(securityContextUtil.getCurrentUser().getLoggedDomain().getId(),Boolean.TRUE);
-
-		anaSayfaSlider.setMenu(anasayfa);
+//		Menu anasayfa = menuRepository.findOneByDomainIdAndAnaSayfaMi(securityContextUtil.getCurrentUser().getLoggedDomain().getId(),Boolean.TRUE);
+//
+//		anaSayfaSlider.setMenu(anasayfa);
 
 		if (files != null && files.length > 0) {
 			for (MultipartFile file : files) {
