@@ -97,6 +97,7 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
             altMenu.setDeleted(altMenuDTO.getDeleted());
             altMenu.setGroupId(count + 1);
             altMenu.setDomain(domain);
+            altMenu.setMenuGroupId(menu.getGroupId());
             altMenu.setMenu(menu);
             if (altMenuDTO.getGenelDilCategoryId() != null) {
                 GenelDilCategory genelDilCategory = genelDilCategoryRepository.findById(altMenuDTO.getGenelDilCategoryId()).orElse(null);
@@ -119,7 +120,17 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
             return new ApiResponse<>(false, "Domain bulunamadı.", null);
         }
         List<AltMenu> altMenus = altMenuRepository.findAllByMenuDomainId(domain.getId());
-        List<AltMenuDTO> dtos = altMenus.stream().map(altMenu -> this.modelMapperService.response().map(altMenu, AltMenuDTO.class)).collect(Collectors.toList());
+        List<AltMenuDTO> dtos = altMenus.stream().map(altMenu -> {
+            AltMenuDTO dto = new AltMenuDTO();
+            dto.setAd(altMenu.getAd());
+            dto.setId(altMenu.getId());
+            dto.setDeleted(altMenu.getDeleted());
+            dto.setMenuGroupId(altMenu.getMenu().getGroupId());
+            dto.setGenelDilCategoryId(altMenu.getGenelDilCategory().getId());
+            dto.setGroupId(altMenu.getGroupId());
+            dto.setUrl(altMenu.getUrl());
+            return dto;
+        }).collect(Collectors.toList());
 
         return new ApiResponse<>(true, "İşlem başarılı.", dtos);
 

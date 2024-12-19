@@ -29,6 +29,8 @@ public class AltMenuDTO extends BaseDTO<AltMenu> {
 
 	private Long menuGroupId;
 
+	private Long groupId;
+
 
 	@JsonBackReference
 	MenuDTO menuDTO;

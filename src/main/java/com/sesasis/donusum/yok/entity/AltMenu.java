@@ -1,4 +1,5 @@
 package com.sesasis.donusum.yok.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sesasis.donusum.yok.core.domain.BaseModel;
 import com.sesasis.donusum.yok.dto.AltMenuDTO;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 	@OneToOne
 	@JoinColumn(name = "dil_category_id")
 	private GenelDilCategory genelDilCategory;
+	
 
 	@ManyToOne
 	@JoinColumn(name = "ana_menu_id", referencedColumnName = "id", nullable = false)
@@ -34,6 +36,7 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 	private List<MenuIcerik> menuIceriks;
 
 	@OneToMany(mappedBy = "altMenu",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JsonIgnore
 	private List<NewAltMenu> newAltMenus;
 
 

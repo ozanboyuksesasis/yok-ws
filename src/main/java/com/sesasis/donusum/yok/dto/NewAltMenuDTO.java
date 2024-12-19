@@ -28,8 +28,6 @@ public class NewAltMenuDTO {
     @NotBlank(message = "Dil kategorisi seçiniz.")
     private Long genelDilCategoryId;
 
-    @NotNull(message = "Alt menu grup id giriniz.")
-    private Long altMenuGroupId;
 
     private List<MenuIcerikDTO> menuIcerikDTOS;
 }

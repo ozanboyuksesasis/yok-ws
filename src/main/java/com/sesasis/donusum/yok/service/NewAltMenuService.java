@@ -14,12 +14,14 @@ import com.sesasis.donusum.yok.repository.GenelDilCategoryRepository;
 import com.sesasis.donusum.yok.repository.NewAltMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class NewAltMenuService implements IService<NewAltMenuDTO> {
 
     private final ModelMapperServiceImpl modelMapperService;
@@ -56,6 +58,7 @@ public class NewAltMenuService implements IService<NewAltMenuDTO> {
 
             NewAltMenu newAltMenu = new NewAltMenu();
             newAltMenu.setAd(dto.getAd());
+            newAltMenu.setAltMenuGroupId(altMenu.getGroupId());
             newAltMenu.setUrl(dto.getUrl());
             newAltMenu.setAltMenu(altMenu);
             newAltMenu.setGroupId(count + 1);

@@ -91,7 +91,7 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
             menuDTO.setDeleted(menu.getDeleted());
             return menuDTO;
         }).collect(Collectors.toList());
-        return new ApiResponse<>(false,"İşlem başarılı.",dtos);
+        return new ApiResponse<>(true,"İşlem başarılı.",dtos);
     }
 
     public ApiResponse saveList(List<MenuDTO> menuDTOS) {
@@ -126,7 +126,7 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
         }).collect(Collectors.toList());
 
         menuRepository.saveAll(menuList);
-        return new ApiResponse<>(false, "Kayıt başarılı.", null);
+        return new ApiResponse<>(true, "Kayıt başarılı.", null);
     }
 
     @Override
