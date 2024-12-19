@@ -80,6 +80,7 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
         List<MenuDTO> dtos = menus.stream().map(menu -> {
             MenuDTO menuDTO = new MenuDTO();
             menuDTO.setId(menu.getId());
+            menuDTO.setAd(menu.getAd());
             menuDTO.setDomainId(menu.getDomain().getId());
             menuDTO.setGenelDilCategoryId(menu.getGenelDilCategory() != null ? menu.getGenelDilCategory().getId() : null);
             menuDTO.setUrl(menu.getUrl());

@@ -8,10 +8,7 @@ import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.MenuIcerikDTO;
 import com.sesasis.donusum.yok.entity.*;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
-import com.sesasis.donusum.yok.repository.AltMenuRepository;
-import com.sesasis.donusum.yok.repository.MenuIcerikRepository;
-import com.sesasis.donusum.yok.repository.MenuRepository;
-import com.sesasis.donusum.yok.repository.NewAltMenuRepository;
+import com.sesasis.donusum.yok.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,9 +26,10 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
     private final MenuRepository menuRepository;
     private final AltMenuRepository altMenuRepository;
     private final NewAltMenuRepository newAltMenuRepository;
+    private final GenelDilCategoryRepository genelDilCategoryRepository;
 
     public MenuIcerikService(MenuIcerikRepository repository, SecurityContextUtil securityContextUtil, ModelMapperServiceImpl modelMapperService,
-                             MenuIcerikRepository menuIcerikRepository, MenuRepository menuRepository, AltMenuRepository altMenuRepository, NewAltMenuRepository newAltMenuRepository) {
+                             MenuIcerikRepository menuIcerikRepository, MenuRepository menuRepository, AltMenuRepository altMenuRepository, NewAltMenuRepository newAltMenuRepository, GenelDilCategoryRepository genelDilCategoryRepository) {
         super(repository);
         this.securityContextUtil = securityContextUtil;
         this.modelMapperService = modelMapperService;
@@ -39,6 +37,7 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
         this.menuRepository = menuRepository;
         this.altMenuRepository = altMenuRepository;
         this.newAltMenuRepository = newAltMenuRepository;
+        this.genelDilCategoryRepository = genelDilCategoryRepository;
     }
 
 
@@ -72,7 +71,7 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
         return new ApiResponse(true, "İçerik eklendi.", null);
     }
 
-    public ApiResponse addListIcerik(List<MenuIcerikDTO> menuIcerikDTOS) {
+    public ApiResponse addListIcerik(List<MenuIcerikDTO> menuIcerikDTOS, Long menuGroupId, Long altMenuGroupId, Long newAltMenuGroupId) {
 
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         if (domain == null) {
@@ -81,31 +80,52 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
         List<Menu> menus = new ArrayList<>();
         List<AltMenu> altMenus = new ArrayList<>();
         List<NewAltMenu> newAltMenus = new ArrayList<>();
+        List<MenuIcerik> menuIceriks = new ArrayList<>();
+        if (menuGroupId != null) {
+            menus = menuRepository.findAllByGroupIdAndDomain_Id(menuGroupId, domain.getId());
+        }
+        if (altMenuGroupId != null) {
+            altMenus = altMenuRepository.findAllByGroupIdAndDomain_Id(altMenuGroupId, domain.getId());
+        }
+        if (newAltMenuGroupId != null) {
+            newAltMenus = newAltMenuRepository.findAllByGroupIdAndDomain_Id(newAltMenuGroupId, domain.getId());
+        }
 
         for (int i = 0; i < menuIcerikDTOS.size() || i < menus.size() || i < altMenus.size() || i < newAltMenus.size(); i++) {
             MenuIcerikDTO dto = menuIcerikDTOS.get(i);
-
+            Menu menu = menus.get(i);
+            AltMenu altMenu = null;
+            if (altMenus.size() < 1) {
+                continue;
+            } else {
+                altMenu = altMenus.get(i);
+            }
+            NewAltMenu newAltMenu = null;
+            if (newAltMenus.size() < 1) {
+                continue;
+            } else {
+                newAltMenu = newAltMenus.get(i);
+            }
+            GenelDilCategory dilCategory = null;
+            if (dto.getGenelDilCategoryId() != null) {
+                dilCategory = genelDilCategoryRepository.findById(dto.getGenelDilCategoryId()).orElse(null);
+                if (dilCategory == null) {
+                    return new ApiResponse<>(false, "Dil seçimi bulunamadı.", null);
+                }
+            }
             MenuIcerik menuIcerik = new MenuIcerik();
-
-            menus = menuRepository.findAllByGroupIdAndDomain_Id(dto.getMenuGroupId(), domain.getId());
-            Menu menu = menus.stream().filter(m -> m.getId().equals(dto.getMenuId())).findFirst().orElse(null);
-
-            altMenus = altMenuRepository.findAllByGroupIdAndDomain_Id(dto.getAltMenuGroupId(), domain.getId());
-            AltMenu altMenu = altMenus.stream().filter(a -> a.getId().equals(dto.getAltMenuId())).findFirst().orElse(null);
-
-            newAltMenus = newAltMenuRepository.findAllByGroupIdAndDomain_Id(dto.getNewAltMenuId(), domain.getId());
-            NewAltMenu newAltMenu = newAltMenus.stream().filter(n -> n.getId().equals(dto.getNewAltMenuId())).findFirst().orElse(null);
-
-
-            menuIcerik.setMenu(menu);
-            menuIcerik.setAltMenu(altMenu);
-            menuIcerik.setNewAltMenu(newAltMenu);
-            menuIcerik.setDomain(domain);
             menuIcerik.setBaslik(dto.getBaslik());
             menuIcerik.setIcerik(dto.getIcerik().getBytes());
-            menuIcerikRepository.save(menuIcerik);
-
+            menuIcerik.setDeleted(dto.getDeleted());
+            menuIcerik.setDomain(domain);
+            menuIcerik.setMenu(menu);
+            menuIcerik.setGenelDilCategory(dilCategory);
+            menuIcerik.setAltMenu(altMenu);
+            menuIcerik.setNewAltMenu(newAltMenu);
+            menuIceriks.add(menuIcerik);
         }
+        menuIcerikRepository.saveAll(menuIceriks);
+
         return new ApiResponse<>(false, "Kayıt başarılı.", null);
 
     }

@@ -40,6 +40,9 @@ public class DomainWebService {
             dto.setBaslik(menuIcerik.getBaslik());
             dto.setDeleted(menuIcerik.getDeleted());
             dto.setId(menuIcerik.getId());
+            dto.setAltMenuId(menuIcerik.getAltMenu().getId());
+            dto.setMenuId(menuIcerik.getMenu().getId());
+            dto.setGenelDilCategoryId(menuIcerik.getGenelDilCategory().getId());
             dto.setMenuId(menuIcerik.getMenu().getId());
             dto.setIcerik(menuIcerik.getIcerik() != null ? new String(menuIcerik.getIcerik(), StandardCharsets.UTF_8) : null);
            // dto.setMenuDTO(menuIcerik.getMenu().toDTO());

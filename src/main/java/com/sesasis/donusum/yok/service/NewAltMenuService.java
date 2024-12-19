@@ -77,9 +77,16 @@ public class NewAltMenuService implements IService<NewAltMenuDTO> {
     }
 
 
+
     @Override
     public ApiResponse findAll() {
-        return null;
+
+        Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        if (loggedDomain == null) {
+            return new ApiResponse(false, "Domain bulunamadı.", null);
+        }
+        List<NewAltMenu> newAltMenus = newAltMenuRepository.findAllByDomain_Id(loggedDomain.getId());
+        return new ApiResponse<>(true,"İşlem başarılı.",newAltMenus);
     }
 
     @Override

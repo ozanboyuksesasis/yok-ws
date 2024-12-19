@@ -37,6 +37,9 @@ public class MenuIcerik extends BaseModel<MenuIcerikDTO> {
 	@JoinColumn(name = "new_alt_menu_id")
 	private NewAltMenu newAltMenu;
 
+	@OneToOne
+	@JoinColumn(name = "dil_category_id")
+	private GenelDilCategory genelDilCategory;
 
 	@Override
 	public MenuIcerikDTO toDTO() {

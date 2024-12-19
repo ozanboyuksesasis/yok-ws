@@ -15,6 +15,9 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 	@Column(name = "group_id")
 	private Long groupId;
 
+	@Column(name = "menu_group_id")
+	private Long menuGroupId;
+
 	@ManyToOne
 	@JoinColumn(name = "domain_id")
 	private Domain domain;

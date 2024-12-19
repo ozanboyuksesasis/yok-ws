@@ -24,10 +24,16 @@ public class MenuIcerikController {
         return ResponseEntity.ok(menuIcerikService.save(menuIcerikDTO));
     }
 
-    @PostMapping(value = "/list-save",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> save(@RequestBody List<MenuIcerikDTO> menuIcerikDTO) {
-        ApiResponse apiResponse = menuIcerikService.addListIcerik(menuIcerikDTO);
-        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+    @PostMapping(value = {"/list-save/{menuGroupId}", "/list-save/{menuGroupId}/{altMenuGroupId}", "/list-save/{menuGroupId}/{altMenuGroupId}/{newAltMenuGroupId}"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> save(
+            @RequestBody List<MenuIcerikDTO> menuIcerikDTO,
+            @PathVariable(required = false) Long menuGroupId,
+            @PathVariable(required = false) Long altMenuGroupId,
+            @PathVariable(required = false) Long newAltMenuGroupId) {
+
+
+        ApiResponse apiResponse = menuIcerikService.addListIcerik(menuIcerikDTO, menuGroupId, altMenuGroupId, newAltMenuGroupId);
+        return ResponseEntity.ok(apiResponse);
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
