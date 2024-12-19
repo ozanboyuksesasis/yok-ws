@@ -1,5 +1,6 @@
 package com.sesasis.donusum.yok.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Generated;
@@ -31,8 +32,12 @@ public class NewAltMenu {
     @Column(name = "group_id")
     private Long groupId;
 
+    @Column(name = "alt_menu_group_id")
+    private Long altMenuGroupId;
+
     @ManyToOne
     @JoinColumn(name = "alt_menü_id")
+    @JsonIgnore
     private AltMenu altMenu;
 
     @OneToOne

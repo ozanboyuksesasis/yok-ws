@@ -26,4 +26,10 @@ public class NewAltMenuController {
         ApiResponse apiResponse = newAltMenuService.addListNewAltMenu(newAltMenuDTO, altMenuGroupId);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/all",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> all(){
+        ApiResponse all = newAltMenuService.findAll();
+        return new ResponseEntity<>(all,HttpStatus.OK);
+    }
 }
