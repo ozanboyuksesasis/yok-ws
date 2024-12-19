@@ -124,6 +124,7 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
             AltMenuDTO dto = new AltMenuDTO();
             dto.setAd(altMenu.getAd());
             dto.setId(altMenu.getId());
+            dto.setMenuId(altMenu.getMenu().getId());
             dto.setDeleted(altMenu.getDeleted());
             dto.setMenuGroupId(altMenu.getMenu().getGroupId());
             dto.setGenelDilCategoryId(altMenu.getGenelDilCategory().getId());

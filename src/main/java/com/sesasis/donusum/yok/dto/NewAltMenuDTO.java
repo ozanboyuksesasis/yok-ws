@@ -21,6 +21,11 @@ public class NewAltMenuDTO {
     @NotBlank(message = "İsim giriniz.")
     String ad;
 
+    private Long domainId;
+    private Long groupId;
+    private Long altMenuGroupId;
+    private Long altMenuId;
+
     @NotBlank(message = "Url giriniz.")
     String url;
 

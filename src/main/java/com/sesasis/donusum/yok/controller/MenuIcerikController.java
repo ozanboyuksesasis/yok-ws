@@ -30,8 +30,6 @@ public class MenuIcerikController {
             @PathVariable(required = false) Long menuGroupId,
             @PathVariable(required = false) Long altMenuGroupId,
             @PathVariable(required = false) Long newAltMenuGroupId) {
-
-
         ApiResponse apiResponse = menuIcerikService.addListIcerik(menuIcerikDTO, menuGroupId, altMenuGroupId, newAltMenuGroupId);
         return ResponseEntity.ok(apiResponse);
     }

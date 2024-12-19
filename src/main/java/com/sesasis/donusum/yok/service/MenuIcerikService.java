@@ -77,35 +77,19 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
         if (domain == null) {
             return new ApiResponse<>(false, "Domain bulunamadı.", null);
         }
-        List<Menu> menus = new ArrayList<>();
-        List<AltMenu> altMenus = new ArrayList<>();
-        List<NewAltMenu> newAltMenus = new ArrayList<>();
-        List<MenuIcerik> menuIceriks = new ArrayList<>();
-        if (menuGroupId != null) {
-            menus = menuRepository.findAllByGroupIdAndDomain_Id(menuGroupId, domain.getId());
-        }
-        if (altMenuGroupId != null) {
-            altMenus = altMenuRepository.findAllByGroupIdAndDomain_Id(altMenuGroupId, domain.getId());
-        }
-        if (newAltMenuGroupId != null) {
-            newAltMenus = newAltMenuRepository.findAllByGroupIdAndDomain_Id(newAltMenuGroupId, domain.getId());
-        }
 
-        for (int i = 0; i < menuIcerikDTOS.size() || i < menus.size() || i < altMenus.size() || i < newAltMenus.size(); i++) {
+        List<Menu> menus = menuGroupId != null ? menuRepository.findAllByGroupIdAndDomain_Id(menuGroupId, domain.getId()) : new ArrayList<>();
+        List<AltMenu> altMenus = altMenuGroupId != null ? altMenuRepository.findAllByGroupIdAndDomain_Id(altMenuGroupId, domain.getId()) : new ArrayList<>();
+        List<NewAltMenu> newAltMenus = newAltMenuGroupId != null ? newAltMenuRepository.findAllByGroupIdAndDomain_Id(newAltMenuGroupId, domain.getId()) : new ArrayList<>();
+
+
+        List<MenuIcerik> menuIceriks = new ArrayList<>();
+        for (int i = 0; i < menuIcerikDTOS.size(); i++) {
             MenuIcerikDTO dto = menuIcerikDTOS.get(i);
-            Menu menu = menus.get(i);
-            AltMenu altMenu = null;
-            if (altMenus.size() < 1) {
-                continue;
-            } else {
-                altMenu = altMenus.get(i);
-            }
-            NewAltMenu newAltMenu = null;
-            if (newAltMenus.size() < 1) {
-                continue;
-            } else {
-                newAltMenu = newAltMenus.get(i);
-            }
+            Menu menu = menus.size() > i ? menus.get(i) : null;
+            AltMenu altMenu = altMenus.size() > i ? altMenus.get(i) : null;
+            NewAltMenu newAltMenu = newAltMenus.size() > i ? newAltMenus.get(i) : null;
+
             GenelDilCategory dilCategory = null;
             if (dto.getGenelDilCategoryId() != null) {
                 dilCategory = genelDilCategoryRepository.findById(dto.getGenelDilCategoryId()).orElse(null);
@@ -113,22 +97,34 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
                     return new ApiResponse<>(false, "Dil seçimi bulunamadı.", null);
                 }
             }
+
             MenuIcerik menuIcerik = new MenuIcerik();
             menuIcerik.setBaslik(dto.getBaslik());
-            menuIcerik.setIcerik(dto.getIcerik().getBytes());
+            menuIcerik.setIcerik(dto.getIcerik() != null ? dto.getIcerik().getBytes() : new byte[0]);
             menuIcerik.setDeleted(dto.getDeleted());
             menuIcerik.setDomain(domain);
-            menuIcerik.setMenu(menu);
+
+            if (menu != null) {
+                menuIcerik.setMenu(menu);
+            } else if (altMenu != null) {
+                menuIcerik.setAltMenu(altMenu);
+            } else if (newAltMenu != null) {
+                menuIcerik.setNewAltMenu(newAltMenu);
+            }
+
             menuIcerik.setGenelDilCategory(dilCategory);
-            menuIcerik.setAltMenu(altMenu);
-            menuIcerik.setNewAltMenu(newAltMenu);
             menuIceriks.add(menuIcerik);
         }
+
+
+        if (menuIceriks.isEmpty()) {
+            return new ApiResponse<>(false, "Kaydedilecek içerik bulunamadı.", null);
+        }
+
         menuIcerikRepository.saveAll(menuIceriks);
-
-        return new ApiResponse<>(false, "Kayıt başarılı.", null);
-
+        return new ApiResponse<>(true, "Kayıt başarılı.", null);
     }
+
 
     @Override
     public ApiResponse findAll() {
