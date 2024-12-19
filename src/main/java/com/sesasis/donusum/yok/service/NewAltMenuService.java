@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,18 +71,14 @@ public class NewAltMenuService implements IService<NewAltMenuDTO> {
                     return new ApiResponse<>(false, "Dil bulunamadı.", null);
                 }
                 newAltMenu.setGenelDilCategory(genelDilCategory);
-
             }
-
             newAltMenus.add(newAltMenu);
         }
-
         newAltMenuRepository.saveAll(newAltMenus);
 
         return new ApiResponse<>(true, "Diğer alt menü kayıt başarılı.", null);
 
     }
-
 
     @Override
     public ApiResponse findAll() {
@@ -91,6 +88,18 @@ public class NewAltMenuService implements IService<NewAltMenuDTO> {
             return new ApiResponse(false, "Domain bulunamadı.", null);
         }
         List<NewAltMenu> newAltMenus = newAltMenuRepository.findAllByDomain_Id(loggedDomain.getId());
+        List<NewAltMenuDTO> dtos = newAltMenus.stream().map(newAltMenu -> {
+            NewAltMenuDTO dto = new NewAltMenuDTO();
+            dto.setId(newAltMenu.getId());
+            dto.setUrl(newAltMenu.getUrl());
+            dto.setAd(newAltMenu.getAd());
+            dto.setAltMenuId(newAltMenu.getAltMenu().getId());
+            dto.setAltMenuGroupId(newAltMenu.getAltMenu().getGroupId());
+            dto.setDomainId(loggedDomain.getId());
+            dto.setGenelDilCategoryId(newAltMenu.getGenelDilCategory().getId());
+            return dto;
+        }).collect(Collectors.toList());
+
         return new ApiResponse<>(true,"İşlem başarılı.",newAltMenus);
     }
 

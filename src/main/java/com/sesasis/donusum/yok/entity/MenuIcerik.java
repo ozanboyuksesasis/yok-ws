@@ -15,6 +15,9 @@ public class MenuIcerik extends BaseModel<MenuIcerikDTO> {
 
 	private String	baslik;
 
+	@Column(name = "accordion")
+	private Boolean accordion;
+
 	@Lob
 	@Type(type = "org.hibernate.type.ImageType")
 	private byte[] icerik;
@@ -29,14 +32,26 @@ public class MenuIcerik extends BaseModel<MenuIcerikDTO> {
 	@JsonIgnore
 	private Menu menu;
 
+	@JoinColumn(name = "menu_group_id")
+	private Long menuGroupId;
+
 	@ManyToOne
 	@JoinColumn(name = "alt_menu_id")
 	private AltMenu altMenu;
+
+	@JoinColumn(name = "alt_menu_id")
+	private Long altMenuGroupId;
 
 	@ManyToOne
 	@JoinColumn(name = "new_alt_menu_id")
 	private NewAltMenu newAltMenu;
 
+	@JoinColumn(name = "new_alt_menu_group_id")
+	private Long newAltMenuGroupId;
+
+	@OneToOne
+	@JoinColumn(name = "dil_category_id")
+	private GenelDilCategory genelDilCategory;
 
 	@Override
 	public MenuIcerikDTO toDTO() {

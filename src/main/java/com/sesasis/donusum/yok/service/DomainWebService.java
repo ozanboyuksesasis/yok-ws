@@ -40,6 +40,9 @@ public class DomainWebService {
             dto.setBaslik(menuIcerik.getBaslik());
             dto.setDeleted(menuIcerik.getDeleted());
             dto.setId(menuIcerik.getId());
+            dto.setAltMenuId(menuIcerik.getAltMenu().getId());
+            dto.setMenuId(menuIcerik.getMenu().getId());
+            dto.setGenelDilCategoryId(menuIcerik.getGenelDilCategory().getId());
             dto.setMenuId(menuIcerik.getMenu().getId());
             dto.setIcerik(menuIcerik.getIcerik() != null ? new String(menuIcerik.getIcerik(), StandardCharsets.UTF_8) : null);
            // dto.setMenuDTO(menuIcerik.getMenu().toDTO());
@@ -97,7 +100,18 @@ public class DomainWebService {
             dto.setAnaSayfaMi(menu.isAnaSayfaMi());
             dto.setGenelDilCategoryId(menu.getGenelDilCategory()!=null ? menu.getGenelDilCategory().getId() : null);
             dto.setMenuIcerikDTOS(menu.getMenuIceriks().stream().map(menuIcerik -> menuIcerik.toDTO()).collect(Collectors.toList()));
-            dto.setAltMenuDTOS(menu.getAltMenus().stream().map(altMenu -> this.modelMapperServiceImpl.response().map(altMenu,AltMenuDTO.class)).collect(Collectors.toList()));
+            dto.setAltMenuDTOS(menu.getAltMenus().stream().map(altMenu -> {
+                AltMenuDTO dto1 = new AltMenuDTO();
+                dto1.setId(altMenu.getId());
+                dto1.setMenuGroupId(altMenu.getMenuGroupId());
+                dto1.setMenuId(altMenu.getMenu().getId());
+                dto1.setAd(altMenu.getAd());
+                dto1.setGenelDilCategoryId(altMenu.getGenelDilCategory().getId());
+                dto1.setDeleted(altMenu.getDeleted());
+                dto1.setGroupId(altMenu.getGroupId());
+                dto1.setNewAltMenuDTOS(altMenu.getNewAltMenus().stream().map(newAltMenu -> this.modelMapperServiceImpl.response().map(newAltMenu,NewAltMenuDTO.class)).collect(Collectors.toList()));
+                return dto1;
+            }).collect(Collectors.toList()));
             return dto;
         }).collect(Collectors.toList());
         return new ApiResponse<>(true,"İşlem başarılı.",menus);
@@ -109,38 +123,5 @@ public class DomainWebService {
         AnaBaslikDTO dto = this.modelMapperServiceImpl.response().map(anaBaslik,AnaBaslikDTO.class);
         return new ApiResponse<>(true, "İşlem başarılı.", dto);
     }
-
- /*   public ApiResponse getListAltMenuOrDomainId(Long domainId){
-            Domain domain = domainRepository.findById(domainId).orElse(null);
-            if (domain==null){
-                return new ApiResponse<>(false,"Domain bulunamadı.",null);
-            }
-            List<MenuDTO> menuList = domain.getMenus().stream().map(menu -> {
-                MenuDTO menuDTO = new MenuDTO();
-                menuDTO.setDomainId(menu.getDomain().getId());
-                menuDTO.setId(menu.getId());
-                menuDTO.setAd(menu.getAd());
-                menuDTO.setAnaSayfaMi(menu.isAnaSayfaMi());
-                menuDTO.setLabel(menu.getLabel());
-                menuDTO.setDeleted(menu.getDeleted());
-                menuDTO.setParentId(menu.getParentId());
-                menuDTO.setUrl(menu.getUrl());
-                menuDTO.setAltMenuDTOS(menu.getAltMenus().stream().map(altMenu -> {
-                    AltMenuDTO dto = new AltMenuDTO();
-                    dto.setId(altMenu.getId());
-                    dto.setAnaMenu(altMenu.getAnaMenu().toDTO());
-                    dto.setAd(altMenu.getAd());
-                    dto.setUrl(altMenu.getUrl());
-                    dto.setDeleted(altMenu.getDeleted());
-                    dto.setMenuIcerikDTOS(altMenu.getMenuIceriks().stream().map(menuIcerik -> menuIcerik.toDTO()).collect(Collectors.toList()));
-                    return dto;
-                }).collect(Collectors.toList()));
-
-                return menuDTO;
-            }).collect(Collectors.toList());
-
-            return new ApiResponse<>(true,"İşlem başarılı.",menuList);
-    }*/
-
 
 }

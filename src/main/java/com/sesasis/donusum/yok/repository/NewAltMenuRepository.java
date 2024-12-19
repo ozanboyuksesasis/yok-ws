@@ -14,4 +14,7 @@ public interface NewAltMenuRepository extends JpaRepository<NewAltMenu,Long> {
 
     List<NewAltMenu> findAllByDomain_Id(Long domainId);
 
+    NewAltMenu findOneByIdAndDomainId(Long newAltmenuId,Long domainId);
+    List<NewAltMenu> findAllByGroupIdAndDomain_Id(Long groupId , Long domainId);
+
 }

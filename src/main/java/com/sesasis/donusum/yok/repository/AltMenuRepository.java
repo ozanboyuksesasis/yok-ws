@@ -22,4 +22,7 @@ public interface AltMenuRepository extends JpaRepository<AltMenu, Long> {
 
 	List<AltMenu> findAllByGroupIdAndDomain_Id(Long groupId, Long domainId);
 
+	boolean existsByUrlAndDomain_Id(String url,Long domainId);
+
+
 }
