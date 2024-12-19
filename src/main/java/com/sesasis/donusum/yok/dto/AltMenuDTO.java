@@ -25,6 +25,9 @@ public class AltMenuDTO extends BaseDTO<AltMenu> {
 	@NotBlank(message = "Menü seçimi yapınız.")
 	private Long menuId;
 
+
+	private Long menuGroupId;
+
 	private Long groupId;
 
 

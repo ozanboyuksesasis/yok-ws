@@ -23,6 +23,9 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 	@JoinColumn(name = "dil_category_id")
 	private GenelDilCategory genelDilCategory;
 
+	@Column(name = "menu_group_id")
+	private Long menuGroupId;
+
 	@ManyToOne
 	@JoinColumn(name = "ana_menu_id", referencedColumnName = "id", nullable = false)
 	private Menu menu;
