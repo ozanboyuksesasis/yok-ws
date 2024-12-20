@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -26,6 +23,7 @@ public class DomainWebController {
     private final OnemliBilgilerService onemliBilgilerService;
     private final GenelDilCategoryService genelDilCategoryService;
     private final DomainService domainService;
+    private final AnaSayfaSliderService anaSayfaSliderService;
 
 
 
@@ -61,6 +59,13 @@ public class DomainWebController {
     @GetMapping(value = "/get-slider/{domainId}")
     public ResponseEntity<?> getSlider(@PathVariable Long domainId) {
         ApiResponse slidersDomainId = domainWebService.getAllSlidersDomainId(domainId);
+        return new ResponseEntity<>(slidersDomainId, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/get-anasayfa-slider")
+    public ResponseEntity<?> getAnaDomainSlider() {
+        ApiResponse slidersDomainId = anaSayfaSliderService.findAll();
         return new ResponseEntity<>(slidersDomainId, HttpStatus.OK);
     }
 
