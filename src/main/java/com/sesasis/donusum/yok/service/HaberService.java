@@ -48,6 +48,7 @@ public class HaberService implements IService<HaberDTO> {
             haber.setIcerik(haberDTO.getIcerik());
             haber.setAktifMi(haberDTO.getAktifMi());
             haber.setAltBaslik(haberDTO.getAltBaslik());
+            haber.setEventDate(haberDTO.getEventDate());
             haber.setCreatedAt(LocalDate.now());
             if (haberDTO.getGenelDilCategoryId() != null) {
                 GenelDilCategory dilCategory = genelDilCategoryRepository.findById(haberDTO.getGenelDilCategoryId()).orElse(null);
@@ -86,6 +87,7 @@ public class HaberService implements IService<HaberDTO> {
                 haber.setIcerik(haberDTO.getIcerik());
                 haber.setAktifMi(haberDTO.getAktifMi());
                 haber.setAltBaslik(haberDTO.getAltBaslik());
+                haber.setEventDate(haberDTO.getEventDate());
                 haber.setUpdateAt(LocalDate.now());
             }
         } else {

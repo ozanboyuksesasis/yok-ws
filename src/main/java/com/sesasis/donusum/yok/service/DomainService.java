@@ -60,17 +60,17 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 
 				if (domainDTO.isAnaDomainMi()){//ana domain menüleri farklı olacak
 					DashboardMenu yok = new DashboardMenu();
-					yok.setId(10L);
+					yok.setId(11L);
 					DashboardMenu anasayfaSlider = new DashboardMenu();
-					anasayfaSlider.setId(11L);
+					anasayfaSlider.setId(12L);
 					DashboardMenu anasayfaStory = new DashboardMenu();
-					anasayfaStory.setId(12L);
+					anasayfaStory.setId(13L);
 					DashboardMenu anasayfaHizliBaglantilar = new DashboardMenu();
-					anasayfaHizliBaglantilar.setId(13L);
+					anasayfaHizliBaglantilar.setId(14L);
 					DashboardMenu anasayfaDuyuru = new DashboardMenu();
-					anasayfaDuyuru.setId(14L);
+					anasayfaDuyuru.setId(15L);
 					DashboardMenu anasayfaHaber = new DashboardMenu();
-					anasayfaHaber.setId(15L);
+					anasayfaHaber.setId(16L);
 
 					List<DashboardMenu> dashboardMenuList = new ArrayList<>();
 					dashboardMenuList.add(yok);

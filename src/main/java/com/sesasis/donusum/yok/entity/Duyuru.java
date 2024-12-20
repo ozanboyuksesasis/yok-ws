@@ -44,6 +44,9 @@ public class Duyuru {
     private LocalDate updateAt;
 
 
+    @Column(name = "event_date")
+    private LocalDate eventDate;
+
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "domain_id")

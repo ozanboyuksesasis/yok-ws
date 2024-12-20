@@ -56,6 +56,7 @@ public class DuyuruService implements IService<DuyuruDTO> {
             duyuru.setCreatedAt(LocalDate.now());
             duyuru.setAltBaslik(duyuruDTO.getAltBaslik());
             duyuru.setSiraNo(atomicLong.getAndIncrement());
+            duyuru.setEventDate(duyuruDTO.getEventDate());
 
             GenelDilCategory genelDilCategory = genelDilCategoryRepository.findById(duyuruDTO.getGenelDilCategoryId()).orElse(null);
             if (genelDilCategory != null) {
@@ -93,6 +94,7 @@ public class DuyuruService implements IService<DuyuruDTO> {
                 duyuru.setIcerik(duyuruDTO.getIcerik());
                 duyuru.setAktifMi(duyuruDTO.getAktifMi());
                 duyuru.setUpdateAt(LocalDate.now());
+                duyuru.setEventDate(duyuruDTO.getEventDate());
             }
         }else {
             return new ApiResponse<>(false,"Tek kayıt oluşturalamaz.Güncelleme yapılabilir.",null);
