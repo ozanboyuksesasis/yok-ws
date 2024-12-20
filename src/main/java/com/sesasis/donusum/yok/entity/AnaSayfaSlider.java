@@ -23,20 +23,22 @@ public class AnaSayfaSlider extends BaseModel<AnaSayfaSliderDTO> {
 	@Type(type = "org.hibernate.type.ImageType")
 	private byte[] contentDetay;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	Menu menu;//ana sayfa olan menu ile ilişkilendirilecek
-
-	@Override
-	public AnaSayfaSliderDTO toDTO() {
-		AnaSayfaSliderDTO anaSayfaSliderDTO = new AnaSayfaSliderDTO();
-		anaSayfaSliderDTO.setId(getId());
-		anaSayfaSliderDTO.setBaslik(baslik);
-		anaSayfaSliderDTO.setSlogan(slogan);
-		anaSayfaSliderDTO.setSira(sira);
-		anaSayfaSliderDTO.setPath(path);
-		anaSayfaSliderDTO.setAktif(aktif);
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	Menu menu;//ana sayfa olan menu ile ilişkilendirilecek
+@Override
+public AnaSayfaSliderDTO toDTO() {
+	AnaSayfaSliderDTO anaSayfaSliderDTO = new AnaSayfaSliderDTO();
+	anaSayfaSliderDTO.setId(getId());
+	anaSayfaSliderDTO.setBaslik(baslik);
+	anaSayfaSliderDTO.setSlogan(slogan);
+	anaSayfaSliderDTO.setSira(sira);
+	anaSayfaSliderDTO.setPath(path);
+	anaSayfaSliderDTO.setAktif(aktif);
+	if (contentDetay != null) {
 		anaSayfaSliderDTO.setContentDetay(new String(contentDetay, StandardCharsets.UTF_8));
-		anaSayfaSliderDTO.setMenu(menu != null ? menu.toDTO() : null);
-		return anaSayfaSliderDTO;
+	} else {
+		anaSayfaSliderDTO.setContentDetay(null);
 	}
+	return anaSayfaSliderDTO;
+}
 }

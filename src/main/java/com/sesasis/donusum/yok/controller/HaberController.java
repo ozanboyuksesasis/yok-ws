@@ -38,6 +38,11 @@ public class HaberController {
         ApiResponse response = haberService.findAll();
         return ResponseEntity.ok(response);
     }
+    @GetMapping(value = "/{domainId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getHabersByDomainId(@PathVariable Long domainId) {
+        ApiResponse response = haberService.getHabersDomainId(domainId);
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> findById(@PathVariable Long id) {

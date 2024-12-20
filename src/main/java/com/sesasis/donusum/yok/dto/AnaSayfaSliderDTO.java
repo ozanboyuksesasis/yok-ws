@@ -11,7 +11,7 @@ public class AnaSayfaSliderDTO extends BaseDTO<AnaSayfaSlider> {
 	int sira;
 	String path;
 	boolean aktif;
-	MenuDTO menu;
+	//MenuDTO menu;
 	String base64content;
 	String contentDetay;
 
@@ -24,8 +24,11 @@ public class AnaSayfaSliderDTO extends BaseDTO<AnaSayfaSlider> {
 		anaSayfaSlider.setSira(sira);
 		anaSayfaSlider.setPath(path);
 		anaSayfaSlider.setAktif(aktif);
-		anaSayfaSlider.setMenu(menu != null ? menu.toEntity() : null);
-		anaSayfaSlider.setContentDetay(contentDetay.getBytes());
+		if (contentDetay != null) {
+			anaSayfaSlider.setContentDetay(contentDetay.getBytes());
+		} else {
+			anaSayfaSlider.setContentDetay(null);
+		}
 		return anaSayfaSlider;
 	}
 }

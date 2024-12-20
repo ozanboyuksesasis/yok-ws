@@ -45,7 +45,7 @@ public class Menu extends BaseModel<MenuDTO> {
 		menuDTO.setGroupId(groupId);
 		menuDTO.setDomainId(domain.getId());
 		menuDTO.setId(getId());
-		menuDTO.setGenelDilCategoryId(getGenelDilCategory().getId());
+		menuDTO.setGenelDilCategoryId(genelDilCategory != null ? genelDilCategory.getId() : null);
 		menuDTO.setAd(ad);
 		menuDTO.setUrl(url);
 		menuDTO.setAnaSayfaMi(anaSayfaMi);

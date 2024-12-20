@@ -20,6 +20,8 @@ public interface DuyuruRepository extends JpaRepository<Duyuru, Long> {
     List<Duyuru> findByDomain_IdAndGenelDilCategory_IdAndAktifMiTrueOrderBySiraNoDesc(Long domainId, Long dilCategoryId);
 
     List<Duyuru> findByDomain_IdAndGenelDilCategory_IdAndAktifMiFalseOrderBySiraNoDesc(Long domainId, Long dilCategoryId);
+    List<Duyuru> findAllByDomainId(Long domainId);
+
 }
 
 

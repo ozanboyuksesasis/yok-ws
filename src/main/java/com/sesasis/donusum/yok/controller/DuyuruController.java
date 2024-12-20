@@ -25,6 +25,14 @@ public class DuyuruController {
         return ResponseEntity.ok(save);
     }
 
+    @GetMapping(value = "/get-haber-by-domainId/{domainId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getDuyurusByDomainId(@PathVariable Long domainId) {
+        if (domainId == null) {
+            return ResponseEntity.badRequest().body(new ApiResponse<>(false, "Domain ID is required.", null));
+        }
+        ApiResponse response = duyuruService.getDuyurusDomainId(domainId);
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping(value = "/update-save",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@Valid @RequestBody DuyuruDTO duyuruDTO){
