@@ -35,6 +35,7 @@ public class NewAltMenu {
     @Column(name = "alt_menu_group_id")
     private Long altMenuGroupId;
 
+
     @ManyToOne
     @JoinColumn(name = "alt_menü_id")
     @JsonIgnore

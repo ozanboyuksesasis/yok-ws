@@ -123,12 +123,14 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
             dto.setBaslik(menuIcerik.getBaslik());
             dto.setDeleted(menuIcerik.getDeleted());
             dto.setId(menuIcerik.getId());
+            dto.setNewAltMenuId(menuIcerik.getNewAltMenu()!=null?menuIcerik.getNewAltMenu().getId():null);
             dto.setMenuGroupId(menuIcerik.getMenu() !=null ? menuIcerik.getMenuGroupId():null);
             dto.setAltMenuGroupId(menuIcerik.getAltMenu() !=null ? menuIcerik.getAltMenuGroupId() : null);
             dto.setNewAltMenuGroupId(menuIcerik.getNewAltMenu() !=null ? menuIcerik.getNewAltMenuGroupId() : null);
             dto.setMenuId(menuIcerik.getMenu() != null ? menuIcerik.getMenu().getId() : null);
             dto.setAltMenuId(menuIcerik.getAltMenu() != null ? menuIcerik.getAltMenu().getId() : null);
             dto.setIcerik(menuIcerik.getIcerik() != null ? new String(menuIcerik.getIcerik(), StandardCharsets.UTF_8) : null);
+            dto.setGenelDilCategoryId(menuIcerik.getGenelDilCategory()!=null? menuIcerik.getGenelDilCategory().getId():null);
             return dto;
         }).collect(Collectors.toList());
         return new ApiResponse<>(true, "İşlem başarılı.", dtos);

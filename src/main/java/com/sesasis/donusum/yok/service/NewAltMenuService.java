@@ -38,7 +38,6 @@ public class NewAltMenuService implements IService<NewAltMenuDTO> {
     }
 
     public ApiResponse addListNewAltMenu(List<NewAltMenuDTO> newAltMenuDTOS, Long altMenuGroupId) {
-
         Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
         if (loggedDomain == null) {
             return new ApiResponse(false, "Domain bulunamadı.", null);
@@ -48,7 +47,6 @@ public class NewAltMenuService implements IService<NewAltMenuDTO> {
         if (newAltMenuDTOS == null || newAltMenuDTOS.isEmpty()) {
             return new ApiResponse<>(false, "DTO listesi boş geldi.", null);
         }
-
         List<AltMenu> altMenus = altMenuRepository.findAllByGroupIdAndDomain_Id(altMenuGroupId, loggedDomain.getId());
         if (altMenus == null || altMenus.isEmpty()) {
             return new ApiResponse<>(false, "Alt menü bulunamadı.", null);
@@ -56,12 +54,11 @@ public class NewAltMenuService implements IService<NewAltMenuDTO> {
         for (int i = 0; i < newAltMenuDTOS.size() && i < altMenus.size(); i++) {
             NewAltMenuDTO dto = newAltMenuDTOS.get(i);
             AltMenu altMenu = altMenus.get(i);
-
             NewAltMenu newAltMenu = new NewAltMenu();
             newAltMenu.setAd(dto.getAd());
             newAltMenu.setAltMenuGroupId(altMenu.getGroupId());
             newAltMenu.setUrl(dto.getUrl());
-            newAltMenu.setAltMenu(altMenu);
+            newAltMenu.setAltMenu(altMenu); // HATA DÜZELTİLDİ
             newAltMenu.setGroupId(count + 1);
             newAltMenu.setDomain(loggedDomain);
             GenelDilCategory genelDilCategory;
@@ -77,7 +74,6 @@ public class NewAltMenuService implements IService<NewAltMenuDTO> {
         newAltMenuRepository.saveAll(newAltMenus);
 
         return new ApiResponse<>(true, "Diğer alt menü kayıt başarılı.", null);
-
     }
 
     @Override
@@ -97,10 +93,12 @@ public class NewAltMenuService implements IService<NewAltMenuDTO> {
             dto.setAltMenuGroupId(newAltMenu.getAltMenu().getGroupId());
             dto.setDomainId(loggedDomain.getId());
             dto.setGenelDilCategoryId(newAltMenu.getGenelDilCategory().getId());
+            dto.setAltMenuId(newAltMenu.getAltMenu().getId());
+
             return dto;
         }).collect(Collectors.toList());
 
-        return new ApiResponse<>(true,"İşlem başarılı.",newAltMenus);
+        return new ApiResponse<>(true,"İşlem başarılı.",dtos);
     }
 
     @Override
