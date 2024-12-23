@@ -74,7 +74,7 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
     public ApiResponse findAll() {
         Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
         if (loggedDomain == null) {
-            return new ApiResponse(false, "No domain context available", null);
+            return new ApiResponse(false, "Domain bulunamadı.", null);
         }
         List<Menu> menus = menuRepository.findAllByDomainId(loggedDomain.getId());
         List<MenuDTO> dtos = menus.stream().map(menu -> {
