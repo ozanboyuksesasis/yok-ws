@@ -31,16 +31,15 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
 
 
     public ApiResponse listSave(List<OnemliBilgilerDTO> dtoList) {
-
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        if (domain==null){
+            return new ApiResponse<>(false,"Domain bulunamadı.",null);
+        }
 
         Long count = onemliBilgilerRepository.findMaxSiraNo().orElse(0L);
         AtomicLong atom = new AtomicLong(count + 1);
-
         List<OnemliBilgiler> onemliBilgilers = new ArrayList<>();
-
         for (OnemliBilgilerDTO dto : dtoList) {
-
             OnemliBilgiler onemliBilgiler = new OnemliBilgiler();
             onemliBilgiler.setDomain(domain);
             onemliBilgiler.setIcerik(dto.getIcerik());
@@ -58,10 +57,8 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
             onemliBilgilers.add(onemliBilgiler);
         }
         onemliBilgilerRepository.saveAll(onemliBilgilers);
-
         return new ApiResponse<>(true,"Kayıt başarılı.",null);
     }
-
 
     @Override
     public ApiResponse save(OnemliBilgilerDTO onemliBilgilerDTO) {
@@ -88,13 +85,10 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
             }
         } else {
             return new ApiResponse<>(false, "Tek kayıt oluşturalamaz.Güncelleme yapılabilir.", null);
-
         }
         OnemliBilgilerDTO dto = this.modelMapperServiceImpl.response().map(onemliBilgiler, OnemliBilgilerDTO.class);
-
         return new ApiResponse(true, "Güncelleme işlemi başarılı.", dto);
     }
-
     @Override
     public ApiResponse findAll() {
       List<OnemliBilgiler> onemliBilgilers = onemliBilgilerRepository.findAll();
@@ -123,8 +117,6 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
 
         return new ApiResponse<>(true, "İşlem başarılı.", onemliBilgilerDTOS);
     }
-
-
     @Override
     public ApiResponse findById(Long onemliBilgiId) {
         OnemliBilgiler onemliBilgi = onemliBilgilerRepository.findById(onemliBilgiId).orElse(null);
@@ -134,14 +126,12 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
         OnemliBilgilerDTO dto = modelMapperServiceImpl.response().map(onemliBilgi, OnemliBilgilerDTO.class);
         return new ApiResponse(true, "İşlem başarılı.", dto);
     }
-
     @Override
     public void deleteById(Long id) {
         if (onemliBilgilerRepository.existsById(id)) {
             onemliBilgilerRepository.deleteById(id);
         }
     }
-
     public ApiResponse onemliBilgilerListTrueTrueDomainId(Long domainId, Long dilCategoryId) {
         List<OnemliBilgiler> onemliBilgilers = onemliBilgilerRepository
                 .findByDomain_IdAndGenelDilCategory_IdAndAktifMiTrueOrderBySiraNoDesc(domainId, dilCategoryId);
@@ -163,13 +153,11 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
                     dto.setSayfaUrl(onemliBilgiler.getSayfaUrl());
                     dto.setCreatedAt(onemliBilgiler.getCreatedAt());
                     dto.setUpdateAt(onemliBilgiler.getUpdateAt());
-
                     return dto;
                 })
                 .collect(Collectors.toList());
         return new ApiResponse<>(true, "İşlem başarılı.", onemliBilgilerDTOS);
     }
-
     public ApiResponse onemliBilgilerFalseTrueDomainId(Long domainId, Long dilCategoryId) {
         List<OnemliBilgiler> onemliBilgilers = onemliBilgilerRepository
                 .findByDomain_IdAndGenelDilCategory_IdAndAktifMiFalseOrderBySiraNoDesc(domainId, dilCategoryId);
@@ -177,7 +165,6 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
         if (onemliBilgilers.isEmpty()) {
             return new ApiResponse<>(false, "Liste boş", null);
         }
-
         List<OnemliBilgilerDTO> onemliBilgilerDTOS = onemliBilgilers.stream()
                 .map(onemliBilgiler -> {
                     OnemliBilgilerDTO dto = new OnemliBilgilerDTO();
@@ -196,5 +183,4 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
                 .collect(Collectors.toList());
         return new ApiResponse<>(true, "İşlem başarılı.", onemliBilgilerDTOS);
     }
-
 }
