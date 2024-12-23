@@ -4,13 +4,16 @@ import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.DuyuruDTO;
+import com.sesasis.donusum.yok.dto.HaberDTO;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Duyuru;
 import com.sesasis.donusum.yok.entity.GenelDilCategory;
+import com.sesasis.donusum.yok.entity.Haber;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.DomainRepository;
 import com.sesasis.donusum.yok.repository.DuyuruRepository;
 import com.sesasis.donusum.yok.repository.GenelDilCategoryRepository;
+import com.sesasis.donusum.yok.repository.HaberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +36,7 @@ public class DuyuruService implements IService<DuyuruDTO> {
     private final ModelMapperServiceImpl modelMapperServiceImpl;
     private final GenelDilCategoryRepository genelDilCategoryRepository;
     private final SecurityContextUtil securityContextUtil;
+    private final HaberRepository haberRepository;
 
     public ApiResponse listSave(List<DuyuruDTO> duyuruDTOList) {
 
@@ -167,17 +171,22 @@ public class DuyuruService implements IService<DuyuruDTO> {
         duyuruRepository.saveAll(duyuruList);
         return new ApiResponse<>(true, "Sıra güncellendi.", null);
     }
-    public ApiResponse getDuyurusDomainId(Long domainId) {
-        List<Duyuru> duyurus = duyuruRepository.findAllByDomainId(domainId);
-        if (duyurus == null || duyurus.isEmpty()) {
-            return new ApiResponse<>(false, "Duyuru listesi bulunamadı.", null);
+    public ApiResponse getDuyuruByDomainId(Long domainId) {
+        List<Haber> duyuru = haberRepository.findAllByDomainId(domainId);
+        if (duyuru == null) {
+            return new ApiResponse<>(false, "Haber listesi bulunamadı.", null);
+        }
+        long index = duyuru.size();
+
+        for (Haber haber : duyuru) {
+            haber.setSiraNo(index--);
         }
 
-        List<DuyuruDTO> duyuruDTOS = duyurus.stream()
-                .map(duyuru -> this.modelMapperServiceImpl.response().map(duyuru, DuyuruDTO.class))
+        List<HaberDTO> haberDTOS = duyuru.stream()
+                .map(haber -> this.modelMapperServiceImpl.response().map(duyuru, HaberDTO.class))
                 .collect(Collectors.toList());
 
-        return new ApiResponse<>(true, "İşlem başarılı.", duyuruDTOS);
+        return new ApiResponse<>(true, "İşlem başarılı.", haberDTOS);
     }
 
     public ApiResponse duyuruListTrueDomainId(Long domainId, Long dilCategoryId) {
