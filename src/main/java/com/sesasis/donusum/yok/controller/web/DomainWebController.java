@@ -79,7 +79,7 @@ public class DomainWebController {
 //not : sadece domaindei haberlerin hepsi karışık gelir , dil seçimi için aşağıda var.
     @GetMapping(value = "/get-haber/{domainId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getHaber(@PathVariable Long domainId){
-        ApiResponse habersDomainId = haberService.getHabersDomainId(domainId);
+        ApiResponse habersDomainId = haberService.getHaberByDomainId(domainId);
         return new ResponseEntity<>(habersDomainId,HttpStatus.OK);
     }
     //not : domain ve dil e göre seçim yapan kısm.
