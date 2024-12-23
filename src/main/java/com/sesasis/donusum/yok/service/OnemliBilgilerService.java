@@ -48,6 +48,7 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
             onemliBilgiler.setSiraNo(atom.getAndIncrement());
             onemliBilgiler.setAktifMi(dto.getAktifMi());
             onemliBilgiler.setBaslik(dto.getBaslik());
+            onemliBilgiler.setEventDate(dto.getEventDate());
             onemliBilgiler.setAltBaslik(dto.getAltBaslik());
             onemliBilgiler.setSayfaUrl(dto.getSayfaUrl());
             if (dto.getGenelDilCategoryId() != null) {
