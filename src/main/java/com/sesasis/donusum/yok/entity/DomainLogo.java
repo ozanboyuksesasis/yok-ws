@@ -18,9 +18,6 @@ public class DomainLogo {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "fotograf_id")
-    private Fotograf fotograf;
 
     @ManyToOne
     @JoinColumn(name = "domain_id")

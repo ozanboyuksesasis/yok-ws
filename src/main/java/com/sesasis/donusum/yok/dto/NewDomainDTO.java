@@ -39,5 +39,4 @@ public class NewDomainDTO {
 
     private List<SliderDTO> sliders;
 
-    private List<DomainLogoDTO> domainLogos;
 }

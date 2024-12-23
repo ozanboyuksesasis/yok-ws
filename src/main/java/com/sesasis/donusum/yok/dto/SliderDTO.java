@@ -36,6 +36,4 @@ public class SliderDTO {
     @URL(message = "Geçerli bir URL olmalıdır.")
     private String sayfaUrl;
 
-
-    private List<FotografDTO> fotografDTOS;
 }
