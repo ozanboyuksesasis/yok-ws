@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -27,7 +25,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
     private final OnemliBilgilerRepository onemliBilgilerRepository;
-    private final ModelMapperServiceImpl modelMapperService;
+    private final ModelMapperServiceImpl modelMapperServiceImpl;
     private final SecurityContextUtil securityContextUtil;
     private final GenelDilCategoryRepository genelDilCategoryRepository;
 
@@ -91,7 +89,7 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
             return new ApiResponse<>(false, "Tek kayıt oluşturalamaz.Güncelleme yapılabilir.", null);
 
         }
-        OnemliBilgilerDTO dto = this.modelMapperService.response().map(onemliBilgiler, OnemliBilgilerDTO.class);
+        OnemliBilgilerDTO dto = this.modelMapperServiceImpl.response().map(onemliBilgiler, OnemliBilgilerDTO.class);
 
         return new ApiResponse(true, "Güncelleme işlemi başarılı.", dto);
     }
@@ -102,11 +100,29 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
       if (onemliBilgilers.isEmpty()){
           return new ApiResponse<>(false,"Liste boş",null);
       }
-      List<OnemliBilgilerDTO> dtos = onemliBilgilers.stream().map(onemliBilgiler -> this.modelMapperService.response()
+      List<OnemliBilgilerDTO> dtos = onemliBilgilers.stream().map(onemliBilgiler -> this.modelMapperServiceImpl.response()
               .map(onemliBilgiler,OnemliBilgilerDTO.class)).collect(Collectors.toList());
 
         return new ApiResponse<>(true,"İşlem başarılı.",dtos);
     }
+    public ApiResponse getOnemliBilgilerByDomainId(Long domainId) {
+        List<OnemliBilgiler> onemliBilgilers = onemliBilgilerRepository.findAllByDomainId(domainId);
+        if (onemliBilgilers == null) {
+            return new ApiResponse<>(false, "Haber listesi bulunamadı.", null);
+        }
+        long index = onemliBilgilers.size();
+
+        for (OnemliBilgiler onemliBilgiler : onemliBilgilers) {
+            onemliBilgiler.setSiraNo(index--);
+        }
+
+        List<OnemliBilgilerDTO> onemliBilgilerDTOS = onemliBilgilers.stream()
+                .map(onemliBilgiler -> this.modelMapperServiceImpl.response().map(onemliBilgiler, OnemliBilgilerDTO.class))
+                .collect(Collectors.toList());
+
+        return new ApiResponse<>(true, "İşlem başarılı.", onemliBilgilerDTOS);
+    }
+
 
     @Override
     public ApiResponse findById(Long onemliBilgiId) {
@@ -114,7 +130,7 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
         if (onemliBilgi == null) {
             return new ApiResponse(false, "Önemli bilgi bulunamadı.", null);
         }
-        OnemliBilgilerDTO dto = modelMapperService.response().map(onemliBilgi, OnemliBilgilerDTO.class);
+        OnemliBilgilerDTO dto = modelMapperServiceImpl.response().map(onemliBilgi, OnemliBilgilerDTO.class);
         return new ApiResponse(true, "İşlem başarılı.", dto);
     }
 

@@ -55,4 +55,8 @@ public class OnemliBilgiler {
     @JoinColumn(name = "dil_category_id")
     private GenelDilCategory genelDilCategory;
 
+    @Column(name = "event_date")
+    private LocalDate eventDate;
+
+
 }

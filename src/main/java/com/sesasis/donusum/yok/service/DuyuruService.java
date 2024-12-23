@@ -172,21 +172,21 @@ public class DuyuruService implements IService<DuyuruDTO> {
         return new ApiResponse<>(true, "Sıra güncellendi.", null);
     }
     public ApiResponse getDuyuruByDomainId(Long domainId) {
-        List<Haber> duyuru = haberRepository.findAllByDomainId(domainId);
-        if (duyuru == null) {
-            return new ApiResponse<>(false, "Haber listesi bulunamadı.", null);
+        List<Duyuru> duyurus = duyuruRepository.findAllByDomainId(domainId);
+        if (duyurus == null) {
+            return new ApiResponse<>(false, "Duyuru listesi bulunamadı.", null);
         }
-        long index = duyuru.size();
+        long index = duyurus.size();
 
-        for (Haber haber : duyuru) {
-            haber.setSiraNo(index--);
+        for (Duyuru duyuru : duyurus) {
+            duyuru.setSiraNo(index--);
         }
 
-        List<HaberDTO> haberDTOS = duyuru.stream()
-                .map(haber -> this.modelMapperServiceImpl.response().map(duyuru, HaberDTO.class))
+        List<DuyuruDTO> duyuruDTOS = duyurus.stream()
+                .map(duyuru -> this.modelMapperServiceImpl.response().map(duyuru, DuyuruDTO.class))
                 .collect(Collectors.toList());
 
-        return new ApiResponse<>(true, "İşlem başarılı.", haberDTOS);
+        return new ApiResponse<>(true, "İşlem başarılı.", duyuruDTOS);
     }
 
     public ApiResponse duyuruListTrueDomainId(Long domainId, Long dilCategoryId) {

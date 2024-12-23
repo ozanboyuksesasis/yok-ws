@@ -51,7 +51,6 @@ public class DuyuruDTO {
     @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate updateAt;
 
-
     @JsonFormat(pattern = "dd.MM.yyyy")
     @NotNull(message = "Etkinlik tarihi boş olamaz.")
     private LocalDate eventDate;

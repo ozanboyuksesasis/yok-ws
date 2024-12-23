@@ -39,6 +39,11 @@ public class OnemliBilgilerController {
         ApiResponse all = onemliBilgilerService.findAll();
         return new ResponseEntity<>(all,HttpStatus.OK);
     }
+    @GetMapping(value = "/all/{domainId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getOnemliBilgilerByDomainId(@PathVariable Long domainId) {
+        ApiResponse response = onemliBilgilerService.getOnemliBilgilerByDomainId(domainId);
+        return ResponseEntity.ok(response);
+    }
 
 
     @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)

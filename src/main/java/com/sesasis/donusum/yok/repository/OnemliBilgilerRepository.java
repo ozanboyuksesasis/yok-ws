@@ -20,4 +20,6 @@ List<OnemliBilgiler>  findByDomain_IdAndGenelDilCategory_IdAndAktifMiFalseOrderB
     @Query("SELECT MAX(o.siraNo)  FROM OnemliBilgiler o")
     Optional<Long> findMaxSiraNo();
 
+    List<OnemliBilgiler> findAllByDomainId(Long domainId);
+
 }
