@@ -27,9 +27,6 @@ public class Menu extends BaseModel<MenuDTO> {
 	@JoinColumn(name = "dil_category_id")
 	private GenelDilCategory genelDilCategory;
 
-	@ManyToOne
-	@JoinColumn(name = "fotograf_id")
-	private Fotograf fotograf;
 
 	@OneToMany(mappedBy = "menu",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 

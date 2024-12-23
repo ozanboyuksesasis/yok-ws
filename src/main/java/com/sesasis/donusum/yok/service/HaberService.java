@@ -73,6 +73,9 @@ public class HaberService implements IService<HaberDTO> {
     public ApiResponse save(HaberDTO haberDTO) {
 
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        if (domain==null){
+            return new ApiResponse<>(false,"Domain bulunamadı.",null);
+        }
         GenelDilCategory genelDilCategory = this.genelDilCategoryRepository.findById(haberDTO.getGenelDilCategoryId()).orElse(null);
         if (genelDilCategory == null) {
             return new ApiResponse<>(false, "Dil kategorisi bulunamadı.", null);
@@ -104,12 +107,10 @@ public class HaberService implements IService<HaberDTO> {
         if (habers.isEmpty()) {
             return new ApiResponse<>(false, "Liste boş.", null);
         }
-
         List<HaberDTO> dtos = habers.stream().map(haber ->
                 this.modelMapperServiceImpl.response().map(haber, HaberDTO.class)).collect(Collectors.toList());
         return new ApiResponse<>(true, "İşlem başarılı.", dtos);
     }
-
     @Override
     public ApiResponse findById(Long id) {
         Haber haber = this.haberRepository.findById(id)
@@ -117,7 +118,6 @@ public class HaberService implements IService<HaberDTO> {
         HaberDTO dto = this.modelMapperServiceImpl.response().map(haber, HaberDTO.class);
         return new ApiResponse<>(true, "İşlem başarılı.", dto);
     }
-
     @Transactional
     @Override
     public void deleteById(Long id) {
@@ -126,7 +126,6 @@ public class HaberService implements IService<HaberDTO> {
             siraNoGuncelle();
         }
     }
-
     public ApiResponse DomainEkle(Long newDomainId, Long duyuruId) {
         Domain newDomain = domainRepository.findById(newDomainId)
                 .orElseThrow(() -> new RuntimeException("Domain bulunamadı : " + newDomainId));
@@ -148,7 +147,6 @@ public class HaberService implements IService<HaberDTO> {
         for (Haber haber : habers) {
             haber.setSiraNo(index++);
         }
-
         haberRepository.saveAll(habers);
         return new ApiResponse<>(true, "Sıra güncellendi.", null);
     }
@@ -159,15 +157,12 @@ public class HaberService implements IService<HaberDTO> {
             return new ApiResponse<>(false, "Haber listesi bulunamadı.", null);
         }
         long index = habers.size();
-
         for (Haber haber : habers) {
             haber.setSiraNo(index--);
         }
-
         List<HaberDTO> haberDTOS = habers.stream()
                 .map(haber -> this.modelMapperServiceImpl.response().map(haber, HaberDTO.class))
                 .collect(Collectors.toList());
-
         return new ApiResponse<>(true, "İşlem başarılı.", haberDTOS);
     }
 
@@ -201,6 +196,4 @@ public class HaberService implements IService<HaberDTO> {
         List<HaberDTO> haberDTOS = haberList.stream().map(haber -> this.modelMapperServiceImpl.response().map(haber, HaberDTO.class)).collect(Collectors.toList());
         return new ApiResponse<>(true, "İşlem başarılı.", haberDTOS);
     }
-
-
 }

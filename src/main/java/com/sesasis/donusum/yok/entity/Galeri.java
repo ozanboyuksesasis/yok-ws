@@ -6,21 +6,22 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "domain_logo")
-public class DomainLogo {
-
+@Table(name = "galeri")
+public class Galeri {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "name")
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "domain_id")
-    private Domain  domain;
+    private Domain domain;
 
 }

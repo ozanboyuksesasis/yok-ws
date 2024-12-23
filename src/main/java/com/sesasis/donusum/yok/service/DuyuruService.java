@@ -41,7 +41,9 @@ public class DuyuruService implements IService<DuyuruDTO> {
     public ApiResponse listSave(List<DuyuruDTO> duyuruDTOList) {
 
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
-
+        if (domain==null){
+            return new ApiResponse<>(false,"Domain bulunamadı.",null);
+        }
         List<GenelDilCategory> dilCategoryList = this.genelDilCategoryRepository.findAll();
         if (dilCategoryList == null) {
             return new ApiResponse(false, "Dil Listesi bulunamadı.", null);
@@ -125,7 +127,6 @@ public class DuyuruService implements IService<DuyuruDTO> {
             return new ApiResponse(false, "Veri çekme veya mapping sırasında hata oluştu: " + e.getMessage(), null);
         }
     }
-
     @Transactional
     @Override
     public ApiResponse findById(Long id) {
@@ -162,12 +163,10 @@ public class DuyuruService implements IService<DuyuruDTO> {
         if (duyuruList.isEmpty()) {
             return new ApiResponse(false, "Sıra güncellemesi yapılacak duyuru bulunamadı.", null);
         }
-
         long index = 1;
         for (Duyuru duyuru : duyuruList) {
             duyuru.setSiraNo(index++);
         }
-
         duyuruRepository.saveAll(duyuruList);
         return new ApiResponse<>(true, "Sıra güncellendi.", null);
     }
@@ -181,7 +180,6 @@ public class DuyuruService implements IService<DuyuruDTO> {
         for (Duyuru duyuru : duyurus) {
             duyuru.setSiraNo(index--);
         }
-
         List<DuyuruDTO> duyuruDTOS = duyurus.stream()
                 .map(duyuru -> this.modelMapperServiceImpl.response().map(duyuru, DuyuruDTO.class))
                 .collect(Collectors.toList());

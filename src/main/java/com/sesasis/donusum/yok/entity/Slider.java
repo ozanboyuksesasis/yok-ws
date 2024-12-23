@@ -39,8 +39,6 @@ public class Slider {
     @JoinColumn(name = "domain_id")
     private Domain  domain;
 
-    @OneToMany(mappedBy = "slider",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Fotograf> fotograflar;
 
     @ManyToOne
     @JoinColumn(name = "slider_dil_category_id")

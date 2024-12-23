@@ -118,7 +118,6 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
             return new ApiResponse<>(false, "Domain bulunamadı.", null);
         }
         List<MenuIcerik> menuIceriks = menuIcerikRepository.findAllByDomainId(domain.getId());
-
         List<MenuIcerikDTO> dtos = menuIceriks.stream().map(menuIcerik -> {
             MenuIcerikDTO dto = new MenuIcerikDTO();
             dto.setBaslik(menuIcerik.getBaslik());
