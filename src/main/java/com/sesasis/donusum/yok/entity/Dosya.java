@@ -1,5 +1,6 @@
 package com.sesasis.donusum.yok.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Dosya")
+@Table(name = "dosya")
 @Entity
 public class Dosya {
 
@@ -19,11 +20,8 @@ public class Dosya {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "baslik")
-    String baslik;
-
-    @Column(name = "alt_baslik")
-    String altBaslik;
+    @Column(name = "url")
+    private String url;
 
     @Column(name = "sira_no")
     private Long siraNo;
@@ -37,8 +35,9 @@ public class Dosya {
     private byte[] contentDetay;
 
     @ManyToOne
-    @JoinColumn(name = "dosya_id")
-    private Dosya dosya;
+    @JoinColumn(name = "galeri_id")
+    @JsonIgnore
+    private Galeri galeri;
 
     @ManyToOne
     @JoinColumn(name = "domain_id")

@@ -23,8 +23,8 @@ public class AnaSayfaSliderController {
 		return ResponseEntity.ok(anaSayfaSliderService.save(anaSayfaSliderDTO));
 	}
 
-	@PostMapping(value= MappingConstants.SAVE_WITH_FILE,produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> saveWithFile(@RequestPart AnaSayfaSliderDTO model, @RequestPart(value = "files",required = false) MultipartFile[] files, HttpServletRequest httpServletRequest) {
+	@PostMapping(value= MappingConstants.SAVE_WITH_FILE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> saveWithFile(@RequestPart(value = "model") AnaSayfaSliderDTO model, @RequestPart(value = "files",required = false) MultipartFile[] files, HttpServletRequest httpServletRequest) {
 		return ResponseEntity.ok(anaSayfaSliderService.saveWithFile(model,files));
 	}
 

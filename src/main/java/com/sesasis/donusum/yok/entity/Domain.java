@@ -40,6 +40,7 @@ public class Domain extends BaseModel<DomainDTO> {
 	private List<NewAltMenu > newAltMenus;
 
 	@OneToMany(mappedBy = "domain",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JsonIgnore
 	private List<Galeri> galeriList;
 
 

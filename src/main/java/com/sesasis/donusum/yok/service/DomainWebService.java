@@ -61,8 +61,6 @@ public class DomainWebService {
         List<Menu> menu = menuRepository.findAllByDomainId(domainId);
         List<MenuDTO> dtos = menu.stream().map(localMenu -> this.modelMapperServiceImpl.response().
                 map(localMenu, MenuDTO.class)).collect(Collectors.toList());
-
-
         return new ApiResponse<>(true, "İşlem başarılı.", dtos);
     }
 

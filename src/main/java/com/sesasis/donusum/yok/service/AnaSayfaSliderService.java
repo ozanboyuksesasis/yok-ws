@@ -32,8 +32,6 @@ public class AnaSayfaSliderService extends AbstractService<AnaSayfaSlider, AnaSa
 		this.menuRepository = menuRepository;
 		this.fileService = fileService;
 	}
-
-
 	@Override
 	@Transactional
 	public ApiResponse save(AnaSayfaSliderDTO anaSayfaSliderDTO) {
@@ -86,7 +84,6 @@ public class AnaSayfaSliderService extends AbstractService<AnaSayfaSlider, AnaSa
 				}
 			}
 		}
-
 		if (GeneralUtils.valueNullOrEmpty(anaSayfaSlider.getId())) {
 			anaSayfaSlider.setPath(path);
 			getRepository().save(anaSayfaSlider);

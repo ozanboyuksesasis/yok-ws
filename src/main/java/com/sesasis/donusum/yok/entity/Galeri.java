@@ -1,5 +1,6 @@
 package com.sesasis.donusum.yok.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,8 @@ public class Galeri {
     @JoinColumn(name = "domain_id")
     private Domain domain;
 
-    @OneToMany(mappedBy = "dosya")
+    @OneToMany(mappedBy = "galeri",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Dosya> dosyaList;
 
 }
