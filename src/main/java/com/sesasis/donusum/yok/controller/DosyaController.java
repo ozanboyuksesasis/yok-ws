@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/dosya")
@@ -22,7 +23,7 @@ public class DosyaController {
 
 
     @PostMapping(value = "/save-file",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveFile(@RequestPart DosyaDTO dosyaDTO,@RequestPart(value = "files",required = false) MultipartFile[] files, HttpServletRequest httpServletRequest){
+    public ResponseEntity<?> saveFile(@RequestPart List<DosyaDTO> dosyaDTO, @RequestPart(value = "files",required = false) MultipartFile[] files, HttpServletRequest httpServletRequest){
         ApiResponse apiResponse = dosyaService.saveDosya(dosyaDTO, files);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }

@@ -24,7 +24,7 @@ public class DomainWebController {
     private final GenelDilCategoryService genelDilCategoryService;
     private final DomainService domainService;
     private final AnaSayfaSliderService anaSayfaSliderService;
-
+    private final SliderService sliderService;
 
 
     @GetMapping(value = "/domain-all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -60,6 +60,12 @@ public class DomainWebController {
     public ResponseEntity<?> getSlider(@PathVariable Long domainId) {
         ApiResponse slidersDomainId = domainWebService.getAllSlidersDomainId(domainId);
         return new ResponseEntity<>(slidersDomainId, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/get-anasayfa-slider/{sliderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAnasayfaSliderById(@PathVariable Long sliderId) {
+        ApiResponse apiResponse = domainWebService.getAnasayfaSliderById(sliderId);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
 

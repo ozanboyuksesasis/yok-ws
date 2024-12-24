@@ -2,7 +2,7 @@ server:
   port: 8095
 spring:
   datasource:
-    password: 1234
+    password: 6134
     username: postgres
     url: jdbc:postgresql://localhost:5432/yokdb
   sql:

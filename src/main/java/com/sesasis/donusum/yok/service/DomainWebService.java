@@ -24,6 +24,8 @@ public class DomainWebService {
     private final ModelMapperServiceImpl modelMapperServiceImpl;
     private final MenuRepository menuRepository;
     private final AnaBaslikRepository anaBaslikRepository;
+    private final SliderRepository sliderRepository;
+    private final AnaSayfaSliderRepository anaSayfaSliderRepository;
 
 
     public ApiResponse getAllIcerikDomainId(Long domainId) {
@@ -50,6 +52,17 @@ public class DomainWebService {
         }).collect(Collectors.toList());
 
         return new ApiResponse<>(true, "İşlem başarılı.", dtos);
+    }
+
+    public ApiResponse getAnasayfaSliderById(Long sliderId) {
+
+
+        AnaSayfaSlider slider = anaSayfaSliderRepository.findById(sliderId).orElse(null);
+        if (slider == null) {
+            return new ApiResponse(false, "Haber bulunamadı.", null);
+        }
+        AnaSayfaSliderDTO dto = modelMapperServiceImpl.response().map(slider, AnaSayfaSliderDTO.class);
+        return new ApiResponse(true, "İşlem başarılı.", dto);
     }
 
     public ApiResponse getAllMenusDomainId(Long domainId) {
