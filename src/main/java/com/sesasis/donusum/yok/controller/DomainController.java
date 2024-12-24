@@ -22,25 +22,19 @@ public class DomainController {
 	public ResponseEntity<?> save(@RequestBody DomainDTO domainDTO) {
 		return ResponseEntity.ok(domainService.save(domainDTO));
 	}
-
-
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> findAll() {
 		return ResponseEntity.ok(domainService.findAll());
 	}
-
 
 	@GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getId(@PathVariable Long id){
 		ApiResponse byId = domainService.findById(id);
 		return new ResponseEntity<>(byId,HttpStatus.OK);
 	}
-
-
 	@DeleteMapping(MappingConstants.PATH_VARIABLE_ID)
 	public ResponseEntity<?> deleteById(@PathVariable Long id) {
 		return ResponseEntity.ok(domainService.delete(id));
 	}
-
 
 }

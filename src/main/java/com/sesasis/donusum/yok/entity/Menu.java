@@ -20,6 +20,9 @@ public class Menu extends BaseModel<MenuDTO> {
 	@ManyToOne
 	Domain domain;
 
+	@Column(name = "aktif_mi")
+	private boolean aktifMi;
+
 	private int parentId ;
 	private String label ;
 

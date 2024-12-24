@@ -114,6 +114,7 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
                 dilCategory = genelDilCategoryRepository.findById(dto.getGenelDilCategoryId()).orElse(null);
             }
             menu.setGenelDilCategory(dilCategory);
+            menu.setAktifMi(dto.isAktifMi());
             menu.setDomain(loggedDomain);
             menu.setGroupId(countSiraNo + 1);
             menu.setAd(dto.getAd());
@@ -127,6 +128,34 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
 
         menuRepository.saveAll(menuList);
         return new ApiResponse<>(true, "Kayıt başarılı.", null);
+    }
+
+    public ApiResponse updateMenu(Long groupId ,List<MenuDTO> menuDTOS){
+        Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        if (loggedDomain == null) {
+            return new ApiResponse(false, "Domain bulunamadı.", null);
+        }
+        List<Menu> updateMenu = menuRepository.findAllByGroupIdAndDomain_Id(groupId, loggedDomain.getId());
+        if (updateMenu.isEmpty()) {
+            return new ApiResponse(false, "GroupId ile eşleşen menü bulunamadı.", null);
+        }
+
+        for (MenuDTO dto :menuDTOS){
+
+            Menu menu = updateMenu.stream().filter(m->m.getId()
+                    .equals(dto.getId())).
+                    findFirst().orElse(null);
+
+            if (menu!=null){
+                Boolean existByUrl = menuRepository.existsByUrlAndDomain_Id(dto.getUrl(), loggedDomain.getId());
+
+            }
+
+
+        }
+
+    return null;
+
     }
 
     @Override

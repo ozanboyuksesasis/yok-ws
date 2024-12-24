@@ -79,8 +79,6 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 					dashboardMenuList.add(anasayfaHizliBaglantilar);
 					dashboardMenuList.add(anasayfaDuyuru);
 					dashboardMenuList.add(anasayfaHaber);
-
-
 					Role role = roleRepository.findById(domainDTO.getRole().getId()).get();
 					role.setDashboardMenuList(dashboardMenuList);
 					roleRepository.save(role);
