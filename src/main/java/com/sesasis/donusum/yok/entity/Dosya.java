@@ -1,6 +1,7 @@
 package com.sesasis.donusum.yok.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sesasis.donusum.yok.enums.DosyaType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -8,16 +8,12 @@ import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.DosyaDTO;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Dosya;
-import com.sesasis.donusum.yok.entity.DosyaType;
+import com.sesasis.donusum.yok.enums.DosyaType;
 import com.sesasis.donusum.yok.entity.Galeri;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.DosyaRepository;
 import com.sesasis.donusum.yok.repository.GaleriRepository;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -70,8 +66,8 @@ public class DosyaService implements IService<DosyaDTO> {
                 }
             }
             Dosya dosya = new Dosya();
-            if (dto.getDosyaType()==DosyaType.HIZLIBAGLANTI){
-            dosya.setDosyaType(DosyaType.HIZLIBAGLANTI);
+            if (dto.getDosyaType().equals(DosyaType.HIZLIBAGLANTI)){
+                dosya.setDosyaType(DosyaType.HIZLIBAGLANTI);
             }else {
                 dosya.setDosyaType(DosyaType.STORIE);
             }

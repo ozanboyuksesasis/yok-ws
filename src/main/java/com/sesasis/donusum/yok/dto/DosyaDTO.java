@@ -1,12 +1,11 @@
 package com.sesasis.donusum.yok.dto;
-import com.sesasis.donusum.yok.entity.DosyaType;
+import com.sesasis.donusum.yok.enums.DosyaType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,6 +35,6 @@ public class DosyaDTO {
 
     private Long domainId;
 
-    private DosyaType dosyaType; // Enum alanı
+    private DosyaType dosyaType; // Enum alanı ön yüzden STORIE ya da HIZLIBAGLANTI şeklinde gelmesi.
 
 }
