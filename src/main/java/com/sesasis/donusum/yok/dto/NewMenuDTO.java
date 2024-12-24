@@ -15,15 +15,12 @@ public class NewMenuDTO {
 
     @NotNull(message = "Domain id giriniz.")
     private Long domainId;
-
-
     private Long fotografId;
 
     private int parentId ;
 
     private String label ;
 
-    @NotNull
     @NotBlank(message = "Hata : İsim boş bırakılamaz.")
     private String isim;
 
