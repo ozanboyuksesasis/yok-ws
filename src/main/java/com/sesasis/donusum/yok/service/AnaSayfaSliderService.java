@@ -99,6 +99,7 @@ public class AnaSayfaSliderService extends AbstractService<AnaSayfaSlider, AnaSa
 
         if (GeneralUtils.valueNullOrEmpty(anaSayfaSlider.getId())) {
             anaSayfaSlider.setPath(path);
+            anaSayfaSlider.setSiraNo(getNextSiraNo(anaSayfaSliderDTO.getGenelDilCategoryId()));
             getRepository().save(anaSayfaSlider);
             return new ApiResponse(true, MessageConstant.SAVE_MSG, null);
         } else {
@@ -108,5 +109,13 @@ public class AnaSayfaSliderService extends AbstractService<AnaSayfaSlider, AnaSa
             getRepository().save(anaSayfaSlider);
             return new ApiResponse(true, MessageConstant.UPDATE_MSG, null);
         }
+    }
+
+    private Long getNextSiraNo(Long genelDilCategoryId) {
+        Long maxSiraNo = getRepository().findAllByGenelDilCategoryIdOrderBySiraNoAsc(genelDilCategoryId).stream()
+                .mapToLong(AnaSayfaSlider::getSiraNo)
+                .max()
+                .orElse(0L);
+        return maxSiraNo + 1;
     }
 }

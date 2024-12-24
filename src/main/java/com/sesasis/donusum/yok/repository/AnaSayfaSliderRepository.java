@@ -9,5 +9,6 @@ public interface AnaSayfaSliderRepository extends JpaRepository<AnaSayfaSlider, 
 	//List<AnaSayfaSlider> findAllByMenuAnaSayfaMiAndMenuDomainId(boolean anaSayfami, Long domainId);
 
 	List<AnaSayfaSlider> findAllByOrderBySiraNoAsc();
+	List<AnaSayfaSlider> findAllByGenelDilCategoryIdOrderBySiraNoAsc(Long genelDilCategoryId);
 
 }
