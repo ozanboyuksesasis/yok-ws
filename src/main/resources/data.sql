@@ -18,10 +18,11 @@ INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "num
 
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Yok', 2, 'yok', NULL,'FaClipboardList');
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Slider', 1, 'anasayfa-slider', 11,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Story', 2, 'anasayfa-story', 11,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Hızlı Bağlantılar', 3, 'anasayfa-hizli-baglantilar', 11,'FaCirclePlus');
+INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Hızlı Bağlantı Ve Stori', 3, 'anasayfa-hizli-baglanti-yada-stori-ekle', 11,'FaCirclePlus');
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Duyuru', 4, 'anasayfa-duyuru', 11,'FaCirclePlus');
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Haber', 5, 'anasayfa-haber', 11,'FaCirclePlus');
+INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Galeri', 5, 'anasayfa-galeri-ekle', 11,'FaCirclePlus');
+
 
 
 

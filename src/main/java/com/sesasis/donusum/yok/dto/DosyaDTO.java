@@ -1,4 +1,5 @@
 package com.sesasis.donusum.yok.dto;
+import com.sesasis.donusum.yok.entity.DosyaType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,4 +35,7 @@ public class DosyaDTO {
     private Long galeriId;
 
     private Long domainId;
+
+    private DosyaType dosyaType; // Enum alanı
+
 }

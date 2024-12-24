@@ -43,5 +43,7 @@ public class Dosya {
     @JoinColumn(name = "domain_id")
     private Domain domain;
 
+    private DosyaType dosyaType;
+
 
 }
