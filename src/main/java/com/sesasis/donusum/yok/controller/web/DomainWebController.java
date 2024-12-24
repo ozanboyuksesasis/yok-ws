@@ -2,6 +2,7 @@ package com.sesasis.donusum.yok.controller.web;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.service.*;
+import com.sesasis.donusum.yok.service.servisler.YokService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +26,7 @@ public class DomainWebController {
     private final DomainService domainService;
     private final AnaSayfaSliderService anaSayfaSliderService;
     private final SliderService sliderService;
+    private final YokService yokService;
 
 
     @GetMapping(value = "/domain-all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -153,5 +155,11 @@ public class DomainWebController {
         return ResponseEntity.ok(all);
     }
 
+
+    @GetMapping(value = "/get-faaliyetler")
+    public ResponseEntity<?> getFaaliyetler() {
+        ApiResponse apiResponse = yokService.getFaaliyetler();
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 
 }
