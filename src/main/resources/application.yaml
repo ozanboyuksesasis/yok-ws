@@ -2,7 +2,7 @@ server:
   port: 8095
 spring:
   datasource:
-    password: 6134
+    password: root
     username: postgres
     url: jdbc:postgresql://localhost:5432/yokdb
   sql:
@@ -35,3 +35,8 @@ springfox:
 
 upload:
   dir : src/main/resources/static/uploads
+
+entegration:
+    yokservisler:
+      url: http://servisler.yok.gov.tr/rest/external/websayfasi/
+      authorization-value: Basic OTgwMTM2OmJEZjRoWSFELnQzUDI=
