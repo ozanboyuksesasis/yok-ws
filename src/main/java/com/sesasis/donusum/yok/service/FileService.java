@@ -26,7 +26,11 @@ public class FileService {
 
 	public String getFileAsBase64(String filename) throws IOException {
 		Path path = Paths.get(uploadDir).resolve(filename).normalize();
-		byte[] fileContent = Files.readAllBytes(path);
-		return Base64.getEncoder().encodeToString(fileContent);
+		if (Files.exists(path)) {
+			byte[] fileContent = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(fileContent);
+		} else {
+			throw new RuntimeException("File not found: " + filename);
+		}
 	}
 }
