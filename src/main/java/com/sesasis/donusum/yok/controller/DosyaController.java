@@ -23,8 +23,8 @@ public class DosyaController {
 
 
     @PostMapping(value = "/save-file",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveFile(@RequestPart List<DosyaDTO> dosyaDTO, @RequestPart(value = "files",required = false) MultipartFile[] files, HttpServletRequest httpServletRequest){
-        ApiResponse apiResponse = dosyaService.saveDosya(dosyaDTO, files);
+    public ResponseEntity<?> saveFile(@RequestPart List<DosyaDTO> dosyaDTO, @RequestPart(value = "file",required = false) MultipartFile file, HttpServletRequest httpServletRequest){
+        ApiResponse apiResponse = dosyaService.saveDosya(dosyaDTO, file);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 

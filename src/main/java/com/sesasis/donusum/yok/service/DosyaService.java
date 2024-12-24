@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,39 +49,43 @@ public class DosyaService implements IService<DosyaDTO> {
         return null;
     }
 
-    public ApiResponse saveDosya(List<DosyaDTO> dosyaDTO,MultipartFile[] files){
+    public ApiResponse saveDosya(List<DosyaDTO> dosyaDTO,MultipartFile file){
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         if (domain==null){
             return new ApiResponse<>(false,"Domain bulunamadı.",null);
         }
-        Galeri galeri = galeriRepository.findById(dosyaDTO.getGaleriId()).orElse(null);
-
-
-        Dosya dosya = modelMapperService.request().map(dosyaDTO,Dosya.class);
-        dosya.setGaleri(galeri);
-        dosya.setContentDetay(dosyaDTO.getContentDetay().getBytes());
-        String path = null;
-        if (files!=null&&files.length>0){
-            for (MultipartFile file : files){
+        String path=null;
+        boolean kaydedildi=false;
+        List<Dosya> dosyaList = new ArrayList<>();
+        for (DosyaDTO dto : dosyaDTO){
+            if (!kaydedildi){
                 String dosyaName  = GeneralUtils.generateFileName(file);
                 try {
                     path = fileService.saveFile(file, dosyaName).toFile().getAbsolutePath();
+                    kaydedildi = true;
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
+            Dosya dosya = new Dosya();
+            dosya.setUrl(path);
+            dosya.setId(dto.getId());
+            dosya.setContentDetay(dto.getContentDetay().getBytes());
+            dosya.setDomain(domain);
+            dosya.setSiraNo(dto.getSiraNo());
+            Galeri galeri = galeriRepository.findById(dto.getGaleriId()).orElse(null);
+            if (galeri==null){
+                return new ApiResponse<>(false,"Galeri bulunamadı.",null);
+            }
+            dosya.setGaleri(galeri);
+            dosyaList.add(dosya);
         }
         if (GeneralUtils.valueNullOrEmpty(path)){
-            dosya.setUrl(path);
-            dosyaRepository.save(dosya);
+            dosyaRepository.saveAll(dosyaList);
             return new ApiResponse(true, MessageConstant.SAVE_MSG, null);
         }else {
-            if (!GeneralUtils.valueNullOrEmpty(path)&& !path.isEmpty()){
-                dosya.setUrl(path);
-            }
-            dosyaRepository.save(dosya);
+            return new ApiResponse(false, "Dosya oluşturulamadı.", null);
         }
-        return new ApiResponse(true, MessageConstant.UPDATE_MSG, null);
     }
 
 
