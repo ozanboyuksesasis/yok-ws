@@ -76,6 +76,21 @@ public class AnaSayfaSliderService extends AbstractService<AnaSayfaSlider, AnaSa
     }
 
     @Transactional
+    public ApiResponse updateSiraNo(Long id, Long newSiraNo, Long genelDilCategoryId) {
+        List<AnaSayfaSlider> sliders = getRepository().findAllByGenelDilCategoryIdOrderBySiraNoAsc(genelDilCategoryId);
+        for (AnaSayfaSlider slider : sliders) {
+            if (slider.getSiraNo() >= newSiraNo) {
+                slider.setSiraNo(slider.getSiraNo() + 1);
+                getRepository().save(slider);
+            }
+        }
+        AnaSayfaSlider anaSayfaSlider = getRepository().findById(id).orElseThrow(() -> new RuntimeException("Slider not found"));
+        anaSayfaSlider.setSiraNo(newSiraNo);
+        getRepository().save(anaSayfaSlider);
+        return new ApiResponse(true, "SiraNo updated successfully", null);
+    }
+
+    @Transactional
     public ApiResponse saveWithFile(AnaSayfaSliderDTO anaSayfaSliderDTO, MultipartFile[] files) {
         if (anaSayfaSliderDTO.getGenelDilCategoryId() == null) {
             throw new IllegalArgumentException("GenelDilCategory ID must not be null");

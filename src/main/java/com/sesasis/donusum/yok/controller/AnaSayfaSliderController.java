@@ -1,9 +1,11 @@
 package com.sesasis.donusum.yok.controller;
 
 import com.sesasis.donusum.yok.constant.MappingConstants;
+import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.dto.AnaSayfaSliderDTO;
 import com.sesasis.donusum.yok.service.AnaSayfaSliderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +43,9 @@ public ResponseEntity<?> saveWithFile(@RequestPart AnaSayfaSliderDTO model, @Req
 		anaSayfaSliderService.deleteById(id);
 		return ResponseEntity.ok().build();
 	}
-
-
+	@PutMapping(value = "/update-sira-no/{id}/{newSiraNo}/{genelDilCategoryId}")
+	public ResponseEntity<?> updateSiraNo(@PathVariable Long id, @PathVariable Long newSiraNo, @PathVariable Long genelDilCategoryId) {
+		ApiResponse apiResponse = anaSayfaSliderService.updateSiraNo(id, newSiraNo, genelDilCategoryId);
+		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+	}
 }
