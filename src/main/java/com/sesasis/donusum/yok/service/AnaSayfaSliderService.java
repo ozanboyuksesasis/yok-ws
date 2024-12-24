@@ -71,9 +71,23 @@ public class AnaSayfaSliderService extends AbstractService<AnaSayfaSlider, AnaSa
         return null;
     }
 
+    @Transactional
     @Override
     public void deleteById(Long id) {
+        AnaSayfaSlider anaSayfaSlider = getRepository().findById(id)
+                .orElseThrow(() -> new RuntimeException("Slider bulunamadı"));
+        getRepository().delete(anaSayfaSlider);
     }
+
+    @Transactional
+    public void deleteBySiraNo(Long siraNo) {
+        List<AnaSayfaSlider> sliders = getRepository().findAllBySiraNo(siraNo);
+        if (sliders.isEmpty()) {
+            throw new RuntimeException("No sliders found with siraNo: " + siraNo);
+        }
+        getRepository().deleteAll(sliders);
+    }
+
 
     @Transactional
     public ApiResponse updateSiraNo(Long id, Long newSiraNo, Long genelDilCategoryId) {

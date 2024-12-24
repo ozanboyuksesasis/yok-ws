@@ -43,6 +43,11 @@ public ResponseEntity<?> saveWithFile(@RequestPart AnaSayfaSliderDTO model, @Req
 		anaSayfaSliderService.deleteById(id);
 		return ResponseEntity.ok().build();
 	}
+	@DeleteMapping(value = "/delete-by-sira-no/{siraNo}")
+	public ResponseEntity<?> deleteBySiraNo(@PathVariable Long siraNo) {
+		anaSayfaSliderService.deleteBySiraNo(siraNo);
+		return ResponseEntity.ok(new ApiResponse(true, "Slider silme işlemi başarılı oldu.", null));
+	}
 	@PutMapping(value = "/update-sira-no/{id}/{newSiraNo}/{genelDilCategoryId}")
 	public ResponseEntity<?> updateSiraNo(@PathVariable Long id, @PathVariable Long newSiraNo, @PathVariable Long genelDilCategoryId) {
 		ApiResponse apiResponse = anaSayfaSliderService.updateSiraNo(id, newSiraNo, genelDilCategoryId);
