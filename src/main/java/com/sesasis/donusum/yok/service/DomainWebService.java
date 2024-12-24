@@ -74,8 +74,6 @@ public class DomainWebService {
         List<Menu> menu = menuRepository.findAllByDomainId(domainId);
         List<MenuDTO> dtos = menu.stream().map(localMenu -> this.modelMapperServiceImpl.response().
                 map(localMenu, MenuDTO.class)).collect(Collectors.toList());
-
-
         return new ApiResponse<>(true, "İşlem başarılı.", dtos);
     }
 
@@ -116,6 +114,7 @@ public class DomainWebService {
             dto.setAltMenuDTOS(menu.getAltMenus().stream().map(altMenu -> {
                 AltMenuDTO dto1 = new AltMenuDTO();
                 dto1.setId(altMenu.getId());
+                dto1.setUrl(altMenu.getUrl());
                 dto1.setMenuGroupId(altMenu.getMenuGroupId());
                 dto1.setMenuId(altMenu.getMenu().getId());
                 dto1.setAd(altMenu.getAd());

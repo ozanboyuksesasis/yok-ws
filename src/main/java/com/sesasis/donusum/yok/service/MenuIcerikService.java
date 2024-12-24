@@ -1,6 +1,4 @@
 package com.sesasis.donusum.yok.service;
-
-import com.sesasis.donusum.yok.core.constant.MessageConstant;
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.AbstractService;
 import com.sesasis.donusum.yok.core.service.IService;

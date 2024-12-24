@@ -28,6 +28,7 @@ public class AnaSayfaSliderService extends AbstractService<AnaSayfaSlider, AnaSa
     private final FileService fileService;
     private final GenelDilCategoryRepository genelDilCategoryRepository;
 
+
     public AnaSayfaSliderService(AnaSayfaSliderRepository repository, SecurityContextUtil securityContextUtil, MenuRepository menuRepository, FileService fileService, GenelDilCategoryRepository genelDilCategoryRepository) {
         super(repository);
         this.securityContextUtil = securityContextUtil;
@@ -70,6 +71,7 @@ public class AnaSayfaSliderService extends AbstractService<AnaSayfaSlider, AnaSa
     public ApiResponse findById(Long id) {
         return null;
     }
+
 
     @Transactional
     @Override
@@ -139,7 +141,6 @@ public class AnaSayfaSliderService extends AbstractService<AnaSayfaSlider, AnaSa
             return new ApiResponse(true, MessageConstant.UPDATE_MSG, null);
         }
     }
-
     private Long getNextSiraNo(Long genelDilCategoryId) {
         Long maxSiraNo = getRepository().findAllByGenelDilCategoryIdOrderBySiraNoAsc(genelDilCategoryId).stream()
                 .mapToLong(AnaSayfaSlider::getSiraNo)
