@@ -23,10 +23,13 @@ public class AnaSayfaSliderController {
 		return ResponseEntity.ok(anaSayfaSliderService.save(anaSayfaSliderDTO));
 	}
 
-	@PostMapping(value= MappingConstants.SAVE_WITH_FILE,produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> saveWithFile(@RequestPart AnaSayfaSliderDTO model, @RequestPart(value = "files",required = false) MultipartFile[] files, HttpServletRequest httpServletRequest) {
-		return ResponseEntity.ok(anaSayfaSliderService.saveWithFile(model,files));
-	}
+	@PostMapping(value= MappingConstants.SAVE_WITH_FILE, produces = MediaType.APPLICATION_JSON_VALUE)
+public ResponseEntity<?> saveWithFile(@RequestPart AnaSayfaSliderDTO model, @RequestPart(value = "files", required = false) MultipartFile[] files, HttpServletRequest httpServletRequest) {
+    if (model.getGenelDilCategoryId() == null) {
+        return ResponseEntity.badRequest().body("GenelDilCategory ID must not be null");
+    }
+    return ResponseEntity.ok(anaSayfaSliderService.saveWithFile(model, files));
+}
 
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> findAll() {
