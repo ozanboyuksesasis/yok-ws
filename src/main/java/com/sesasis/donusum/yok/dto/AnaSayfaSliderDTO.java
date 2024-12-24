@@ -52,7 +52,7 @@ public class AnaSayfaSliderDTO extends BaseDTO<AnaSayfaSlider> {
         anaSayfaSlider.setPath(path);
 
 
-        if (contentDetay != null) {
+        if (contentDetay != null && !contentDetay.isEmpty()) {
             anaSayfaSlider.setContentDetay(Base64.getDecoder().decode(contentDetay));
         }
         return anaSayfaSlider;
