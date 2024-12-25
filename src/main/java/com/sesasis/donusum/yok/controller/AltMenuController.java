@@ -18,27 +18,29 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AltMenuController {
 
-	private final AltMenuService altMenuService;
+    private final AltMenuService altMenuService;
 
-	@PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> save(@Valid @RequestBody AltMenuDTO altMenuDTO) {
-		return ResponseEntity.ok(altMenuService.save(altMenuDTO));
-	}
-	@PostMapping(value = "/list-save/{menuGroupId}",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> save(@Valid @RequestBody List<AltMenuDTO> altMenuDTOS,@PathVariable  Long menuGroupId){
-		ApiResponse apiResponse = altMenuService.addListAltMenu(altMenuDTOS,menuGroupId);
-		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-	}
+    @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> save(@Valid @RequestBody AltMenuDTO altMenuDTO) {
+        return ResponseEntity.ok(altMenuService.save(altMenuDTO));
+    }
 
-	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> findAll() {
-		return ResponseEntity.ok(altMenuService.findAll());
-	}
+    @PostMapping(value = "/list-save/{menuGroupId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> save(@Valid @RequestBody List<AltMenuDTO> altMenuDTOS, @PathVariable Long menuGroupId) {
+        ApiResponse apiResponse = altMenuService.addListAltMenu(altMenuDTOS, menuGroupId);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 
-	@DeleteMapping(MappingConstants.PATH_VARIABLE_ID)
-	public ResponseEntity<?> deleteById(@PathVariable Long id) {
-		return ResponseEntity.ok(altMenuService.delete(id));
-	}
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findAll() {
+        return ResponseEntity.ok(altMenuService.findAll());
+    }
+
+    @DeleteMapping(value = "/{groupId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteById(@PathVariable Long groupId) {
+        altMenuService.deleteById(groupId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Silme başarılı.", null));
+    }
 
 
 }

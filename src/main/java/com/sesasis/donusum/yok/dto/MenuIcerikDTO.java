@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 public class MenuIcerikDTO extends BaseDTO<MenuIcerik> {
 
 	private Long altMenuId;
+	private Long groupId;
 	private Long altMenuGroupId;
 	private Long menuId;
 	private Long menuGroupId;

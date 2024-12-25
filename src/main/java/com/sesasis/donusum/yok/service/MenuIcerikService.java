@@ -76,6 +76,8 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
         List<AltMenu> altMenus = altMenuGroupId != null ? altMenuRepository.findAllByGroupIdAndDomain_Id(altMenuGroupId, domain.getId()) : new ArrayList<>();
         List<NewAltMenu> newAltMenus = newAltMenuGroupId != null ? newAltMenuRepository.findAllByGroupIdAndDomain_Id(newAltMenuGroupId, domain.getId()) : new ArrayList<>();
         List<MenuIcerik> menuIceriks = new ArrayList<>();
+
+        Long maxGroupId = menuIcerikRepository.findMaxGroupId().orElse(0L);
         for (int i = 0; i < menuIcerikDTOS.size(); i++) {
             MenuIcerikDTO dto = menuIcerikDTOS.get(i);
             Menu menu = menus.size() > i ? menus.get(i) : null;
@@ -97,6 +99,7 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
             menuIcerik.setMenuGroupId(menu !=null ? menu.getGroupId() :null);
             menuIcerik.setNewAltMenuGroupId(newAltMenu!=null ? newAltMenu.getGroupId() : null);
             menuIcerik.setDomain(domain);
+            menuIcerik.setGroupId(maxGroupId+1);
             menuIcerik.setMenu(menu);
             menuIcerik.setAltMenu(altMenu);
             menuIcerik.setNewAltMenu(newAltMenu);
@@ -138,11 +141,18 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         return null;
     }
+
     @Override
-    public void deleteById(Long id) {
-        if (menuIcerikRepository.existsById(id)) {
-            menuIcerikRepository.deleteById(id);
+    public void deleteById(Long groupId) {
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        if (domain==null){
+            throw new RuntimeException("Domain bulunamadi.");
         }
+        List<MenuIcerik> menuIceriks = menuIcerikRepository.findAllByGroupIdAndDomain_Id(groupId, domain.getId());
+        if (menuIceriks.isEmpty()) {
+            throw new RuntimeException("İçerik grubu bulunamadi.");
+        }
+        menuIcerikRepository.deleteAll(menuIceriks);
     }
     public ApiResponse getIcerikByAltMenuUrl(String altMenuUrl) {
         //  return new ApiResponse(true, MessageConstant.SUCCESS,getRepository().findOneByAltMenuAnaMenuDomainIdAndAltMenuUrl(securityContextUtil.getCurrentUser().getLoggedDomain().getId(),altMenuUrl).toDTO());

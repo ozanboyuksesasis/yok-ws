@@ -66,7 +66,6 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
         menu.setDomain(loggedDomain);
         getRepository().save(menu);
 
-
         return new ApiResponse(true, MessageConstant.SAVE_MSG, null);
     }
 
@@ -148,14 +147,9 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
 
             if (menu!=null){
                 Boolean existByUrl = menuRepository.existsByUrlAndDomain_Id(dto.getUrl(), loggedDomain.getId());
-
             }
-
-
         }
-
     return null;
-
     }
 
     @Override
@@ -164,15 +158,17 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
     }
 
     @Override
-    public void deleteById(Long menuId) {
+    public void deleteById(Long groupId) {
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
-        Menu menu = menuRepository.findOneByIdAndDomainId(menuId, domain.getId());
-        if (menu == null) {
-            throw new IllegalArgumentException("Menü bulunamadı.");
+        if (domain==null){
+            throw new RuntimeException("Domain bulunamadi.");
         }
-        menuRepository.deleteById(menu.getId());
+        List<Menu> menu = menuRepository.findAllByGroupIdAndDomain_Id(groupId, domain.getId());
+        if (menu.isEmpty()) {
+            throw new RuntimeException("Menü grubu bulunamadi.");
+        }
+        menuRepository.deleteAll(menu);
     }
-
     public ApiResponse findAllWithoutAnasayfa() {
         Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
         if (loggedDomain == null) {
@@ -180,7 +176,6 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
         }
         return new ApiResponse(true, MessageConstant.SUCCESS, getRepository().findAllByDomainIdAndAnaSayfaMi(loggedDomain.getId(), Boolean.FALSE).stream().map(e -> e.toDTO()).collect(Collectors.toList()));
     }
-
     public ApiResponse findDomainAnasayfa() {
         Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
         if (loggedDomain == null) {

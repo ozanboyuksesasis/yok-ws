@@ -32,4 +32,10 @@ public class NewAltMenuController {
         ApiResponse all = newAltMenuService.findAll();
         return new ResponseEntity<>(all,HttpStatus.OK);
     }
+
+    @DeleteMapping(value = "/{groupId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> delete(@PathVariable Long groupId){
+        newAltMenuService.deleteById(groupId);
+        return ResponseEntity.ok(new ApiResponse<>(true,"Silme başarılı",null));
+    }
 }

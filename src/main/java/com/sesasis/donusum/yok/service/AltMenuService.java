@@ -51,7 +51,7 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
         if (domain == null) {
             return new ApiResponse<>(false, "Domain bulunamadı.", null);
         }
-        Menu menu = menuRepository.findOneByIdAndDomainId(altMenuDTO.getMenuId(), domain.getId());
+        Menu menu = menuRepository.findOneByIdAndDomain_Id(altMenuDTO.getMenuId(), domain.getId());
         if (menu == null) {
             return new ApiResponse<>(false, "Menü bulunamadı.", null);
         }
@@ -112,7 +112,6 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
         return new ApiResponse<>(true, "Alt menü kayıt başarılı.", null);
     }
 
-
     @Override
     public ApiResponse findAll() {
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
@@ -132,18 +131,23 @@ public class AltMenuService extends AbstractService<AltMenu, AltMenuRepository> 
             dto.setUrl(altMenu.getUrl());
             return dto;
         }).collect(Collectors.toList());
-
         return new ApiResponse<>(true, "İşlem başarılı.", dtos);
-
     }
-
     @Override
     public ApiResponse findById(Long id) {
         return null;
     }
 
     @Override
-    public void deleteById(Long id) {
-
+    public void deleteById(Long groupId) {
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        if (domain==null){
+            throw new RuntimeException("Domain bulunamadi.");
+        }
+        List<AltMenu> altMenus = altMenuRepository.findAllByGroupIdAndDomain_Id(groupId, domain.getId());
+        if (altMenus.isEmpty()) {
+            throw new RuntimeException("Alt Menü grubu bulunamadi.");
+        }
+        altMenuRepository.deleteAll(altMenus);
     }
 }

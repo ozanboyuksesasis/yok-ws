@@ -46,7 +46,7 @@ public class MenuController {
 		return ResponseEntity.ok(menuService.findDomainAnasayfa());
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> deleteById(@PathVariable Long id) {
 		menuService.deleteById(id);
 		return ResponseEntity.ok(new ApiResponse<>(true, "Menü başarıyla silindi.", null));

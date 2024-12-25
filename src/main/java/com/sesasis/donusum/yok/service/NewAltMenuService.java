@@ -102,12 +102,20 @@ public class NewAltMenuService implements IService<NewAltMenuDTO> {
     }
 
     @Override
-    public ApiResponse findById(Long id) {
+    public ApiResponse findById(Long groupId) {
         return null;
     }
 
     @Override
-    public void deleteById(Long id) {
-
+    public void deleteById(Long groupId) {
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        if (domain==null){
+            throw new RuntimeException("Domain bulunamadi.");
+        }
+        List<NewAltMenu> newAltMenus = newAltMenuRepository.findAllByGroupIdAndDomain_Id(groupId, domain.getId());
+        if (newAltMenus.isEmpty()) {
+            throw new RuntimeException(" Alt menü grubu bulunamadi.");
+        }
+        newAltMenuRepository.deleteAll(newAltMenus);
     }
 }
