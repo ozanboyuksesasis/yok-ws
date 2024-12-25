@@ -138,9 +138,9 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
         if (updateMenu.isEmpty()) {
             return new ApiResponse(false, "GroupId ile eşleşen menü bulunamadı.", null);
         }
-
         List<Menu> menus = updateMenu.stream().map(menu -> {
             for (MenuDTO dto : menuDTOS){
+                menu.setAd(dto.getAd());
                 menu.setLabel(dto.getLabel());
                 menu.setUrl(dto.getUrl());
                 menu.setDeleted(dto.getDeleted());
