@@ -46,5 +46,25 @@ public class YokService  {
 
         return  new ApiResponse(faaliyetlerResponse.getStatusCode()==HttpStatus.OK,"",faaliyetlerResponse.getBody());
     }
+    public ApiResponse getUniversiteler() {
+
+        HttpEntity<Map> httpEntity = getHttpEntity(null);
+
+        String endPoint = url + "getUniversiteler";
+
+        ResponseEntity<Object> universitelerResponse = restTemplate.exchange(endPoint, HttpMethod.GET, httpEntity, Object.class);
+
+        return  new ApiResponse(universitelerResponse.getStatusCode()==HttpStatus.OK,"",universitelerResponse.getBody());
+    }
+    public ApiResponse getRektorler() {
+
+        HttpEntity<Map> httpEntity = getHttpEntity(null);
+
+        String endPoint = url + "getRektorler";
+
+        ResponseEntity<Object> rektorlerResponse = restTemplate.exchange(endPoint, HttpMethod.GET, httpEntity, Object.class);
+
+        return  new ApiResponse(rektorlerResponse.getStatusCode()==HttpStatus.OK,"",rektorlerResponse.getBody());
+    }
 
 }
