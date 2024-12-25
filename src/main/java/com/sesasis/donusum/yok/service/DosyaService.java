@@ -8,15 +8,10 @@ import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.DosyaDTO;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Dosya;
-import com.sesasis.donusum.yok.entity.Galeri;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.DosyaRepository;
 import com.sesasis.donusum.yok.repository.GaleriRepository;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

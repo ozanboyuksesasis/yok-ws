@@ -5,7 +5,6 @@ import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.GaleriDTO;
 import com.sesasis.donusum.yok.entity.Domain;
-import com.sesasis.donusum.yok.entity.Galeri;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.GaleriRepository;
 import lombok.RequiredArgsConstructor;
