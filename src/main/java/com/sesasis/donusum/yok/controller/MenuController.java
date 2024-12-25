@@ -28,7 +28,12 @@ public class MenuController {
 	public ResponseEntity<?> save(@RequestBody List<MenuDTO> menuDTO) {
 		ApiResponse apiResponse = menuService.saveList(menuDTO);
 		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+	}
 
+	@PostMapping(value = "/update-save/{groupId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> update(@RequestBody List<MenuDTO> menuDTO,@PathVariable Long groupId) {
+		ApiResponse apiResponse = menuService.updateMenu(menuDTO,groupId);
+		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)

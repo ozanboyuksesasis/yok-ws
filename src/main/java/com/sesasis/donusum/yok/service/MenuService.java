@@ -129,8 +129,7 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
         menuRepository.saveAll(menuList);
         return new ApiResponse<>(true, "Kayıt başarılı.", null);
     }
-
-    public ApiResponse updateMenu(Long groupId ,List<MenuDTO> menuDTOS){
+    public ApiResponse updateMenu(List<MenuDTO> menuDTOS,Long groupId ){
         Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
         if (loggedDomain == null) {
             return new ApiResponse(false, "Domain bulunamadı.", null);
