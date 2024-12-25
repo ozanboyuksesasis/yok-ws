@@ -9,10 +9,8 @@ import com.sesasis.donusum.yok.dto.DosyaDTO;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Dosya;
 import com.sesasis.donusum.yok.enums.DosyaType;
-import com.sesasis.donusum.yok.entity.Galeri;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.DosyaRepository;
-import com.sesasis.donusum.yok.repository.GaleriRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,27 +24,14 @@ import java.util.stream.Collectors;
 @Service
 public class DosyaService implements IService<DosyaDTO> {
     private final SecurityContextUtil securityContextUtil;
-    private final GaleriRepository galeriRepository;
     private final DosyaRepository dosyaRepository;
     private final ModelMapperServiceImpl modelMapperService;
     private final FileService fileService;
 
     @Override
     public ApiResponse save(DosyaDTO dosyaDTO) {
-        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
-        if (domain == null) {
-            return new ApiResponse<>(false, "Domain bulunamadı.", null);
-        }
-        Galeri galeri = galeriRepository.findById(dosyaDTO.getGaleriId()).orElse(null);
-        if (galeri == null) {
-            return new ApiResponse<>(false, "Galeri bulunamadı.", null);
-        }
-        Dosya dosya = modelMapperService.request().map(dosyaDTO, Dosya.class);
-        dosya.setGaleri(galeri);
-        dosya.setContentDetay(dosyaDTO.getContentDetay().getBytes());
         return null;
     }
-
     public ApiResponse saveDosya(List<DosyaDTO> dosyaDTO, MultipartFile file) {
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         if (domain == null) {
@@ -73,14 +58,8 @@ public class DosyaService implements IService<DosyaDTO> {
             }
             dosya.setUrl(path);
             dosya.setId(dto.getId());
-            dosya.setContentDetay(dto.getContentDetay().getBytes());
             dosya.setDomain(domain);
             dosya.setSiraNo(dto.getSiraNo());
-            Galeri galeri = galeriRepository.findById(dto.getGaleriId()).orElse(null);
-            if (galeri == null) {
-                return new ApiResponse<>(false, "Galeri bulunamadı.", null);
-            }
-            dosya.setGaleri(galeri);
             dosyaList.add(dosya);
         }
         if (GeneralUtils.valueNullOrEmpty(path)) {
@@ -90,8 +69,6 @@ public class DosyaService implements IService<DosyaDTO> {
             return new ApiResponse(false, "Dosya oluşturulamadı.", null);
         }
     }
-
-
     @Override
     public ApiResponse findAll() {
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();

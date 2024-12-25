@@ -21,6 +21,10 @@ public class Dosya {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "baslik")
+    private String baslik;
+
+
     @Column(name = "url")
     private String url;
 
@@ -30,15 +34,6 @@ public class Dosya {
     @Column(name = "aktif_mi")
     boolean aktifMi;
 
-    @Lob
-    @Column(name = "content_detay")
-    @Type(type = "org.hibernate.type.ImageType")
-    private byte[] contentDetay;
-
-    @ManyToOne
-    @JoinColumn(name = "galeri_id")
-    @JsonIgnore
-    private Galeri galeri;
 
     @ManyToOne
     @JoinColumn(name = "domain_id")

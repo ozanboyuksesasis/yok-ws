@@ -2,6 +2,7 @@ package com.sesasis.donusum.yok.controller;
 
 import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.dto.DosyaDTO;
+import com.sesasis.donusum.yok.enums.DosyaType;
 import com.sesasis.donusum.yok.service.DosyaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

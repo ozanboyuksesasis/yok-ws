@@ -2,7 +2,7 @@ server:
   port: 8095
 spring:
   datasource:
-    password: root
+    password: 1234
     username: postgres
     url: jdbc:postgresql://localhost:5432/yokdb
   sql:
@@ -34,7 +34,10 @@ springfox:
 
 
 upload:
-  dir : src/main/resources/static/uploads
+  dir: 'src/main/resources/static/uploads'
+  anasayfa-story-hızlı-baglantı:
+    story: 'src/main/resources/static/uploads/anasayfa-story'
+    hızlıbaglantı: 'src/main/resources/static/uploads/anasayfa-hızlıbaglantı'
 
 entegration:
     yokservisler:

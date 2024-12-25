@@ -17,19 +17,11 @@ public class DosyaDTO {
     @NotBlank(message = "Hata : Başlık boş bırakılamaz.")
     private String baslik;
 
-    @NotBlank(message = "Hata : Alt başlık boş bırakılamaz.")
-    private String altBaslik;
-
     @NotBlank(message = "Hata : Sıra numarası  boş bırakılamaz.")
     private Long siraNo;
 
     @NotBlank(message = "Hata : Aktif durumu boş bırakılamaz.")
     private boolean aktifMi ;
-
-    @NotBlank(message = "Hata : İçerik  boş bırakılamaz.")
-    private String contentDetay;
-
-    String base64content;
 
     private Long galeriId;
 
