@@ -161,5 +161,15 @@ public class DomainWebController {
         ApiResponse apiResponse = yokService.getFaaliyetler();
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+    @GetMapping(value = "/get-universiteler")
+    public ResponseEntity<?> getUniversiteler() {
+        ApiResponse apiResponse = yokService.getUniversiteler();
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+    @GetMapping(value = "/get-rektorler")
+    public ResponseEntity<?> getRektorler() {
+        ApiResponse apiResponse = yokService.getRektorler();
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 
 }
