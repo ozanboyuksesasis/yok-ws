@@ -26,7 +26,6 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 	@OneToOne
 	@JoinColumn(name = "dil_category_id")
 	private GenelDilCategory genelDilCategory;
-	
 
 	@ManyToOne
 	@JoinColumn(name = "ana_menu_id", referencedColumnName = "id", nullable = false)
@@ -38,8 +37,6 @@ public class AltMenu extends BaseModel<AltMenuDTO> {
 	@OneToMany(mappedBy = "altMenu",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<NewAltMenu> newAltMenus;
-
-
 
 	@Override
 	public AltMenuDTO toDTO() {

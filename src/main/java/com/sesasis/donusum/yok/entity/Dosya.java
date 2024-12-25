@@ -24,7 +24,6 @@ public class Dosya {
     @Column(name = "baslik")
     private String baslik;
 
-
     @Column(name = "url")
     private String url;
 
@@ -33,7 +32,6 @@ public class Dosya {
 
     @Column(name = "aktif_mi")
     boolean aktifMi;
-
 
     @ManyToOne
     @JoinColumn(name = "domain_id")
