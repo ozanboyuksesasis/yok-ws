@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -139,17 +140,29 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
             return new ApiResponse(false, "GroupId ile eşleşen menü bulunamadı.", null);
         }
 
-        for (MenuDTO dto :menuDTOS){
-
-            Menu menu = updateMenu.stream().filter(m->m.getId()
-                    .equals(dto.getId())).
-                    findFirst().orElse(null);
-
-            if (menu!=null){
-                Boolean existByUrl = menuRepository.existsByUrlAndDomain_Id(dto.getUrl(), loggedDomain.getId());
+        List<Menu> menus = updateMenu.stream().map(menu -> {
+            for (MenuDTO dto : menuDTOS){
+                menu.setLabel(dto.getLabel());
+                menu.setUrl(dto.getUrl());
+                menu.setDeleted(dto.getDeleted());
+                menu.setDomain(loggedDomain);
+                menu.setAd(dto.getAd());
+                GenelDilCategory genelDilCategory=null;
+                if (dto.getGenelDilCategoryId()!=null){
+                    genelDilCategory = genelDilCategoryRepository.findById(dto.getGenelDilCategoryId()).orElse(null);
+                    if (genelDilCategory==null){
+                        throw new IllegalArgumentException("Hata: Dil seçimi bulunamadı.");
+                    }
+                }
+                menu.setGenelDilCategory(genelDilCategory);
+                menu.setAktifMi(dto.isAktifMi());
+                menu.setParentId(dto.getParentId());
             }
-        }
-    return null;
+            return menu;
+        }).collect(Collectors.toList());
+        menuRepository.saveAll(menus);
+
+        return new ApiResponse<>(true,"Güncelleme başarılı.",null);
     }
 
     @Override
