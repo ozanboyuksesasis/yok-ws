@@ -30,10 +30,6 @@ public class Menu extends BaseModel<MenuDTO> {
 	@JoinColumn(name = "dil_category_id")
 	private GenelDilCategory genelDilCategory;
 
-	@OneToMany(mappedBy = "menu",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-
-	private List<AltMenu> altMenus;
-
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "menu",orphanRemoval = true)
 	private List<MenuIcerik> menuIceriks;
 

@@ -20,9 +20,6 @@ public class MenuDTO extends BaseDTO<Menu> {
 	private int parentId ;
 	private String label ;
 
-	@JsonManagedReference
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	private List<AltMenuDTO> altMenuDTOS;
 
 	@JsonManagedReference
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)

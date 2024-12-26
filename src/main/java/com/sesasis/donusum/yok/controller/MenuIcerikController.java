@@ -50,11 +50,6 @@ public class MenuIcerikController {
         return ResponseEntity.ok(menuIcerikService.getIcerikByAltMenuUrl(altMenuUrl));
     }
 
-    @GetMapping(value = "/get-alt-menü-icerik",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getListAltMenuIcerik(){
-        ApiResponse listAltMenuIcerik = menuIcerikService.getListAltMenuIcerik();
-        return new ResponseEntity<>(listAltMenuIcerik, HttpStatus.OK);
-    }
 
 
 }

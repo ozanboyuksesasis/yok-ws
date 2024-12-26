@@ -10,7 +10,6 @@ public interface MenuIcerikRepository extends JpaRepository<MenuIcerik, Long> {
 	//MenuIcerik findOneByAltMenuAnaMenuDomainIdAndAltMenuUrl(Long domainId,String altMenuUrl);
     List<MenuIcerik> findAllByMenuDomainId(Long domainId);
     MenuIcerik findOneByMenuId(Long menuId);
-    List<MenuIcerik> findAllByAltMenuMenuDomainId(Long domainId);
     List<MenuIcerik> findAllByDomainId(Long domainId);
     List<MenuIcerik> findAllByGroupIdAndDomain_Id(Long groupId, Long domainId);
     @Query("SELECT MAX(m.groupId) FROM MenuIcerik m")
