@@ -27,8 +27,6 @@ public class Menu extends BaseModel<MenuDTO> {
 
 	private String label ;
 
-	@Column(name = "parent_id")
-	private List<Menu> childMenu = new ArrayList<>();
 
 	@OneToOne
 	@JoinColumn(name = "dil_category_id")
@@ -37,9 +35,7 @@ public class Menu extends BaseModel<MenuDTO> {
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "menu",orphanRemoval = true)
 	private List<MenuIcerik> menuIceriks;
 
-	public void addChild(Menu child) {
-		this.childMenu.add(child);
-	}
+
 
 
 	@Override
