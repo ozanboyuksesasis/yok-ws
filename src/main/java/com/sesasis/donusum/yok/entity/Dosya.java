@@ -35,11 +35,6 @@ public class Dosya {
     private byte[] contentDetay;
 
     @ManyToOne
-    @JoinColumn(name = "galeri_id")
-    @JsonIgnore
-    private Galeri galeri;
-
-    @ManyToOne
     @JoinColumn(name = "domain_id")
     private Domain domain;
 
