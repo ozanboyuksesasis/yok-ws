@@ -28,14 +28,11 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
     private final ModelMapperServiceImpl modelMapperServiceImpl;
     private final SecurityContextUtil securityContextUtil;
     private final GenelDilCategoryRepository genelDilCategoryRepository;
-
-
     public ApiResponse listSave(List<OnemliBilgilerDTO> dtoList) {
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         if (domain==null){
             return new ApiResponse<>(false,"Domain bulunamadı.",null);
         }
-
         Long count = onemliBilgilerRepository.findMaxSiraNo().orElse(0L);
         AtomicLong atom = new AtomicLong(count + 1);
         List<OnemliBilgiler> onemliBilgilers = new ArrayList<>();
@@ -135,11 +132,9 @@ public class OnemliBilgilerService implements IService<OnemliBilgilerDTO> {
     public ApiResponse onemliBilgilerListTrueTrueDomainId(Long domainId, Long dilCategoryId) {
         List<OnemliBilgiler> onemliBilgilers = onemliBilgilerRepository
                 .findByDomain_IdAndGenelDilCategory_IdAndAktifMiTrueOrderBySiraNoDesc(domainId, dilCategoryId);
-
         if (onemliBilgilers.isEmpty()) {
             return new ApiResponse<>(false, "Liste boş", null);
         }
-
         List<OnemliBilgilerDTO> onemliBilgilerDTOS = onemliBilgilers.stream()
                 .map(onemliBilgiler -> {
                     OnemliBilgilerDTO dto = new OnemliBilgilerDTO();

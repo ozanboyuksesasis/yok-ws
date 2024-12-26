@@ -21,66 +21,46 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
     private final ModelMapperServiceImpl modelMapperService;
     private final MenuIcerikRepository menuIcerikRepository;
     private final MenuRepository menuRepository;
-    private final AltMenuRepository altMenuRepository;
-    private final NewAltMenuRepository newAltMenuRepository;
     private final GenelDilCategoryRepository genelDilCategoryRepository;
-
     public MenuIcerikService(MenuIcerikRepository repository, SecurityContextUtil securityContextUtil, ModelMapperServiceImpl modelMapperService,
-                             MenuIcerikRepository menuIcerikRepository, MenuRepository menuRepository, AltMenuRepository altMenuRepository, NewAltMenuRepository newAltMenuRepository, GenelDilCategoryRepository genelDilCategoryRepository) {
+                             MenuIcerikRepository menuIcerikRepository, MenuRepository menuRepository, GenelDilCategoryRepository genelDilCategoryRepository) {
         super(repository);
         this.securityContextUtil = securityContextUtil;
         this.modelMapperService = modelMapperService;
         this.menuIcerikRepository = menuIcerikRepository;
         this.menuRepository = menuRepository;
-        this.altMenuRepository = altMenuRepository;
-        this.newAltMenuRepository = newAltMenuRepository;
         this.genelDilCategoryRepository = genelDilCategoryRepository;
     }
     @Override
     @Transactional
     public ApiResponse save(MenuIcerikDTO menuIcerikDTO) {
-
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         List<Menu> menus = new ArrayList<>();
         if (menuIcerikDTO.getMenuId() != null) {
             menus = menuRepository.findAllByDomainId(domain.getId());
         }
         Menu menu = menus.stream().filter(m -> m.getId().equals(menuIcerikDTO.getMenuId())).findFirst().orElse(null);
-
-        AltMenu altMenu = null;
-        if (menuIcerikDTO.getAltMenuId() != null) {
-            altMenu = altMenuRepository.findOneByIdAndMenuId_DomainId(menuIcerikDTO.getAltMenuId(), domain.getId());
-        }
-        NewAltMenu newAltMenu = newAltMenuRepository.findOneByIdAndDomainId(menuIcerikDTO.getNewAltMenuId(), domain.getId());
-        if (newAltMenu == null) {
-            return new ApiResponse<>(false, "Yeni sütun alt menü bulunamadı.", null);
-        }
         MenuIcerik menuIcerik = this.modelMapperService.request().map(menuIcerikDTO, MenuIcerik.class);
         menuIcerik.setMenu(menu);
-        menuIcerik.setNewAltMenu(newAltMenu);
         menuIcerik.setAccordion(menuIcerikDTO.getAccordion());
         menuIcerik.setDomain(domain);
-        menuIcerik.setAltMenu(altMenu);
         menuIcerik.setBaslik(menuIcerikDTO.getBaslik());
         menuIcerik.setIcerik(menuIcerikDTO.getIcerik().getBytes());
         menuIcerikRepository.save(menuIcerik);
         return new ApiResponse(true, "İçerik eklendi.", null);
     }
     public ApiResponse addListIcerik(List<MenuIcerikDTO> menuIcerikDTOS, Long menuGroupId, Long altMenuGroupId, Long newAltMenuGroupId) {
-
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         if (domain == null) {
             return new ApiResponse<>(false, "Domain bulunamadı.", null);
         }
-        List<Menu> menus = menuGroupId != null ? menuRepository.findAllByGroupIdAndDomain_Id(menuGroupId, domain.getId()) : new ArrayList<>();
-        List<AltMenu> altMenus = altMenuGroupId != null ? altMenuRepository.findAllByGroupIdAndDomain_Id(altMenuGroupId, domain.getId()) : new ArrayList<>();
-        List<NewAltMenu> newAltMenus = newAltMenuGroupId != null ? newAltMenuRepository.findAllByGroupIdAndDomain_Id(newAltMenuGroupId, domain.getId()) : new ArrayList<>();
+        List<Menu> menus = menuGroupId != null ? menuRepository.findAllByChildIdAndDomain_Id(menuGroupId, domain.getId()) : new ArrayList<>();
         List<MenuIcerik> menuIceriks = new ArrayList<>();
+
+        Long maxGroupId = menuIcerikRepository.findMaxGroupId().orElse(0L);
         for (int i = 0; i < menuIcerikDTOS.size(); i++) {
             MenuIcerikDTO dto = menuIcerikDTOS.get(i);
             Menu menu = menus.size() > i ? menus.get(i) : null;
-            AltMenu altMenu = altMenus.size() > i ? altMenus.get(i) : null;
-            NewAltMenu newAltMenu = newAltMenus.size() > i ? newAltMenus.get(i) : null;
 
             GenelDilCategory dilCategory = null;
             if (dto.getGenelDilCategoryId() != null) {
@@ -93,13 +73,10 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
             menuIcerik.setBaslik(dto.getBaslik());
             menuIcerik.setIcerik(dto.getIcerik() != null ? dto.getIcerik().getBytes() : null);
             menuIcerik.setDeleted(dto.getDeleted());
-            menuIcerik.setAltMenuGroupId(altMenu !=null ? altMenu.getGroupId():null);
-            menuIcerik.setMenuGroupId(menu !=null ? menu.getGroupId() :null);
-            menuIcerik.setNewAltMenuGroupId(newAltMenu!=null ? newAltMenu.getGroupId() : null);
+            menuIcerik.setMenuGroupId(menu !=null ? menu.getChildId() :null);
             menuIcerik.setDomain(domain);
+            menuIcerik.setGroupId(maxGroupId+1);
             menuIcerik.setMenu(menu);
-            menuIcerik.setAltMenu(altMenu);
-            menuIcerik.setNewAltMenu(newAltMenu);
             menuIcerik.setGenelDilCategory(dilCategory);
             menuIceriks.add(menuIcerik);
         }
@@ -121,12 +98,8 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
             dto.setBaslik(menuIcerik.getBaslik());
             dto.setDeleted(menuIcerik.getDeleted());
             dto.setId(menuIcerik.getId());
-            dto.setNewAltMenuId(menuIcerik.getNewAltMenu()!=null?menuIcerik.getNewAltMenu().getId():null);
             dto.setMenuGroupId(menuIcerik.getMenu() !=null ? menuIcerik.getMenuGroupId():null);
-            dto.setAltMenuGroupId(menuIcerik.getAltMenu() !=null ? menuIcerik.getAltMenuGroupId() : null);
-            dto.setNewAltMenuGroupId(menuIcerik.getNewAltMenu() !=null ? menuIcerik.getNewAltMenuGroupId() : null);
             dto.setMenuId(menuIcerik.getMenu() != null ? menuIcerik.getMenu().getId() : null);
-            dto.setAltMenuId(menuIcerik.getAltMenu() != null ? menuIcerik.getAltMenu().getId() : null);
             dto.setIcerik(menuIcerik.getIcerik() != null ? new String(menuIcerik.getIcerik(), StandardCharsets.UTF_8) : null);
             dto.setGenelDilCategoryId(menuIcerik.getGenelDilCategory()!=null? menuIcerik.getGenelDilCategory().getId():null);
             return dto;
@@ -138,31 +111,22 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
         Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
         return null;
     }
+
     @Override
-    public void deleteById(Long id) {
-        if (menuIcerikRepository.existsById(id)) {
-            menuIcerikRepository.deleteById(id);
+    public void deleteById(Long groupId) {
+        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        if (domain==null){
+            throw new RuntimeException("Domain bulunamadi.");
         }
+        List<MenuIcerik> menuIceriks = menuIcerikRepository.findAllByGroupIdAndDomain_Id(groupId, domain.getId());
+        if (menuIceriks.isEmpty()) {
+            throw new RuntimeException("İçerik grubu bulunamadi.");
+        }
+        menuIcerikRepository.deleteAll(menuIceriks);
     }
     public ApiResponse getIcerikByAltMenuUrl(String altMenuUrl) {
         //  return new ApiResponse(true, MessageConstant.SUCCESS,getRepository().findOneByAltMenuAnaMenuDomainIdAndAltMenuUrl(securityContextUtil.getCurrentUser().getLoggedDomain().getId(),altMenuUrl).toDTO());
         return null;
     }
-    public ApiResponse getListAltMenuIcerik() {
-        Domain domain = securityContextUtil.getCurrentUser().getLoggedDomain();
-        if (domain == null) {
-            return new ApiResponse<>(false, "Domain bulunamadı.", null);
-        }
-        List<MenuIcerik> menuIceriks = menuIcerikRepository.findAllByAltMenuMenuDomainId(domain.getId());
-        List<MenuIcerikDTO> dtos = menuIceriks.stream().map(menuIcerik -> {
-            MenuIcerikDTO dto = new MenuIcerikDTO();
-            dto.setAltMenuId(menuIcerik.getAltMenu().getId());
-            dto.setId(menuIcerik.getId());
-            dto.setBaslik(menuIcerik.getBaslik());
-            dto.setDeleted(menuIcerik.getDeleted());
-            dto.setIcerik(new String(menuIcerik.getIcerik(), StandardCharsets.UTF_8));
-            return dto;
-        }).collect(Collectors.toList());
-        return new ApiResponse<>(true, "İşlem başarılı.", dtos);
-    }
+
 }

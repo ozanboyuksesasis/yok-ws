@@ -79,8 +79,6 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 					dashboardMenuList.add(anasayfaHizliBaglantilar);
 					dashboardMenuList.add(anasayfaDuyuru);
 					dashboardMenuList.add(anasayfaHaber);
-
-
 					Role role = roleRepository.findById(domainDTO.getRole().getId()).get();
 					role.setDashboardMenuList(dashboardMenuList);
 					roleRepository.save(role);
@@ -109,29 +107,21 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 					role.setDashboardMenuList(dashboardMenuList);
 					roleRepository.save(role);
 				}
-
 			}
 		}else{
-
 			Domain existsAnaDomain = domainRepository.findOneByAnaDomainMiAndIdNot(Boolean.TRUE, domainDTO.getId());
-
 			if (existsAnaDomain != null && domainDTO.isAnaDomainMi()) {
 				return new ApiResponse(false, "Birden fazla ana domain kaydedemezsiniz.", null);
 			}
-
 			Domain existsDomain = domainRepository.findById(domainDTO.getId()).get();
-
 			existsDomain.setAd(domainDTO.getAd());
 			existsDomain.setUrl(domainDTO.getUrl());
 			existsDomain.setAnaDomainMi(domainDTO.isAnaDomainMi());
 			existsDomain.setRole(domainDTO.getRole().toEntity());
-
 			getRepository().save(existsDomain);
-
 		}
 		return new ApiResponse(true, MessageConstant.SAVE_MSG, null);
 	}
-
 	@Override
 	public ApiResponse findAll() {
 		return new ApiResponse(true, MessageConstant.SUCCESS, domainRepository.findAllByOrderByAnaDomainMiDesc());
@@ -150,7 +140,6 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 
 		return new ApiResponse<>(true, "İşlem başarılı.", domainDTO);
 	}
-
 
 	@Override
 	public void deleteById(Long id) {

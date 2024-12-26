@@ -8,15 +8,9 @@ import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
 import com.sesasis.donusum.yok.dto.DosyaDTO;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.Dosya;
-import com.sesasis.donusum.yok.entity.Galeri;
 import com.sesasis.donusum.yok.mapper.ModelMapperServiceImpl;
 import com.sesasis.donusum.yok.repository.DosyaRepository;
-import com.sesasis.donusum.yok.repository.GaleriRepository;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +23,6 @@ import java.util.stream.Collectors;
 @Service
 public class DosyaService implements IService<DosyaDTO> {
     private final SecurityContextUtil securityContextUtil;
-    private final GaleriRepository galeriRepository;
     private final DosyaRepository dosyaRepository;
     private final ModelMapperServiceImpl modelMapperService;
     private final FileService fileService;
@@ -39,12 +32,7 @@ public class DosyaService implements IService<DosyaDTO> {
         if (domain==null){
             return new ApiResponse<>(false,"Domain bulunamadı.",null);
         }
-        Galeri galeri = galeriRepository.findById(dosyaDTO.getGaleriId()).orElse(null);
-        if (galeri==null){
-            return new ApiResponse<>(false,"Galeri bulunamadı.",null);
-        }
         Dosya dosya = modelMapperService.request().map(dosyaDTO,Dosya.class);
-        dosya.setGaleri(galeri);
         dosya.setContentDetay(dosyaDTO.getContentDetay().getBytes());
         return null;
     }
@@ -73,11 +61,6 @@ public class DosyaService implements IService<DosyaDTO> {
             dosya.setContentDetay(dto.getContentDetay().getBytes());
             dosya.setDomain(domain);
             dosya.setSiraNo(dto.getSiraNo());
-            Galeri galeri = galeriRepository.findById(dto.getGaleriId()).orElse(null);
-            if (galeri==null){
-                return new ApiResponse<>(false,"Galeri bulunamadı.",null);
-            }
-            dosya.setGaleri(galeri);
             dosyaList.add(dosya);
         }
         if (GeneralUtils.valueNullOrEmpty(path)){
