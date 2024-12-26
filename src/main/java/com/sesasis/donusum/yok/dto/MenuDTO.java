@@ -14,10 +14,10 @@ public class MenuDTO extends BaseDTO<Menu> {
 	Long domainId;
 	Long genelDilCategoryId;
 	String url;
-	private Long groupId;
+	private Long childId;
 	private boolean aktifMi;
 	boolean anaSayfaMi ;
-	private int parentId ;
+	private Long parentId ;
 	private String label ;
 
 
@@ -32,7 +32,6 @@ public class MenuDTO extends BaseDTO<Menu> {
 		menu.setId(getId());
 		menu.setAd(ad);
 		menu.setUrl(url);
-		menu.setAnaSayfaMi(anaSayfaMi);
 		return menu;
 	}
 }

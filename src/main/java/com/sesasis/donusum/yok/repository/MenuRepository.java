@@ -11,10 +11,13 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 	List<Menu> findAllByDomainId(Long domainId);
 	Menu findOneByIdAndDomain_Id(Long menuId,Long domainId);
 	Menu findOneByDomainIdAndAnaSayfaMi(Long domainId,boolean anaSayfaMi);
-	List<Menu> findAllByGroupIdAndDomain_Id(Long groupId, Long domainId);
+	List<Menu> findAllByChildIdAndDomain_Id(Long groupId, Long domainId);
 	List<Menu> findAllByDomainIdAndAnaSayfaMi(Long domainId,boolean anaSayfaMi);
 	boolean existsByUrlAndDomain_Id(String url, Long domainId);
 
-	@Query("SELECT MAX(d.groupId) FROM Menu d")
-	Optional<Long> findMaxGroupId();
+	@Query("SELECT MAX(d.childId) FROM Menu d")
+	Optional<Long> findMaxChildId();
+	@Query("SELECT MAX(d.parentId) FROM Menu d")
+	Optional<Long> findMaxParentId();
+	List<Menu> findAllByParentIdAndDomain_Id(Long parentId,Long domainId);
 }

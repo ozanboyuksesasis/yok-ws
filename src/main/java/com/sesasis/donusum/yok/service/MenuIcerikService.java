@@ -54,7 +54,7 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
         if (domain == null) {
             return new ApiResponse<>(false, "Domain bulunamadı.", null);
         }
-        List<Menu> menus = menuGroupId != null ? menuRepository.findAllByGroupIdAndDomain_Id(menuGroupId, domain.getId()) : new ArrayList<>();
+        List<Menu> menus = menuGroupId != null ? menuRepository.findAllByChildIdAndDomain_Id(menuGroupId, domain.getId()) : new ArrayList<>();
         List<MenuIcerik> menuIceriks = new ArrayList<>();
 
         Long maxGroupId = menuIcerikRepository.findMaxGroupId().orElse(0L);
@@ -73,7 +73,7 @@ public class MenuIcerikService extends AbstractService<MenuIcerik, MenuIcerikRep
             menuIcerik.setBaslik(dto.getBaslik());
             menuIcerik.setIcerik(dto.getIcerik() != null ? dto.getIcerik().getBytes() : null);
             menuIcerik.setDeleted(dto.getDeleted());
-            menuIcerik.setMenuGroupId(menu !=null ? menu.getGroupId() :null);
+            menuIcerik.setMenuGroupId(menu !=null ? menu.getChildId() :null);
             menuIcerik.setDomain(domain);
             menuIcerik.setGroupId(maxGroupId+1);
             menuIcerik.setMenu(menu);
