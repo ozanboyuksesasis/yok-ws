@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
 @Data
 public class AnaBaslikDTO {
 
+    private Long id;
 
     @NotBlank(message = "Hata: Bu alan boşluklardan oluşamaz.")
     @Size(min = 2, max = 70, message = "Hata: Başlık 2 ile 70 karakter arasında olmalı.")
