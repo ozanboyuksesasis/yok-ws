@@ -43,9 +43,6 @@ public class Domain extends BaseModel<DomainDTO> {
 	@JsonIgnore
 	private List<SliderDilCategory> sliderDilCategories;
 
-	@OneToMany(mappedBy = "domain", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JsonIgnore
-	private List<DomainLogo> domainLogos;
 
 	@Override
 	public DomainDTO toDTO() {
