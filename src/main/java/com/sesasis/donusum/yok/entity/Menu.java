@@ -13,8 +13,8 @@ public class Menu extends BaseModel<MenuDTO> {
 	String url;
 	boolean anaSayfaMi;
 
-	@Column(name = "child_id")
-	private Long childId;
+	@Column(name = "group_id")
+	private Long groupId;
 
 	@ManyToOne
 	Domain domain;
@@ -41,7 +41,6 @@ public class Menu extends BaseModel<MenuDTO> {
 	@Override
 	public MenuDTO toDTO() {
 		MenuDTO menuDTO = new MenuDTO();
-		menuDTO.setChildId(childId);
 		menuDTO.setDomainId(domain.getId());
 		menuDTO.setId(getId());
 		menuDTO.setGenelDilCategoryId(genelDilCategory != null ? genelDilCategory.getId() : null);
