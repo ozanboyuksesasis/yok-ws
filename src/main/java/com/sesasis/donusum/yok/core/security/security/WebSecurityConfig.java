@@ -65,14 +65,14 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authorizeRequests()
-				.antMatchers("/**",//TODO : security şimdilik izin verdim geri al
+				.antMatchers(//TODO : security şimdilik izin verdim geri al
 						"/favicon.ico",
 						"/**/*.png",
 						"/**/*.gif",
 						"/**/*.svg",
 						"/**/*.jpg")
 				.permitAll()
-				.antMatchers("/health-check", "/api/public/**", "/api/auth/signin","	/api/web/**", "/api/auth/signup", "/v3/api-docs", "/api/basic/**").permitAll()
+				.antMatchers("/health-check", "/api/public/**", "/api/auth/**","/api/web/**", "/v3/api-docs", "/api/basic/**").permitAll()
 				.anyRequest().authenticated();
 
 		http.authenticationProvider(authenticationProvider());

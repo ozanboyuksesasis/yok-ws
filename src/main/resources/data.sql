@@ -33,4 +33,4 @@ INSERT INTO public.role_dashboard_menu (role_id, dashboard_menu_id) VALUES(1, 5)
 
 
 
-INSERT INTO public.genel_dil_category (id, kisaltma_eki, name) VALUES(1, 'tr', 'Türkçe');
+--INSERT INTO public.genel_dil_category (kisaltma_eki, name) VALUES('TR', 'TÜRKÇE');

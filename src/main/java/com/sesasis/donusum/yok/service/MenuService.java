@@ -5,6 +5,8 @@ import com.sesasis.donusum.yok.core.payload.ApiResponse;
 import com.sesasis.donusum.yok.core.service.AbstractService;
 import com.sesasis.donusum.yok.core.service.IService;
 import com.sesasis.donusum.yok.core.utils.SecurityContextUtil;
+import com.sesasis.donusum.yok.core.utils.TreeNode;
+import com.sesasis.donusum.yok.core.utils.TreeUtils;
 import com.sesasis.donusum.yok.dto.MenuDTO;
 import com.sesasis.donusum.yok.entity.Domain;
 import com.sesasis.donusum.yok.entity.GenelDilCategory;
@@ -91,6 +93,29 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
         }).collect(Collectors.toList());
         return new ApiResponse<>(true, "İşlem başarılı.", dtos);
     }
+
+    public ApiResponse findAllTree() {
+        Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();
+        if (loggedDomain == null) {
+            return new ApiResponse(false, "Domain bulunamadı.", null);
+        }
+        GenelDilCategory turkceCategory= genelDilCategoryRepository.findAll().get(0);
+        List<Menu> menus = menuRepository.findAllByDomainIdAndGenelDilCategoryId(loggedDomain.getId(),turkceCategory.getId());
+        List<TreeNode> allList = menus.stream().map(menu -> {
+            TreeNode treeNode = new TreeNode();
+            treeNode.setId(menu.getId());
+            treeNode.setLabel(menu.getAd());
+            treeNode.setParentId(menu.getParentId());
+            treeNode.setData(menu);
+            return treeNode;
+        }).collect(Collectors.toList());
+
+        List<TreeNode> treeAll= TreeUtils.Nodes(null,allList);
+
+
+        return new ApiResponse<>(true, "İşlem başarılı.", treeAll);
+    }
+
 
     public ApiResponse saveList(List<MenuDTO> menuDTOS) {
         Domain loggedDomain = securityContextUtil.getCurrentUser().getLoggedDomain();

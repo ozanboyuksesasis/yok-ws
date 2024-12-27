@@ -20,4 +20,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 	@Query("SELECT MAX(d.parentId) FROM Menu d")
 	Optional<Long> findMaxParentId();
 	List<Menu> findAllByParentIdAndDomain_Id(Long parentId,Long domainId);
+	List<Menu> findAllByDomainIdAndGenelDilCategoryId( Long domainId,Long genelDilCategory);
+
 }

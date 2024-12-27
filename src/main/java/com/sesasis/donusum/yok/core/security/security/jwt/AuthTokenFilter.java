@@ -38,37 +38,51 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-    try {
-      String jwt = parseJwt(request);
-      if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
-        String username = jwtUtils.getUserNameFromJwtToken(jwt);
+        UsernamePasswordAuthenticationToken authentication = null;
+        try {
+            String jwt = parseJwt(request);
+            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+                String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-        UsernamePasswordAuthenticationToken authentication =
-            new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities());
+                authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities());
 
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-        String domainId = request.getHeader("domainid");
+                String domainId = request.getHeader("domainid");
 
-        if(domainId!=null&&!domainId.isEmpty()){
-          Domain domain=domainRepository.findById(Long.parseLong(domainId)).get();
-          UserDetailsImpl userDetailsPric = (UserDetailsImpl) authentication.getPrincipal();
-          userDetailsPric.setLoggedDomain(domain);
+                if (domainId != null && !domainId.isEmpty()) {
+                    Domain domain = domainRepository.findById(Long.parseLong(domainId)).get();
+                    UserDetailsImpl userDetailsPric = (UserDetailsImpl) authentication.getPrincipal();
+                    userDetailsPric.setLoggedDomain(domain);
+                }
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+
+          String domainId = request.getHeader("domainid");
+
+          if (domainId != null && !domainId.isEmpty() && authentication == null) {
+            UserDetailsImpl userDetailsPric = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Domain domain = domainRepository.findById(Long.parseLong(domainId)).get();
+            userDetailsPric.setLoggedDomain(domain);
+            SecurityContextHolder.getContext().setAuthentication(SecurityContextHolder.getContext().getAuthentication());
+          }
+
+        } catch (Exception e) {
+            logger.error("Cannot set user authentication: {}", e);
         }
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-      }
-    } catch (Exception e) {
-      logger.error("Cannot set user authentication: {}", e);
-    }
 
-    filterChain.doFilter(request, response);
-  }
+
+
+        filterChain.doFilter(request, response);
+    }
 
   private String parseJwt(HttpServletRequest request) {
     String headerAuth = request.getHeader("Authorization");

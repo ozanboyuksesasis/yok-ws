@@ -47,6 +47,12 @@ public class MenuController {
 		return ResponseEntity.ok(menuService.findAll());
 	}
 
+	@GetMapping(value = "/treeAll", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> treeAll() {
+		return ResponseEntity.ok(menuService.findAllTree());
+	}
+
+
 	@GetMapping(value = "/all-without-ana-sayfa", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> findAllWithoutAnasayfa() {
 		return ResponseEntity.ok(menuService.findAllWithoutAnasayfa());
