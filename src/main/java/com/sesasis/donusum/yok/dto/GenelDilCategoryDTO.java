@@ -22,11 +22,11 @@ public class GenelDilCategoryDTO {
 
     @NotBlank(message = "Hata: Kısaltma eki boş olamaz.")
     @Size(max = 3, message = "En fazla üç karakter girebilirsiniz.")
-    private String kisaltmaEki;
+    private String kisaltmaAdi;
 
 
 
     @NotBlank(message = "Hata : İsim boş olamaz.")
-    private String name;
+    private String ad;
 
 }

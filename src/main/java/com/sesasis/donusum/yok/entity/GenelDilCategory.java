@@ -18,12 +18,12 @@ public class GenelDilCategory {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "kisaltma_eki", nullable = false)
-    private String kisaltmaEki;
+    @Column(name = "kisaltma_adi", nullable = false)
+    private String kisaltmaAdi;
 
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "ad", nullable = false)
+    private String ad;
 
 
 
