@@ -13,7 +13,7 @@ public class Menu extends BaseModel<MenuDTO> {
 	String url;
 	boolean anaSayfaMi;
 
-	@Column(name = "child_id")
+	@Column(name = "group_id")
 	private Long groupId;
 
 	@ManyToOne

@@ -11,7 +11,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 	List<Menu> findAllByDomainId(Long domainId);
 	Menu findOneByIdAndDomain_Id(Long menuId,Long domainId);
 	Menu findOneByDomainIdAndAnaSayfaMi(Long domainId,boolean anaSayfaMi);
-	List<Menu> findAllByChildIdAndDomain_Id(Long groupId, Long domainId);
+	List<Menu> findAllByGroupIdAndDomain_Id(Long groupId, Long domainId);
 	List<Menu> findAllByDomainIdAndAnaSayfaMi(Long domainId,boolean anaSayfaMi);
 	boolean existsByUrlAndDomain_Id(String url, Long domainId);
 

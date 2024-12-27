@@ -132,10 +132,10 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
                     throw new RuntimeException("Dil kategorisi bulunamadı.");
                 }
             }
-            Long groupId = menuRepository.findMaxParentId().orElse(0L);
+            Long groupId = menuRepository.findMaxGroupId().orElse(0L);
             Menu menu = new Menu();
             menu.setAnaSayfaMi(dto.isAnaSayfaMi());
-            menu.setParentId(null);
+            menu.setParentId(dto.getParentId());
             menu.setGroupId(groupId + 1);
             menu.setGenelDilCategory(dilCategory);
             menu.setAktifMi(dto.isAktifMi());
@@ -143,7 +143,6 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
             menu.setAd(dto.getAd());
             menu.setLabel(dto.getLabel());
             menu.setUrl(dto.getUrl());
-
             return menu;
         }).collect(Collectors.toList());
 
@@ -206,7 +205,7 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
         if (loggedDomain == null) {
             return new ApiResponse(false, "Domain bulunamadı.", null);
         }
-        List<Menu> updateMenu = menuRepository.findAllByChildIdAndDomain_Id(groupId, loggedDomain.getId());
+        List<Menu> updateMenu = menuRepository.findAllByGroupIdAndDomain_Id(groupId, loggedDomain.getId());
         if (updateMenu.isEmpty()) {
             return new ApiResponse(false, "GroupId ile eşleşen menü bulunamadı.", null);
         }
@@ -246,7 +245,7 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
         if (domain == null) {
             throw new RuntimeException("Domain bulunamadi.");
         }
-        List<Menu> menu = menuRepository.findAllByChildIdAndDomain_Id(groupId, domain.getId());
+        List<Menu> menu = menuRepository.findAllByGroupIdAndDomain_Id(groupId, domain.getId());
         if (menu.isEmpty()) {
             throw new RuntimeException("Menü grubu bulunamadi.");
         }
