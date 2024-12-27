@@ -12,11 +12,13 @@ import com.sesasis.donusum.yok.entity.GenelDilCategory;
 import com.sesasis.donusum.yok.repository.AnaSayfaSliderRepository;
 import com.sesasis.donusum.yok.repository.GenelDilCategoryRepository;
 import com.sesasis.donusum.yok.repository.MenuRepository;
+import org.eclipse.jdt.internal.compiler.ast.ForeachStatement;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,18 +94,49 @@ public class AnaSayfaSliderService extends AbstractService<AnaSayfaSlider, AnaSa
 
 
     @Transactional
-    public ApiResponse updateSiraNo(Long id, Long newSiraNo, Long genelDilCategoryId) {
-        List<AnaSayfaSlider> sliders = getRepository().findAllByGenelDilCategoryIdOrderBySiraNoAsc(genelDilCategoryId);
+    public ApiResponse updateSiraNo(Long id, Long newSiraNo) {
+        List<AnaSayfaSlider> anaSayfaSliders = getRepository().findSlidersById(id);
+
+        if (anaSayfaSliders.isEmpty()) {
+            return new ApiResponse(false, "Slider bulunamadı", null);
+        }
+
+        // Update the `siraNo` for the sliders in the `anaSayfaSliders` list
+        for (AnaSayfaSlider slider : anaSayfaSliders) {
+            slider.setSiraNo(newSiraNo);
+        }
+        getRepository().saveAll(anaSayfaSliders);
+
+        // Retrieve all sliders ordered by `siraNo`
+        List<AnaSayfaSlider> sliders = getRepository().findAllByOrderBySiraNoAsc();
+
+        // Adjust `siraNo` for other sliders
         for (AnaSayfaSlider slider : sliders) {
-            if (slider.getSiraNo() >= newSiraNo) {
+            if (slider.getSiraNo() >= newSiraNo &&
+                    anaSayfaSliders.stream().noneMatch(s -> s.getId().equals(slider.getId()))) {
                 slider.setSiraNo(slider.getSiraNo() + 1);
-                getRepository().save(slider);
             }
         }
-        AnaSayfaSlider anaSayfaSlider = getRepository().findById(id).orElseThrow(() -> new RuntimeException("Slider not found"));
-        anaSayfaSlider.setSiraNo(newSiraNo);
-        getRepository().save(anaSayfaSlider);
-        return new ApiResponse(true, "SiraNo updated successfully", null);
+        getRepository().saveAll(sliders);
+
+        // Reorganize `siraNo` starting from 1 with two rows having the same value
+        sliders.sort(Comparator.comparing(AnaSayfaSlider::getSiraNo)); // Ensure correct order
+        long siraNo = 1;
+
+        for (int i = 0; i < sliders.size(); i += 2) {
+            if (i < sliders.size()) {
+                sliders.get(i).setSiraNo(siraNo);
+            }
+            if (i + 1 < sliders.size()) {
+                sliders.get(i + 1).setSiraNo(siraNo); // Set the same `siraNo` for the next row
+            }
+            siraNo++;
+        }
+
+        // Save the reordered sliders
+        getRepository().saveAll(sliders);
+
+        return new ApiResponse(true, "SiraNo updated successfully", sliders);
     }
 
     @Transactional

@@ -50,9 +50,9 @@ public class AnaSayfaSliderController {
 		anaSayfaSliderService.deleteBySiraNo(siraNo);
 		return ResponseEntity.ok(new ApiResponse(true, "Slider silme işlemi başarılı oldu.", null));
 	}
-	@PutMapping(value = "/update-sira-no/{id}/{newSiraNo}/{genelDilCategoryId}")
-	public ResponseEntity<?> updateSiraNo(@PathVariable Long id, @PathVariable Long newSiraNo, @PathVariable Long genelDilCategoryId) {
-		ApiResponse apiResponse = anaSayfaSliderService.updateSiraNo(id, newSiraNo, genelDilCategoryId);
+	@PutMapping(value = "/update-sira-no/{id}/{newSiraNo}")
+	public ResponseEntity<?> updateSiraNo(@PathVariable Long id, @PathVariable Long newSiraNo) {
+		ApiResponse apiResponse = anaSayfaSliderService.updateSiraNo(id, newSiraNo);
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 	}
 }
