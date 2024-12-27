@@ -24,8 +24,6 @@ public class GenelDilCategoryDTO {
     @Size(max = 3, message = "En fazla üç karakter girebilirsiniz.")
     private String kisaltmaAdi;
 
-
-
     @NotBlank(message = "Hata : İsim boş olamaz.")
     private String ad;
 

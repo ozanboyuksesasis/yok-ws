@@ -27,14 +27,12 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
     private final SecurityContextUtil securityContextUtil;
     private final MenuRepository menuRepository;
     private final GenelDilCategoryRepository genelDilCategoryRepository;
-    private final Validator validator;
 
-    public MenuService(MenuRepository repository, SecurityContextUtil securityContextUtil, MenuRepository menuRepository, GenelDilCategoryRepository genelDilCategoryRepository, Validator validator) {
+    public MenuService(MenuRepository repository, SecurityContextUtil securityContextUtil, MenuRepository menuRepository, GenelDilCategoryRepository genelDilCategoryRepository) {
         super(repository);
         this.securityContextUtil = securityContextUtil;
         this.menuRepository = menuRepository;
         this.genelDilCategoryRepository = genelDilCategoryRepository;
-        this.validator = validator;
     }
 
 
@@ -61,10 +59,8 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
         if (menuDTO.isAnaSayfaMi()) {
             menu.setGenelDilCategory(null);
         }
-
         menu.setDomain(loggedDomain);
         getRepository().save(menu);
-
         return new ApiResponse(true, MessageConstant.SAVE_MSG, null);
     }
 
@@ -86,7 +82,7 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
             menuDTO.setLabel(menu.getLabel());
             menuDTO.setParentId(menu.getParentId());
             menuDTO.setAnaSayfaMi(menu.isAnaSayfaMi());
-            menuDTO.setChildId(menu.getChildId());
+            menuDTO.setGroupId(menu.getGroupId());
             return menuDTO;
         }).collect(Collectors.toList());
         return new ApiResponse<>(true, "İşlem başarılı.", dtos);
@@ -111,19 +107,18 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
                     throw new RuntimeException("Dil kategorisi bulunamadı.");
                 }
             }
-            Long parentId = menuRepository.findMaxParentId().orElse(0L);
+            Long groupId = menuRepository.findMaxParentId().orElse(0L);
             Menu menu = new Menu();
             menu.setAnaSayfaMi(dto.isAnaSayfaMi());
-            if (dto.isAnaSayfaMi()) {
-                menu.setParentId(parentId + 1);
-                menu.setChildId(null);
-                menu.setGenelDilCategory(dilCategory);
-                menu.setAktifMi(dto.isAktifMi());
-                menu.setDomain(loggedDomain);
-                menu.setAd(dto.getAd());
-                menu.setLabel(dto.getLabel());
-                menu.setUrl(dto.getUrl());
-            }
+            menu.setParentId(null);
+            menu.setGroupId(groupId + 1);
+            menu.setGenelDilCategory(dilCategory);
+            menu.setAktifMi(dto.isAktifMi());
+            menu.setDomain(loggedDomain);
+            menu.setAd(dto.getAd());
+            menu.setLabel(dto.getLabel());
+            menu.setUrl(dto.getUrl());
+
             return menu;
         }).collect(Collectors.toList());
 
@@ -144,7 +139,7 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
                 throw new MenuNotFoundException("Ana menü bulunamadı.");
             }
         }
-        Long parentId=parentMenus.get(0).getParentId();
+        Long parentId = parentMenus.get(0).getParentId();
         List<Menu> menuList = menuDTOS.stream().map(dto -> {
             if (dto.getUrl() != null) {
                 Boolean existByUrl = menuRepository.existsByUrlAndDomain_Id(dto.getUrl(), loggedDomain.getId());
@@ -162,9 +157,9 @@ public class MenuService extends AbstractService<Menu, MenuRepository> implement
 
             Menu menu = new Menu();
             if (!dto.isAnaSayfaMi()) {
-                Long childId = menuRepository.findMaxChildId().orElse(0L);
+                Long groupId = menuRepository.findMaxParentId().orElse(0L);
                 menu.setDomain(loggedDomain);
-                menu.setChildId(childId + 1);
+                menu.setGroupId(groupId + 1);
                 menu.setParentId(parentId);
                 menu.setGenelDilCategory(dilCategory);
                 menu.setAktifMi(dto.isAktifMi());
