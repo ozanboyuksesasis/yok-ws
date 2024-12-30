@@ -70,6 +70,7 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 					DashboardMenu anasayfaHizliBaglantilarVeStory = new DashboardMenu();
 					anasayfaHizliBaglantilarVeStory.setId(15L);
 
+
 					List<DashboardMenu> dashboardMenuList = new ArrayList<>();
 					dashboardMenuList.add(yok);
 					dashboardMenuList.add(anasayfaSlider);
