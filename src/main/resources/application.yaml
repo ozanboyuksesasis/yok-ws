@@ -34,7 +34,10 @@ springfox:
 
 
 upload:
-  dir : src/main/resources/static/uploads
+  dir: 'src/main/resources/static/uploads'
+  anasayfa-story-hızlı-baglantı:
+    story: 'src/main/resources/static/uploads/anasayfa-story'
+    hızlıbaglantı: 'src/main/resources/static/uploads/anasayfa-hızlıbaglantı'
 
 entegration:
     yokservisler:

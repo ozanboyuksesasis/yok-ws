@@ -18,10 +18,10 @@ INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "num
 
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Yok', 2, 'yok', NULL,'FaClipboardList');
 INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Slider', 1, 'anasayfa-slider', 11,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Story', 2, 'anasayfa-story', 11,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Hızlı Bağlantılar', 3, 'anasayfa-hizli-baglantilar', 11,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Duyuru', 4, 'anasayfa-duyuru', 11,'FaCirclePlus');
-INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Haber', 5, 'anasayfa-haber', 11,'FaCirclePlus');
+INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Duyuru', 2, 'anasayfa-duyuru', 11,'FaCirclePlus');
+INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Haber', 3, 'anasayfa-haber', 11,'FaCirclePlus');
+INSERT INTO public.dashboard_menu (create_date, deleted, update_date, name, "number", "path", parent_id,icon_name) VALUES('2024-08-04 16:30:32.403', 0, '2024-08-04 16:30:32.403', 'Anasayfa Hızlı Bağlantı Ve Story', 4, 'anasayfa-hizli-baglanti-story-ekle', 11,'FaCirclePlus');
+
 
 
 
@@ -33,4 +33,8 @@ INSERT INTO public.role_dashboard_menu (role_id, dashboard_menu_id) VALUES(1, 5)
 
 
 
+<<<<<<< HEAD
+--INSERT INTO public.genel_dil_category (id, kisaltma_eki, name) VALUES(1, 'tr', 'Türkçe');
+=======
 --INSERT INTO public.genel_dil_category (kisaltma_eki, name) VALUES('TR', 'TÜRKÇE');
+>>>>>>> main
