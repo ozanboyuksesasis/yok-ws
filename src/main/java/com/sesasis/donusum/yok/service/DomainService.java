@@ -63,19 +63,19 @@ public class DomainService extends AbstractService<Domain, DomainRepository> imp
 					yok.setId(11L);
 					DashboardMenu anasayfaSlider = new DashboardMenu();
 					anasayfaSlider.setId(12L);
-					DashboardMenu anasayfaHizliBaglantilarVeStori = new DashboardMenu();
-					anasayfaHizliBaglantilarVeStori.setId(13L);
 					DashboardMenu anasayfaDuyuru = new DashboardMenu();
-					anasayfaDuyuru.setId(14L);
-					DashboardMenu anaSayfaHaber = new DashboardMenu();
-					anasayfaDuyuru.setId(15L);
+					anasayfaDuyuru.setId(13L);
+					DashboardMenu anasayfaHaber = new DashboardMenu();
+					anasayfaHaber.setId(14L);
+					DashboardMenu anasayfaHizliBaglantilarVeStory = new DashboardMenu();
+					anasayfaHizliBaglantilarVeStory.setId(15L);
 
 					List<DashboardMenu> dashboardMenuList = new ArrayList<>();
 					dashboardMenuList.add(yok);
 					dashboardMenuList.add(anasayfaSlider);
-					dashboardMenuList.add(anasayfaHizliBaglantilarVeStori);
-					dashboardMenuList.add(anaSayfaHaber);
+					dashboardMenuList.add(anasayfaHaber);
 					dashboardMenuList.add(anasayfaDuyuru);
+					dashboardMenuList.add(anasayfaHizliBaglantilarVeStory);
 					Role role = roleRepository.findById(domainDTO.getRole().getId()).get();
 					role.setDashboardMenuList(dashboardMenuList);
 					roleRepository.save(role);
