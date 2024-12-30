@@ -33,6 +33,11 @@ public class Dosya {
     @Column(name = "aktif_mi")
     boolean aktifMi;
 
+    @Lob
+    @Column(name = "content_detay")
+    @Type(type = "org.hibernate.type.ImageType")
+    private byte[] contentDetay;
+
     @ManyToOne
     @JoinColumn(name = "domain_id")
     private Domain domain;

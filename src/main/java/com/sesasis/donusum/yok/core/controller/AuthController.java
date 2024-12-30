@@ -49,12 +49,10 @@ public class AuthController {
 
 		boolean hasAdmin=false;
 		Optional<String> adminOpt = roles.stream().filter(e-> e.equals(RoleNames.ROLE_ADMIN.toString())).findAny();
-
 		if (adminOpt.isPresent()){
 			hasAdmin = true;
 		}
 		String jwt;
-
 		if (hasAdmin){
 			jwt = jwtUtils.generateJwtToken(authentication);
 			return ResponseEntity.ok(new ApiResponse<>(true, MessageConstant.SUCCESS, new JwtResponse(jwt,

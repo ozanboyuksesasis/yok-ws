@@ -42,7 +42,6 @@ public class DomainWebService {
             dto.setBaslik(menuIcerik.getBaslik());
             dto.setDeleted(menuIcerik.getDeleted());
             dto.setId(menuIcerik.getId());
-            dto.setAltMenuId(menuIcerik.getAltMenu().getId());
             dto.setMenuId(menuIcerik.getMenu().getId());
             dto.setGenelDilCategoryId(menuIcerik.getGenelDilCategory().getId());
             dto.setMenuId(menuIcerik.getMenu().getId());
@@ -111,19 +110,6 @@ public class DomainWebService {
             dto.setAnaSayfaMi(menu.isAnaSayfaMi());
             dto.setGenelDilCategoryId(menu.getGenelDilCategory()!=null ? menu.getGenelDilCategory().getId() : null);
             dto.setMenuIcerikDTOS(menu.getMenuIceriks().stream().map(menuIcerik -> menuIcerik.toDTO()).collect(Collectors.toList()));
-            dto.setAltMenuDTOS(menu.getAltMenus().stream().map(altMenu -> {
-                AltMenuDTO dto1 = new AltMenuDTO();
-                dto1.setId(altMenu.getId());
-                dto1.setUrl(altMenu.getUrl());
-                dto1.setMenuGroupId(altMenu.getMenuGroupId());
-                dto1.setMenuId(altMenu.getMenu().getId());
-                dto1.setAd(altMenu.getAd());
-                dto1.setGenelDilCategoryId(altMenu.getGenelDilCategory().getId());
-                dto1.setDeleted(altMenu.getDeleted());
-                dto1.setGroupId(altMenu.getGroupId());
-                dto1.setNewAltMenuDTOS(altMenu.getNewAltMenus().stream().map(newAltMenu -> this.modelMapperServiceImpl.response().map(newAltMenu,NewAltMenuDTO.class)).collect(Collectors.toList()));
-                return dto1;
-            }).collect(Collectors.toList()));
             return dto;
         }).collect(Collectors.toList());
         return new ApiResponse<>(true,"İşlem başarılı.",menus);

@@ -28,13 +28,30 @@ public class MenuController {
 	public ResponseEntity<?> save(@RequestBody List<MenuDTO> menuDTO) {
 		ApiResponse apiResponse = menuService.saveList(menuDTO);
 		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+	}
 
+	@PostMapping(value = "/child-save/{parentGroupId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> save(@RequestBody List<MenuDTO> menuDTO,@PathVariable Long parentGroupId) {
+		ApiResponse apiResponse = menuService.saveChild(menuDTO,parentGroupId);
+		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/update-save/{groupId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> update(@RequestBody List<MenuDTO> menuDTO,@PathVariable Long groupId) {
+		ApiResponse apiResponse = menuService.updateMenu(menuDTO,groupId);
+		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> findAll() {
 		return ResponseEntity.ok(menuService.findAll());
 	}
+
+	@GetMapping(value = "/treeAll", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> treeAll() {
+		return ResponseEntity.ok(menuService.findAllTree());
+	}
+
 
 	@GetMapping(value = "/all-without-ana-sayfa", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> findAllWithoutAnasayfa() {
@@ -46,7 +63,7 @@ public class MenuController {
 		return ResponseEntity.ok(menuService.findDomainAnasayfa());
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> deleteById(@PathVariable Long id) {
 		menuService.deleteById(id);
 		return ResponseEntity.ok(new ApiResponse<>(true, "Menü başarıyla silindi.", null));

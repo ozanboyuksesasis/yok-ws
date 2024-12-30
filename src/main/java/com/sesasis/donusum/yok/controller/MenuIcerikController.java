@@ -39,9 +39,10 @@ public class MenuIcerikController {
         return ResponseEntity.ok(menuIcerikService.findAll());
     }
 
-    @DeleteMapping(MappingConstants.PATH_VARIABLE_ID)
-    public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        return ResponseEntity.ok(menuIcerikService.delete(id));
+    @DeleteMapping(value = "/{groupId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteById(@PathVariable Long groupId) {
+       menuIcerikService.deleteById(groupId);
+       return ResponseEntity.ok(new ApiResponse<>(true,"Silme başarılı.",null));
     }
 
     @GetMapping(value = "/by-alt-menu-url", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,10 +50,6 @@ public class MenuIcerikController {
         return ResponseEntity.ok(menuIcerikService.getIcerikByAltMenuUrl(altMenuUrl));
     }
 
-    @GetMapping(value = "/get-alt-menü-icerik",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getListAltMenuIcerik(){
-        ApiResponse listAltMenuIcerik = menuIcerikService.getListAltMenuIcerik();
-        return new ResponseEntity<>(listAltMenuIcerik, HttpStatus.OK);
-    }
+
 
 }
